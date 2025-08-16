@@ -22,7 +22,7 @@
             --accent-secondary: #e5e7eb;
             --accent-tertiary: #9ca3af;
             --text-primary: #ffffff;
-            --text-secondary: #9ca3af;
+            --text-secondary: #ffffff;
             --border-color: #21262d;
             --gradient-primary: linear-gradient(135deg, #ffffff 0%, #e5e7eb 100%);
             --glow-color: rgba(255, 255, 255, 0.1);
@@ -63,6 +63,12 @@
             z-index: 1000;
             padding: 1rem 0;
             transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        /* Mobile header hide functionality */
+        @media (max-width: 768px) {
+
         }
 
         .nav-container {
@@ -271,7 +277,7 @@
         }
 
         .section-subtitle {
-            font-size: 1.35rem;
+            font-size: 1.5rem;
             color: var(--text-secondary);
             text-align: center;
             margin-bottom: 4rem;
@@ -1147,6 +1153,68 @@
                 font-size: 0.8rem;
             }
         }
+
+        /* Mobile Menu Styles */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.98);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                padding: 2rem 0;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                display: flex;
+                z-index: 999;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .nav-links a {
+                padding: 1.5rem 2rem;
+                font-size: 1.4rem;
+                border-bottom: 1px solid var(--border-color);
+                width: 100%;
+                text-align: center;
+                color: var(--text-primary);
+                transition: all 0.3s ease;
+            }
+
+            .nav-links a:last-child {
+                border-bottom: none;
+            }
+
+            .nav-links a:hover {
+                background: rgba(255, 255, 255, 0.1);
+                color: var(--accent-primary);
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+                z-index: 1001;
+                position: relative;
+            }
+
+            .mobile-menu-btn.active span:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+
+            .mobile-menu-btn.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .mobile-menu-btn.active span:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+        }
     </style>
 </head>
 <body>
@@ -1198,13 +1266,12 @@
 
     <section id="about" class="section">
         <h2 class="section-title">About</h2>
-        <p class="section-subtitle">Through discipline comes excellence.”</p>
         <div class="about-content">
             <div class="about-image">
                 <img src="assets/1751590590846.jpg" alt="Devin Coster - Software Engineer" loading="lazy">
             </div>
             <div class="about-text">
-                <h3>Driven by Innovation</h3>
+                <h3>Hello! I'm Devin</h3>
                 <p>I'm a passionate developer with expertise in C++, Python, and Java. I bring both technical depth and creative problem-solving to every project and every day life.</p>
                 <p>My experience spans from tinkering with games, various projects, or just grinding leetcode. I believe in writing clean, maintainable code and building solutions that scale.</p>
                 <p>When I'm not coding, you can find me swimming for my school, playing Elden Ring, or following an Udemy Course. I have a passion for continually learning and expanding my horizons.</p>
@@ -1431,7 +1498,7 @@
 
     <section id="contact" class="section">
         <h2 class="section-title">Contact</h2>
-        <p class="section-subtitle">Ready to bring your ideas to life? Let's connect and discuss how we can work together.</p>
+        <p class="section-subtitle">I am looking for software engineering internships, if you think I'd be a good fit, please contact me.</p>
         <div class="contact-content">
             <div class="contact-grid">
                 <div class="contact-card" onclick="window.location.href='mailto:costerdevin@gmail.com'">
@@ -1472,6 +1539,8 @@
         // Global variables
         let isLoading = true;
         let currentSection = 'home';
+        let lastScrollTop = 0;
+        let isScrollingDown = false;
 
         // Matrix background effect
         class MatrixBackground {
@@ -1596,14 +1665,102 @@
             });
         }
 
+        // Mobile header scroll behavior
+        function initMobileHeaderScroll() {
+            if (window.innerWidth <= 768) {
+                const navbar = document.getElementById('navbar');
+                let ticking = false;
+
+                function updateHeader() {
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+                    if (scrollTop > lastScrollTop && scrollTop > 100) {
+                        // Scrolling down
+                        if (!isScrollingDown) {
+                            navbar.classList.add('hide-on-scroll');
+                            navbar.classList.remove('show-on-scroll');
+                            isScrollingDown = true;
+                        }
+                    } else {
+                        // Scrolling up
+                        if (isScrollingDown || scrollTop <= 100) {
+                            navbar.classList.remove('hide-on-scroll');
+                            navbar.classList.add('show-on-scroll');
+                            isScrollingDown = false;
+                        }
+                    }
+
+                    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+                    ticking = false;
+                }
+
+                function requestTick() {
+                    if (!ticking) {
+                        requestAnimationFrame(updateHeader);
+                        ticking = true;
+                    }
+                }
+
+                window.addEventListener('scroll', requestTick, { passive: true });
+
+                // Reset on window resize
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 768) {
+                        navbar.classList.remove('hide-on-scroll', 'show-on-scroll');
+                        isScrollingDown = false;
+                        lastScrollTop = 0;
+                    }
+                });
+            }
+        }
+
         // Mobile menu toggle
         function toggleMobileMenu() {
             const navLinks = document.querySelector('.nav-links');
             const mobileBtn = document.querySelector('.mobile-menu-btn');
-            
-            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+            const navbar = document.getElementById('navbar');
+
+            navLinks.classList.toggle('active');
             mobileBtn.classList.toggle('active');
+
+            // Prevent body scroll when menu is open
+            if (navLinks.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+                navbar.classList.remove('hide-on-scroll');
+                navbar.classList.add('show-on-scroll');
+            } else {
+                document.body.style.overflow = '';
+            }
         }
+
+        // Close mobile menu when clicking on a link
+        function closeMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            const mobileBtn = document.querySelector('.mobile-menu-btn');
+
+            navLinks.classList.remove('active');
+            mobileBtn.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Add click handlers to nav links for mobile
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add click handlers to nav links
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', closeMobileMenu);
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                const navLinks = document.querySelector('.nav-links');
+                document.querySelector('.mobile-menu-btn');
+                const nav = document.querySelector('nav');
+
+                if (navLinks.classList.contains('active') && !nav.contains(e.target)) {
+                    closeMobileMenu();
+                }
+            });
+        });
 
         // Animate elements on scroll
         function initScrollAnimations() {
@@ -1740,6 +1897,7 @@
             // Initialize all features
             initScrollSpy();
             initNavbarScroll();
+            initMobileHeaderScroll();
             initScrollAnimations();
             initTerminalEffect();
             initParticlesCursor();
