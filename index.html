@@ -155,6 +155,7 @@
             background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
             position: relative;
             overflow: hidden;
+            padding-top: 120px;
         }
 
         .hero-content {
@@ -167,7 +168,7 @@
             font-size: 1.4rem;
             color: var(--terminal-green);
             font-family: 'JetBrains Mono', monospace;
-            margin-bottom: 1rem;
+            margin-bottom: 2rem;
             opacity: 0;
             animation: fadeInUp 1s ease 0.2s forwards;
         }
@@ -699,6 +700,7 @@
 
             .hero-content .greeting {
                 font-size: 1.1rem;
+                margin-bottom: 2.5rem;
             }
 
             .hero-content h1 {
@@ -867,16 +869,21 @@
 
         /* Smaller mobile screens (iPhone SE, etc.) */
         @media (max-width: 480px) {
+            .hero {
+                padding-top: 160px;
+            }
+
+            .hero-content .greeting {
+                font-size: 1rem;
+                margin-bottom: 3rem;
+            }
+
             body {
                 font-size: 14px;
             }
 
             .hero-content {
                 padding: 0 1rem;
-            }
-
-            .hero-content .greeting {
-                font-size: 1rem;
             }
 
             .hero-content h1 {
@@ -987,6 +994,40 @@
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
+        }
+
+        /* Loading Screen */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid var(--terminal-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* Contact Section */
@@ -1147,6 +1188,15 @@
 
         /* Mobile Menu Styles */
         @media (max-width: 768px) {
+            .hero {
+                padding-top: 140px;
+            }
+
+            .hero-content .greeting {
+                font-size: 1.1rem;
+                margin-bottom: 2.5rem;
+            }
+
             .nav-links {
                 position: fixed;
                 top: 80px;
@@ -1553,16 +1603,201 @@
         let lastScrollTop = 0;
         let isScrollingDown = false;
 
+        // Hide loading screen
+        function hideLoadingScreen() {
+            const loading = document.getElementById('loading');
+            if (loading) {
+                loading.classList.add('hide');
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                }, 500);
+            }
+            isLoading = false;
+        }
+
+        // Scroll animations
+        function initScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe elements that need animation
+            document.querySelectorAll('.skill-category, .project-terminal, .contact-card').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        }
+
+        // Terminal typing effect
+        function initTerminalEffect() {
+            const terminalElements = document.querySelectorAll('.terminal-title');
+
+            terminalElements.forEach(element => {
+                const text = element.textContent;
+                element.textContent = '';
+
+                let i = 0;
+                const typeWriter = () => {
+                    if (i < text.length) {
+                        element.textContent += text.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, 50);
+                    }
+                };
+
+                // Start typing effect when element comes into view
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            setTimeout(typeWriter, 500);
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                });
+
+                observer.observe(element);
+            });
+        }
+
+        // Particle cursor effect
+        function initParticlesCursor() {
+            if (window.innerWidth < 768) return; // Skip on mobile for performance
+
+            let particles = [];
+            const particleCount = 15;
+
+            class Particle {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                    this.size = Math.random() * 3 + 1;
+                    this.speedX = Math.random() * 3 - 1.5;
+                    this.speedY = Math.random() * 3 - 1.5;
+                    this.life = 1;
+                    this.decay = Math.random() * 0.02 + 0.01;
+                }
+
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.life -= this.decay;
+                    this.size *= 0.98;
+                }
+
+                draw(ctx) {
+                    ctx.save();
+                    ctx.globalAlpha = this.life;
+                    ctx.fillStyle = '#00ff41';
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+
+            // Create canvas for particles
+            const canvas = document.createElement('canvas');
+            canvas.style.position = 'fixed';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.pointerEvents = 'none';
+            canvas.style.zIndex = '999';
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            document.body.appendChild(canvas);
+
+            const ctx = canvas.getContext('2d');
+
+            // Mouse move event
+            document.addEventListener('mousemove', (e) => {
+                for (let i = 0; i < 3; i++) {
+                    particles.push(new Particle(e.clientX, e.clientY));
+                }
+
+                // Limit particle count
+                if (particles.length > particleCount) {
+                    particles = particles.slice(-particleCount);
+                }
+            });
+
+            // Animation loop
+            function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                particles = particles.filter(particle => {
+                    particle.update();
+                    particle.draw(ctx);
+                    return particle.life > 0 && particle.size > 0.1;
+                });
+
+                requestAnimationFrame(animateParticles);
+            }
+
+            animateParticles();
+
+            // Resize handler
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        }
+
+        // Performance monitoring
+        function initPerformanceMonitoring() {
+            // Monitor FPS
+            let fps = 0;
+            let lastTime = performance.now();
+
+            function calculateFPS() {
+                const now = performance.now();
+                fps = 1000 / (now - lastTime);
+                lastTime = now;
+
+                // Reduce effects if FPS is too low
+                if (fps < 30 && window.innerWidth > 768) {
+                    // Disable some animations on low-end devices
+                    document.documentElement.style.setProperty('--animation-duration', '0s');
+                }
+
+                requestAnimationFrame(calculateFPS);
+            }
+
+            calculateFPS();
+
+            // Memory usage monitoring
+            if ('memory' in performance) {
+                setInterval(() => {
+                    const memory = performance.memory;
+                    if (memory.usedJSHeapSize > memory.jsHeapSizeLimit * 0.9) {
+                        console.warn('High memory usage detected');
+                    }
+                }, 5000);
+            }
+        }
+
         // Matrix background effect
         class MatrixBackground {
             constructor() {
                 this.canvas = document.getElementById('matrix-canvas');
                 this.ctx = this.canvas.getContext('2d');
                 this.characters = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-                this.fontSize = 12;
+                this.fontSize = window.innerWidth < 768 ? 10 : 12;
                 this.columns = [];
                 this.drops = [];
-                
+                this.isMobile = window.innerWidth < 768;
+
                 this.init();
                 this.animate();
             }
@@ -1573,13 +1808,19 @@
                 
                 this.columns = Math.floor(this.canvas.width / this.fontSize);
                 
-                for (let i = 0; i < this.columns; i++) {
+                // Reduce particle count on mobile for performance
+                const maxColumns = this.isMobile ? Math.min(this.columns, 50) : this.columns;
+
+                for (let i = 0; i < maxColumns; i++) {
                     this.drops[i] = Math.random() * this.canvas.height / this.fontSize;
                 }
             }
 
             animate() {
-                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                // Reduce animation frequency on mobile
+                const alpha = this.isMobile ? 0.1 : 0.05;
+
+                this.ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
                 this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
                 
                 this.ctx.fillStyle = '#00ff41';
@@ -1592,7 +1833,7 @@
                     
                     this.ctx.fillText(text, x, y);
                     
-                    if (y > this.canvas.height && Math.random() > 0.975) {
+                    if (y > this.canvas.height && Math.random() > (this.isMobile ? 0.99 : 0.975)) {
                         this.drops[i] = 0;
                     }
                     
@@ -1603,12 +1844,16 @@
             }
 
             resize() {
+                this.isMobile = window.innerWidth < 768;
+                this.fontSize = this.isMobile ? 10 : 12;
                 this.canvas.width = window.innerWidth;
                 this.canvas.height = window.innerHeight;
                 this.columns = Math.floor(this.canvas.width / this.fontSize);
                 this.drops = [];
                 
-                for (let i = 0; i < this.columns; i++) {
+                const maxColumns = this.isMobile ? Math.min(this.columns, 50) : this.columns;
+
+                for (let i = 0; i < maxColumns; i++) {
                     this.drops[i] = Math.random() * this.canvas.height / this.fontSize;
                 }
             }
@@ -1645,7 +1890,6 @@
             if (navLinks.classList.contains('active')) {
                 navbar.classList.remove('hide-on-scroll');
                 navbar.classList.add('show-on-scroll');
-                // Don't prevent body scroll for horizontal menu
             } else {
                 // Reset scroll behavior when menu closes
                 if (window.innerWidth <= 768) {
@@ -1767,7 +2011,14 @@
             }
         }
 
-        // Add click handlers to nav links for mobile
+        // Resize handler for matrix background
+        window.addEventListener('resize', () => {
+            if (matrixBg) {
+                matrixBg.resize();
+            }
+        });
+
+        // Initialize everything when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
             // Add click handlers to nav links
             document.querySelectorAll('.nav-links a').forEach(link => {
@@ -1789,14 +2040,19 @@
                 }
             });
 
-            // Initialize all other features
+            // Initialize all features
             setTimeout(hideLoadingScreen, 1500);
             initScrollSpy();
             initNavbarScroll();
             initMobileHeaderScroll();
             initScrollAnimations();
             initTerminalEffect();
-            initParticlesCursor();
+
+            // Only init particle cursor on desktop
+            if (window.innerWidth >= 768) {
+                initParticlesCursor();
+            }
+
             initPerformanceMonitoring();
             updateActiveNavLink('home');
             
