@@ -68,7 +68,13 @@
 
         /* Mobile header hide functionality */
         @media (max-width: 768px) {
+            nav.hide-on-scroll {
+                transform: translateY(-100%);
+            }
 
+            nav.show-on-scroll {
+                transform: translateY(0);
+            }
         }
 
         .nav-container {
@@ -1139,60 +1145,65 @@
             color: var(--accent-primary);
         }
 
-        /* Mobile responsiveness for footer */
-        @media (max-width: 768px) {
-            footer {
-                padding: 2rem 1rem 1.5rem;
-            }
-
-            .footer-content p {
-                font-size: 0.9rem;
-            }
-
-            .footer-content p:last-child {
-                font-size: 0.8rem;
-            }
-        }
-
         /* Mobile Menu Styles */
         @media (max-width: 768px) {
             .nav-links {
                 position: fixed;
-                top: 0;
+                top: 80px;
                 left: 0;
                 width: 100%;
-                height: 100vh;
                 background: rgba(0, 0, 0, 0.98);
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
-                flex-direction: column;
-                justify-content: center;
+                flex-direction: row;
+                justify-content: flex-start;
                 align-items: center;
-                gap: 2rem;
-                padding: 2rem 0;
-                transform: translateX(-100%);
+                gap: 0;
+                padding: 1rem;
+                transform: translateY(-100%);
                 transition: transform 0.3s ease;
                 display: flex;
                 z-index: 999;
-                overflow-y: auto;
+                overflow-x: auto;
+                overflow-y: hidden;
                 -webkit-overflow-scrolling: touch;
+                white-space: nowrap;
+                border-bottom: 1px solid var(--border-color);
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+
+            .nav-links::-webkit-scrollbar {
+                display: none;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
             }
 
             .nav-links a {
-                padding: 1.5rem 2rem;
-                font-size: 1.4rem;
-                border-bottom: 1px solid var(--border-color);
-                width: 100%;
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+                border: none;
+                border-right: 1px solid var(--border-color);
                 text-align: center;
                 color: var(--text-primary);
                 transition: all 0.3s ease;
+                white-space: nowrap;
+                flex-shrink: 0;
+                min-width: auto;
             }
 
             .nav-links a:last-child {
-                border-bottom: none;
+                border-right: none;
             }
 
             .nav-links a:hover {
+                background: rgba(255, 255, 255, 0.1);
+                color: var(--accent-primary);
+            }
+
+            .nav-links a.active {
                 background: rgba(255, 255, 255, 0.1);
                 color: var(--accent-primary);
             }
@@ -1621,6 +1632,37 @@
             updateActiveNavLink(sectionId);
         }
 
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            const mobileBtn = document.querySelector('.mobile-menu-btn');
+            const navbar = document.getElementById('navbar');
+
+            navLinks.classList.toggle('active');
+            mobileBtn.classList.toggle('active');
+
+            // Show navbar when menu is opened/closed
+            if (navLinks.classList.contains('active')) {
+                navbar.classList.remove('hide-on-scroll');
+                navbar.classList.add('show-on-scroll');
+                // Don't prevent body scroll for horizontal menu
+            } else {
+                // Reset scroll behavior when menu closes
+                if (window.innerWidth <= 768) {
+                    initMobileHeaderScroll();
+                }
+            }
+        }
+
+        // Close mobile menu when clicking on a link
+        function closeMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            const mobileBtn = document.querySelector('.mobile-menu-btn');
+
+            navLinks.classList.remove('active');
+            mobileBtn.classList.remove('active');
+        }
+
         // Update active navigation link
         function updateActiveNavLink(activeSection) {
             const navLinks = document.querySelectorAll('.nav-links a');
@@ -1669,10 +1711,19 @@
         function initMobileHeaderScroll() {
             if (window.innerWidth <= 768) {
                 const navbar = document.getElementById('navbar');
+                const navLinks = document.querySelector('.nav-links');
                 let ticking = false;
 
                 function updateHeader() {
                     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+                    // Don't hide header if mobile menu is open
+                    if (navLinks.classList.contains('active')) {
+                        navbar.classList.remove('hide-on-scroll');
+                        navbar.classList.add('show-on-scroll');
+                        ticking = false;
+                        return;
+                    }
 
                     if (scrollTop > lastScrollTop && scrollTop > 100) {
                         // Scrolling down
@@ -1707,6 +1758,8 @@
                 window.addEventListener('resize', () => {
                     if (window.innerWidth > 768) {
                         navbar.classList.remove('hide-on-scroll', 'show-on-scroll');
+                        navLinks.classList.remove('active');
+                        document.querySelector('.mobile-menu-btn').classList.remove('active');
                         isScrollingDown = false;
                         lastScrollTop = 0;
                     }
@@ -1714,187 +1767,30 @@
             }
         }
 
-        // Mobile menu toggle
-        function toggleMobileMenu() {
-            const navLinks = document.querySelector('.nav-links');
-            const mobileBtn = document.querySelector('.mobile-menu-btn');
-            const navbar = document.getElementById('navbar');
-
-            navLinks.classList.toggle('active');
-            mobileBtn.classList.toggle('active');
-
-            // Prevent body scroll when menu is open
-            if (navLinks.classList.contains('active')) {
-                document.body.style.overflow = 'hidden';
-                navbar.classList.remove('hide-on-scroll');
-                navbar.classList.add('show-on-scroll');
-            } else {
-                document.body.style.overflow = '';
-            }
-        }
-
-        // Close mobile menu when clicking on a link
-        function closeMobileMenu() {
-            const navLinks = document.querySelector('.nav-links');
-            const mobileBtn = document.querySelector('.mobile-menu-btn');
-
-            navLinks.classList.remove('active');
-            mobileBtn.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
         // Add click handlers to nav links for mobile
         document.addEventListener('DOMContentLoaded', () => {
             // Add click handlers to nav links
             document.querySelectorAll('.nav-links a').forEach(link => {
-                link.addEventListener('click', closeMobileMenu);
+                link.addEventListener('click', (e) => {
+                    // On mobile, close the menu after clicking a link
+                    if (window.innerWidth <= 768) {
+                        closeMobileMenu();
+                    }
+                });
             });
 
             // Close mobile menu when clicking outside
             document.addEventListener('click', (e) => {
                 const navLinks = document.querySelector('.nav-links');
-                document.querySelector('.mobile-menu-btn');
                 const nav = document.querySelector('nav');
 
-                if (navLinks.classList.contains('active') && !nav.contains(e.target)) {
+                if (window.innerWidth <= 768 && navLinks.classList.contains('active') && !nav.contains(e.target)) {
                     closeMobileMenu();
                 }
             });
-        });
 
-        // Animate elements on scroll
-        function initScrollAnimations() {
-            const animateElements = document.querySelectorAll('.skill-category, .contact-card, .project-terminal');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            });
-            
-            animateElements.forEach(element => {
-                element.style.opacity = '0';
-                element.style.transform = 'translateY(50px)';
-                element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(element);
-            });
-        }
-
-        // Terminal typing effect
-        function initTerminalEffect() {
-            const terminals = document.querySelectorAll('.terminal-title');
-            
-            terminals.forEach(terminal => {
-                const originalText = terminal.textContent;
-                terminal.textContent = '';
-                
-                let i = 0;
-                const typeWriter = () => {
-                    if (i < originalText.length) {
-                        terminal.textContent += originalText.charAt(i);
-                        i++;
-                        setTimeout(typeWriter, 50);
-                    }
-                };
-                
-                // Start typing when terminal comes into view
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            setTimeout(typeWriter, Math.random() * 1000);
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                });
-                
-                observer.observe(terminal);
-            });
-        }
-
-        // Particle cursor effect
-        function initParticlesCursor() {
-            const particles = [];
-            const particleCount = 15;
-            let mouseX = 0, mouseY = 0;
-            
-            for (let i = 0; i < particleCount; i++) {
-                particles.push({
-                    x: 0,
-                    y: 0,
-                    size: Math.random() * 3 + 1,
-                    speedX: 0,
-                    speedY: 0,
-                    life: 1
-                });
-            }
-            
-            document.addEventListener('mousemove', (e) => {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-            });
-            
-            function updateParticles() {
-                particles.forEach((particle) => {
-                    particle.life -= 0.02;
-                    
-                    if (particle.life <= 0) {
-                        particle.x = mouseX;
-                        particle.y = mouseY;
-                        particle.life = 1;
-                        particle.speedX = (Math.random() - 0.5) * 4;
-                        particle.speedY = (Math.random() - 0.5) * 4;
-                    }
-                    
-                    particle.x += particle.speedX;
-                    particle.y += particle.speedY;
-                    particle.speedX *= 0.99;
-                    particle.speedY *= 0.99;
-                });
-                
-                requestAnimationFrame(updateParticles);
-            }
-            
-            updateParticles();
-        }
-
-        // Loading screen
-        function hideLoadingScreen() {
-            const loading = document.getElementById('loading');
-            loading.classList.add('fade-out');
-            setTimeout(() => {
-                loading.style.display = 'none';
-                isLoading = false;
-            }, 500);
-        }
-
-        // Performance monitoring
-        function initPerformanceMonitoring() {
-            if ('performance' in window) {
-                window.addEventListener('load', () => {
-                    const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-                    console.log(`Page loaded in ${loadTime}ms`);
-                });
-            }
-        }
-
-        // AWS CloudWatch RUM integration (optional)
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            matrixBg.resize();
-        });
-
-        // Initialize everything when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            // Hide loading screen after a short delay
+            // Initialize all other features
             setTimeout(hideLoadingScreen, 1500);
-            
-            // Initialize all features
             initScrollSpy();
             initNavbarScroll();
             initMobileHeaderScroll();
@@ -1902,8 +1798,6 @@
             initTerminalEffect();
             initParticlesCursor();
             initPerformanceMonitoring();
-            
-            // Set initial active nav link
             updateActiveNavLink('home');
             
             console.log('%c🚀 Portfolio loaded successfully!', 'color: #00ff41; font-size: 16px; font-weight: bold;');
