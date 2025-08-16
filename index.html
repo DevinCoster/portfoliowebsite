@@ -1226,9 +1226,8 @@
             .nav-links::-webkit-scrollbar {
                 display: none;
             }
-
             .nav-links.active {
-                transform: translateY(0);
+                display: flex;
             }
 
             .nav-links a {
@@ -1668,89 +1667,6 @@
                 });
 
                 observer.observe(element);
-            });
-        }
-
-        // Particle cursor effect
-        function initParticlesCursor() {
-            if (window.innerWidth < 768) return; // Skip on mobile for performance
-
-            let particles = [];
-            const particleCount = 15;
-
-            class Particle {
-                constructor(x, y) {
-                    this.x = x;
-                    this.y = y;
-                    this.size = Math.random() * 3 + 1;
-                    this.speedX = Math.random() * 3 - 1.5;
-                    this.speedY = Math.random() * 3 - 1.5;
-                    this.life = 1;
-                    this.decay = Math.random() * 0.02 + 0.01;
-                }
-
-                update() {
-                    this.x += this.speedX;
-                    this.y += this.speedY;
-                    this.life -= this.decay;
-                    this.size *= 0.98;
-                }
-
-                draw(ctx) {
-                    ctx.save();
-                    ctx.globalAlpha = this.life;
-                    ctx.fillStyle = '#00ff41';
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.restore();
-                }
-            }
-
-            // Create canvas for particles
-            const canvas = document.createElement('canvas');
-            canvas.style.position = 'fixed';
-            canvas.style.top = '0';
-            canvas.style.left = '0';
-            canvas.style.pointerEvents = 'none';
-            canvas.style.zIndex = '999';
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            document.body.appendChild(canvas);
-
-            const ctx = canvas.getContext('2d');
-
-            // Mouse move event
-            document.addEventListener('mousemove', (e) => {
-                for (let i = 0; i < 3; i++) {
-                    particles.push(new Particle(e.clientX, e.clientY));
-                }
-
-                // Limit particle count
-                if (particles.length > particleCount) {
-                    particles = particles.slice(-particleCount);
-                }
-            });
-
-            // Animation loop
-            function animateParticles() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                particles = particles.filter(particle => {
-                    particle.update();
-                    particle.draw(ctx);
-                    return particle.life > 0 && particle.size > 0.1;
-                });
-
-                requestAnimationFrame(animateParticles);
-            }
-
-            animateParticles();
-
-            // Resize handler
-            window.addEventListener('resize', () => {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
             });
         }
 
