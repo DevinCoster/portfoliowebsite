@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - Portfolio</title>
+    <title>Devin Coster - Portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -32,13 +32,13 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #000000 0%, #0a0a0a 25%, #111111 50%, #0a0a0a 75%, #000000 100%);
-            background-attachment: fixed;
+            font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #0a0a0a 25%, #111111 50%, #0a0a0a 75%, #000000 100%) fixed;
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
             min-height: 100vh;
+            font-size: 18px;
         }
 
         /* Matrix-style background */
@@ -65,11 +65,6 @@
             transition: all 0.3s ease;
         }
 
-        nav.scrolled {
-            background: rgba(0, 0, 0, 0.98);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
         .nav-container {
             max-width: 1400px;
             margin: 0 auto;
@@ -80,7 +75,7 @@
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.7rem;
             font-weight: 800;
             font-family: 'JetBrains Mono', monospace;
             background: var(--gradient-primary);
@@ -108,10 +103,7 @@
             transition: all 0.3s ease;
             position: relative;
             padding: 0.5rem 0;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--text-primary);
+            font-size: 1.1rem;
         }
 
         .nav-links a::after {
@@ -123,10 +115,6 @@
             height: 2px;
             background: var(--gradient-primary);
             transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after, .nav-links a.active::after {
-            width: 100%;
         }
 
         /* Mobile menu */
@@ -164,7 +152,7 @@
         }
 
         .hero-content .greeting {
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             color: var(--terminal-green);
             font-family: 'JetBrains Mono', monospace;
             margin-bottom: 1rem;
@@ -185,7 +173,7 @@
         }
 
         .hero-content .subtitle {
-            font-size: 1.5rem;
+            font-size: 1.7rem;
             color: var(--text-secondary);
             margin-bottom: 2rem;
             opacity: 0;
@@ -193,7 +181,7 @@
         }
 
         .hero-content .description {
-            font-size: 1.1rem;
+            font-size: 1.25rem;
             color: var(--accent-tertiary);
             margin-bottom: 3rem;
             line-height: 1.7;
@@ -221,7 +209,7 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            font-size: 1rem;
+            font-size: 1.1rem;
             position: relative;
             overflow: hidden;
         }
@@ -272,7 +260,7 @@
         }
 
         .section-title {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 800;
             margin-bottom: 1rem;
             text-align: center;
@@ -283,7 +271,7 @@
         }
 
         .section-subtitle {
-            font-size: 1.2rem;
+            font-size: 1.35rem;
             color: var(--text-secondary);
             text-align: center;
             margin-bottom: 4rem;
@@ -326,7 +314,7 @@
         }
 
         .about-text h3 {
-            font-size: 2rem;
+            font-size: 2.2rem;
             margin-bottom: 1.5rem;
             color: var(--accent-secondary);
         }
@@ -334,7 +322,7 @@
         .about-text p {
             color: var(--text-secondary);
             margin-bottom: 1.5rem;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             line-height: 1.8;
         }
 
@@ -357,17 +345,14 @@
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            height: 350px;
             cursor: pointer;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .project-terminal:hover {
-            transform: scale(1.08) translateZ(0);
-            z-index: 10;
+            transform: translateY(-10px) scale(1.02);
             border-color: var(--accent-primary);
             box-shadow: 0 25px 50px rgba(255, 255, 255, 0.1);
-            height: 500px;
         }
 
         .terminal-header {
@@ -410,65 +395,30 @@
 
         .terminal-title {
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 1rem;
             font-family: 'JetBrains Mono', monospace;
             flex: 1;
         }
 
         .terminal-content {
-            position: relative;
-            height: calc(100% - 70px);
-            overflow: hidden;
-        }
-
-        .project-demo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: all 0.4s ease;
-            filter: brightness(0.7);
-        }
-
-        .project-terminal:hover .project-demo {
-            filter: brightness(1);
+            padding: 2rem;
         }
 
         .project-info {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(
-                to bottom,
-                rgba(13, 17, 23, 0.1) 0%,
-                rgba(13, 17, 23, 0.7) 60%,
-                rgba(13, 17, 23, 0.95) 100%
-            );
-            padding: 2rem;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
-            opacity: 0;
-            transition: all 0.4s ease;
-            transform: translateY(30px);
-        }
-
-        .project-terminal:hover .project-info {
-            opacity: 1;
-            transform: translateY(0);
         }
 
         .project-info h3 {
             color: var(--accent-primary);
             margin-bottom: 1rem;
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             font-weight: 700;
         }
 
         .project-info p {
             color: var(--text-secondary);
-            font-size: 1rem;
+            font-size: 1.1rem;
             margin-bottom: 1.5rem;
             line-height: 1.6;
         }
@@ -485,7 +435,7 @@
             color: var(--accent-secondary);
             padding: 0.3rem 0.8rem;
             border-radius: 1rem;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             border: 1px solid rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             font-family: 'JetBrains Mono', monospace;
@@ -500,7 +450,7 @@
             color: var(--accent-primary);
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 1rem;
             transition: all 0.3s ease;
             padding: 0.5rem 1rem;
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -514,30 +464,31 @@
             transform: translateY(-2px);
         }
 
-        /* Grid animation on hover */
+        /* Remove grid animation on hover */
         .projects-grid:hover .project-terminal:not(:hover) {
-            transform: scale(0.95);
-            opacity: 0.6;
-            filter: blur(2px);
+            transform: scale(0.98);
+            opacity: 0.8;
         }
 
         /* Skills Section */
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 2rem;
-            margin-top: 3rem;
+            margin-top: 4rem;
         }
 
         .skill-category {
-            background: var(--secondary-dark);
+            background: linear-gradient(135deg, var(--secondary-dark) 0%, rgba(22, 27, 34, 0.8) 100%);
             border: 1px solid var(--border-color);
-            border-radius: 1rem;
-            padding: 2.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
+            border-radius: 1.5rem;
+            padding: 2.5rem 2rem;
+            text-align: left;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(10px);
+            min-height: 450px;
         }
 
         .skill-category::before {
@@ -547,8 +498,8 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, var(--glow-color), transparent);
-            transition: left 0.5s ease;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+            transition: left 0.6s ease;
         }
 
         .skill-category:hover::before {
@@ -556,107 +507,194 @@
         }
 
         .skill-category:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent-primary);
-            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.1);
+            transform: translateY(-15px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.4),
+                0 0 50px rgba(255, 255, 255, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(22, 27, 34, 0.9) 0%, rgba(13, 17, 23, 0.9) 100%);
+        }
+
+        .skill-category-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .skill-icon {
+            font-size: 2.5rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .skill-category:hover .skill-icon {
+            transform: scale(1.1) rotate(5deg);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
         }
 
         .skill-category h3 {
-            color: var(--accent-secondary);
-            margin-bottom: 1.5rem;
-            font-size: 1.4rem;
+            color: var(--accent-primary);
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin: 0;
+            transition: color 0.3s ease;
+        }
+
+        .skill-category:hover h3 {
+            color: #ffffff;
         }
 
         .skill-list {
             list-style: none;
+            display: grid;
+            gap: 1rem;
         }
 
-        .skill-list li {
+        .skill-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem 1.2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 0.8rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(135deg, var(--terminal-green) 0%, var(--terminal-blue) 100%);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+            border-radius: 0 3px 3px 0;
+        }
+
+        .skill-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateX(10px);
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.05);
+        }
+
+        .skill-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .skill-item-icon {
+            font-size: 1.2rem;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .skill-item:hover .skill-item-icon {
+            background: linear-gradient(135deg, var(--terminal-green) 0%, var(--terminal-blue) 100%);
+            transform: scale(1.1);
+        }
+
+        .skill-item-text {
             color: var(--text-secondary);
-            margin: 0.8rem 0;
-            font-size: 1rem;
+            font-weight: 500;
+            font-size: 1.1rem;
             transition: color 0.3s ease;
         }
 
-        .skill-category:hover .skill-list li {
-            color: var(--accent-secondary);
+        .skill-item:hover .skill-item-text {
+            color: var(--accent-primary);
         }
 
-        /* Contact Section */
-        .contact-content {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .contact-card {
-            background: var(--secondary-dark);
-            border: 1px solid var(--border-color);
-            border-radius: 1rem;
-            padding: 2rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .contact-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent-primary);
-            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.1);
-        }
-
-        .contact-icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .contact-card h3 {
-            color: var(--accent-secondary);
-            margin-bottom: 0.5rem;
-        }
-
-        .contact-card p {
+        .skill-category-description {
             color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            opacity: 0.8;
         }
 
-        /* Footer */
-        footer {
-            background: var(--secondary-dark);
-            border-top: 1px solid var(--border-color);
-            padding: 3rem 2rem;
-            text-align: center;
-            color: var(--text-secondary);
+        /* Staggered animation for skill items */
+        .skill-item {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: skillItemFadeIn 0.6s ease forwards;
         }
 
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+        .skill-item:nth-child(1) { animation-delay: 0.1s; }
+        .skill-item:nth-child(2) { animation-delay: 0.2s; }
+        .skill-item:nth-child(3) { animation-delay: 0.3s; }
+        .skill-item:nth-child(4) { animation-delay: 0.4s; }
+        .skill-item:nth-child(5) { animation-delay: 0.5s; }
+        .skill-item:nth-child(6) { animation-delay: 0.6s; }
+        .skill-item:nth-child(7) { animation-delay: 0.7s; }
+        .skill-item:nth-child(8) { animation-delay: 0.8s; }
+        .skill-item:nth-child(9) { animation-delay: 0.9s; }
 
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
+        @keyframes skillItemFadeIn {
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+        /* Mobile responsiveness for skills */
+        @media (max-width: 1200px) {
+            .skills-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
         }
 
-        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .skills-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .skill-category {
+                padding: 2rem 1.5rem;
+                min-height: auto;
+            }
+
+            .skill-category-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+
+            .skill-item {
+                padding: 0.6rem 1rem;
+            }
+
+            .skill-item:hover {
+                transform: translateX(5px);
+            }
+        }
+
+        /* Mobile Menu Styles */
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
@@ -682,8 +720,7 @@
             }
 
             .project-terminal:hover {
-                transform: scale(1.02);
-                height: 450px;
+                transform: translateY(-5px) scale(1.01);
             }
 
             .skills-grid {
@@ -715,11 +752,6 @@
             transition: opacity 0.5s ease;
         }
 
-        .loading.fade-out {
-            opacity: 0;
-            pointer-events: none;
-        }
-
         .loader {
             width: 50px;
             height: 50px;
@@ -735,24 +767,193 @@
         }
 
         /* Placeholder styles */
-        .placeholder-img {
-            background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            font-weight: bold;
-            font-family: 'JetBrains Mono', monospace;
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .placeholder-gif {
-            background: linear-gradient(45deg, #0d1117, #161b22);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Contact Section */
+        .contact-content {
+            margin-top: 4rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-card {
+            background: linear-gradient(135deg, var(--secondary-dark) 0%, rgba(22, 27, 34, 0.8) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 1.5rem;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            min-height: 200px;
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .contact-card:hover::before {
+            left: 100%;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.4),
+                0 0 50px rgba(255, 255, 255, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(22, 27, 34, 0.9) 0%, rgba(13, 17, 23, 0.9) 100%);
+        }
+
+        .contact-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .contact-card:hover .contact-icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .contact-card h3 {
+            color: var(--accent-primary);
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .contact-card:hover h3 {
+            color: #ffffff;
+        }
+
+        .contact-card p {
             color: var(--text-secondary);
-            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            margin: 0;
+            transition: color 0.3s ease;
+        }
+
+        .contact-card:hover p {
+            color: var(--accent-secondary);
+        }
+
+        /* Mobile responsiveness for contact */
+        @media (max-width: 1200px) {
+            .contact-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .contact-card {
+                padding: 2rem 1.5rem;
+                min-height: auto;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--secondary-dark) 0%, rgba(13, 17, 23, 0.95) 100%);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+            opacity: 0.3;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-content p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-content p:last-child {
+            margin-bottom: 0;
             font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .footer-content p:hover {
+            color: var(--accent-primary);
+        }
+
+        /* Mobile responsiveness for footer */
+        @media (max-width: 768px) {
+            footer {
+                padding: 2rem 1rem 1.5rem;
+            }
+
+            .footer-content p {
+                font-size: 0.9rem;
+            }
+
+            .footer-content p:last-child {
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
@@ -767,18 +968,141 @@
     
     <nav id="navbar">
         <div class="nav-container">
-            <div class="logo" onclick="scrollToSection('home')">{'YourName'}</div>
+            <div class="logo" onclick="scrollToSection('home')">Devin Coster</div>
             <ul class="nav-links">
-                <li><a href="#home" onclick="scrollToSection('home')">home</a></li>
-                <li><a href="#about" onclick="scrollToSection('about')">about</a></li>
-                <li><a href="#projects" onclick="scrollToSection('projects')">projects</a></li>
-                <li><a href="#skills" onclick="scrollToSection('skills')">skills</a></li>
-                <li><a href="#contact" onclick="scrollToSection('contact')">contact</a></li>
+                <li><a href="#home" onclick="scrollToSection('home')">Home</a></li>
+                <li><a href="#about" onclick="scrollToSection('about')">About</a></li>
+                <li><a href="#projects" onclick="scrollToSection('projects')">Projects</a></li>
+                <li><a href="#skills" onclick="scrollToSection('skills')">Skills</a></li>
+                <li><a href="#contact" onclick="scrollToSection('contact')">Contact</a></li>
             </ul>
             <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="greeting">"The mystery of life isn't a problem to solve, but a reality to experience."</div>
+            <h1>Devin Coster</h1>
+            <div class="subtitle">Software Engineer</div>
+            <div class="description">
+                Designing scalable systems and immersive, gameplay-driven experiences through clean code, performance-driven optimization, and modern technologies.
+                Passionate about building high-quality software, from robust backend architectures to engaging interactive worlds, and solving complex problems with creativity and precision.
+            </div>
+            <div class="cta-buttons">
+                <a href="assets/Devin_Coster_Resume_Updated.pdf" class="btn btn-primary" target="_blank">
+                    <span>Download Resume</span>
+                </a>
+                <a href="#contact" class="btn btn-secondary" onclick="scrollToSection('contact')">
+                    <span>Get In Touch</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <h2 class="section-title">About</h2>
+        <p class="section-subtitle">Through discipline comes excellence.”</p>
+        <div class="about-content">
+            <div class="about-image">
+                <img src="assets/1751590590846.jpg" alt="Devin Coster - Software Engineer" loading="lazy">
+            </div>
+            <div class="about-text">
+                <h3>Driven by Innovation</h3>
+                <p>I'm a passionate developer with expertise in C++, Python, and Java. I bring both technical depth and creative problem-solving to every project and every day life.</p>
+                <p>My experience spans from tinkering with games, various projects, or just grinding leetcode. I believe in writing clean, maintainable code and building solutions that scale.</p>
+                <p>When I'm not coding, you can find me swimming for my school, playing Elden Ring, or following an Udemy Course. I have a passion for continually learning and expanding my horizons.</p>
+                <a href="assets/Devin_Coster_Resume_Updated.pdf" class="btn btn-primary" target="_blank">
+                    <span>Download Resume</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="section">
+        <h2 class="section-title">Projects</h2>
+        <p class="section-subtitle">Showcase of my latest work and innovations</p>
+        <div class="projects-container">
+            <div class="projects-grid">
+                <div class="project-terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-controls">
+                            <span class="control-btn close"></span>
+                            <span class="control-btn minimize"></span>
+                            <span class="control-btn maximize"></span>
+                        </div>
+                        <div class="terminal-title">~/projects/web-crawler</div>
+                    </div>
+                    <div class="terminal-content">
+                        <div class="project-info">
+                            <h3>Web-Crawler</h3>
+                            <p>A high-performance, multithreaded web crawler built in C++ with advanced graph analysis capabilities.</p>
+                            <div class="tech-stack">
+                                <span class="tech-tag">C++</span>
+                                <span class="tech-tag">Cmake</span>
+                                <span class="tech-tag">Libcurl</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/DevinCoster/Web-Crawler" target="_blank" class="project-link">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-controls">
+                            <span class="control-btn close"></span>
+                            <span class="control-btn minimize"></span>
+                            <span class="control-btn maximize"></span>
+                        </div>
+                        <div class="terminal-title">~/projects/movie-recommendations</div>
+                    </div>
+                    <div class="terminal-content">
+                        <div class="project-info">
+                            <h3>Movie Recommendation</h3>
+                            <p>A movie recommendation program built using Python</p>
+                            <div class="tech-stack">
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">Numpy</span>
+                                <span class="tech-tag">Pandas</span>
+                                <span class="tech-tag">Sklearn</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/DevinCoster/Movie-Recommendation-System" target="_blank" class="project-link">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-controls">
+                            <span class="control-btn close"></span>
+                            <span class="control-btn minimize"></span>
+                            <span class="control-btn maximize"></span>
+                        </div>
+                        <div class="terminal-title">~/projects/obstacle assault</div>
+                    </div>
+                    <div class="terminal-content">
+                        <div class="project-info">
+                            <h3>Obstacle Assault</h3>
+                            <p>A mini-game built with Unreal Engine 5.6, using C++ and Blueprints </p>
+                            <div class="tech-stack">
+                                <span class="tech-tag">C++</span>
+                                <span class="tech-tag">Blueprints</span>
+                                <span class="tech-tag">Unreal Engine</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" target="_blank" class="project-link">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -788,46 +1112,126 @@
         <p class="section-subtitle">Technical expertise and tools I work with</p>
         <div class="skills-grid">
             <div class="skill-category">
-                <h3>Frontend</h3>
+                <div class="skill-category-header">
+                    <div class="skill-icon">💻</div>
+                    <h3>Languages</h3>
+                </div>
+                <p class="skill-category-description">Core programming languages I use for development</p>
                 <ul class="skill-list">
-                    <li>React / Vue.js / Angular</li>
-                    <li>TypeScript / JavaScript ES6+</li>
-                    <li>HTML5 / CSS3 / SCSS</li>
-                    <li>Tailwind CSS / Bootstrap</li>
-                    <li>Webpack / Vite / Parcel</li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">☕</div>
+                        <span class="skill-item-text">Java</span>
+                    </li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">🐍</div>
+                        <span class="skill-item-text">Python</span>
+                    </li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">⚡</div>
+                        <span class="skill-item-text">C/C++</span>
+                    </li>
                 </ul>
             </div>
             
             <div class="skill-category">
-                <h3>Backend</h3>
+                <div class="skill-category-header">
+                    <div class="skill-icon">🛠️</div>
+                    <h3>Developer Tools</h3>
+                </div>
+                <p class="skill-category-description">Essential tools and platforms for modern development</p>
                 <ul class="skill-list">
-                    <li>Node.js / Python / C#</li>
-                    <li>Express / Django / .NET Core</li>
-                    <li>RESTful APIs / GraphQL</li>
-                    <li>Microservices Architecture</li>
-                    <li>WebSocket / Server-Sent Events</li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">🎮</div>
+                        <span class="skill-item-text">Unreal Engine</span>
+                    </li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">🐱</div>
+                        <span class="skill-item-text">GitHub</span>
+                    </li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">🐳</div>
+                        <span class="skill-item-text">Docker</span>
+                    </li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">☁️</div>
+                        <span class="skill-item-text">AWS</span>
+                    </li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">📝</div>
+                        <span class="skill-item-text">VS Code</span>
+                    </li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">🔧</div>
+                        <span class="skill-item-text">PyCharm</span>
+                    </li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">💡</div>
+                        <span class="skill-item-text">IntelliJ</span>
+                    </li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">⚙️</div>
+                        <span class="skill-item-text">CLion</span>
+                    </li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">🏃</div>
+                        <span class="skill-item-text">Rider</span>
+                    </li>
                 </ul>
             </div>
             
             <div class="skill-category">
-                <h3>Database & Cloud</h3>
+                <div class="skill-category-header">
+                    <div class="skill-icon">📚</div>
+                    <h3>Libraries & Frameworks</h3>
+                </div>
+                <p class="skill-category-description">Powerful libraries and frameworks for efficient development</p>
                 <ul class="skill-list">
-                    <li>MongoDB / PostgreSQL / MySQL</li>
-                    <li>AWS / Azure / Google Cloud</li>
-                    <li>Docker / Kubernetes</li>
-                    <li>Redis / ElasticSearch</li>
-                    <li>CI/CD Pipelines</li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">🐼</div>
+                        <span class="skill-item-text">Pandas</span>
+                    </li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">🔢</div>
+                        <span class="skill-item-text">NumPy</span>
+                    </li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">🤖</div>
+                        <span class="skill-item-text">Scikit-learn</span>
+                    </li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">🔨</div>
+                        <span class="skill-item-text">CMake</span>
+                    </li>
                 </ul>
             </div>
             
             <div class="skill-category">
-                <h3>DevOps & Tools</h3>
+                <div class="skill-category-header">
+                    <div class="skill-icon">🎯</div>
+                    <h3>Areas of Expertise</h3>
+                </div>
+                <p class="skill-category-description">Specialized domains and technical focus areas</p>
                 <ul class="skill-list">
-                    <li>Git / GitHub Actions</li>
-                    <li>Terraform / CloudFormation</li>
-                    <li>Jest / Cypress / Playwright</li>
-                    <li>Monitoring & Logging</li>
-                    <li>Agile / Scrum Methodologies</li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">🎮</div>
+                        <span class="skill-item-text">Game Development</span>
+                    </li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">📊</div>
+                        <span class="skill-item-text">Data Science & Analytics</span>
+                    </li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">🧠</div>
+                        <span class="skill-item-text">Machine Learning</span>
+                    </li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">☁️</div>
+                        <span class="skill-item-text">Cloud Architecture</span>
+                    </li>
+                    <li class="skill-item">
+                        <div class="skill-item-icon">⚗️</div>
+                        <span class="skill-item-text">Software Engineering</span>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -838,28 +1242,28 @@
         <p class="section-subtitle">Ready to bring your ideas to life? Let's connect and discuss how we can work together.</p>
         <div class="contact-content">
             <div class="contact-grid">
-                <div class="contact-card" onclick="window.location.href='mailto:your.email@example.com'">
+                <div class="contact-card" onclick="window.location.href='mailto:costerdevin@gmail.com'">
                     <div class="contact-icon">📧</div>
                     <h3>Email</h3>
-                    <p>your.email@example.com</p>
+                    <p>costerdevin@gmail.com</p>
                 </div>
                 
-                <div class="contact-card" onclick="window.open('https://linkedin.com/in/yourprofile', '_blank')">
+                <div class="contact-card" onclick="window.open('https://linkedin.com/in/devincoster', '_blank')">
                     <div class="contact-icon">💼</div>
                     <h3>LinkedIn</h3>
                     <p>Connect with me professionally</p>
                 </div>
                 
-                <div class="contact-card" onclick="window.open('https://github.com/yourprofile', '_blank')">
+                <div class="contact-card" onclick="window.open('https://github.com/DevinCoster', '_blank')">
                     <div class="contact-icon">🐱</div>
                     <h3>GitHub</h3>
                     <p>Check out my code repositories</p>
                 </div>
                 
-                <div class="contact-card" onclick="window.location.href='tel:+1234567890'">
+                <div class="contact-card" onclick="window.location.href='tel:+14438763070'">
                     <div class="contact-icon">📱</div>
                     <h3>Phone</h3>
-                    <p>(123) 456-7890</p>
+                    <p>(443) 876-3070</p>
                 </div>
             </div>
         </div>
@@ -867,7 +1271,7 @@
 
     <footer>
         <div class="footer-content">
-            <p>&copy; 2025 Your Name. Built with passion and deployed on AWS.</p>
+            <p>&copy; 2025 Devin Coster. Built with passion and deployed on AWS.</p>
             <p>Designed for performance, accessibility, and modern web standards.</p>
         </div>
     </footer>
@@ -1087,7 +1491,7 @@
             });
             
             function updateParticles() {
-                particles.forEach((particle, index) => {
+                particles.forEach((particle) => {
                     particle.life -= 0.02;
                     
                     if (particle.life <= 0) {
@@ -1131,11 +1535,6 @@
         }
 
         // AWS CloudWatch RUM integration (optional)
-        function initAWSRUM() {
-            // Add AWS CloudWatch RUM script if needed for production monitoring
-            // This would be your AWS RUM configuration
-        }
-
         // Handle window resize
         window.addEventListener('resize', () => {
             matrixBg.resize();
@@ -1164,144 +1563,10 @@
         if ('serviceWorker' in navigator && location.protocol === 'https:') {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
-                    .then(registration => console.log('SW registered'))
-                    .catch(registrationError => console.log('SW registration failed'));
+                    .then(() => console.log('SW registered'))
+                    .catch(() => console.log('SW registration failed'));
             });
         }
     </script>
 </body>
 </html>
-        </div>
-    </nav>
-
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <div class="greeting">$ echo "Hello, World!"</div>
-            <h1>Your Name</h1>
-            <div class="subtitle">Full Stack Developer & System Architect</div>
-            <div class="description">
-                Crafting scalable solutions and elegant interfaces with modern technologies. 
-                Passionate about clean code, performance optimization, and innovative problem-solving.
-            </div>
-            <div class="cta-buttons">
-                <a href="#projects" class="btn btn-primary" onclick="scrollToSection('projects')">
-                    <span>View Projects</span>
-                </a>
-                <a href="#contact" class="btn btn-secondary" onclick="scrollToSection('contact')">
-                    <span>Get In Touch</span>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <section id="about" class="section">
-        <h2 class="section-title">About</h2>
-        <p class="section-subtitle">Building the future, one line of code at a time</p>
-        <div class="about-content">
-            <div class="about-image">
-                <div class="placeholder-img">Your Photo Here</div>
-            </div>
-            <div class="about-text">
-                <h3>Driven by Innovation</h3>
-                <p>I'm a passionate developer with expertise in modern web technologies and cloud architecture. With a background in [Your Background], I bring both technical depth and creative problem-solving to every project.</p>
-                <p>My experience spans full-stack development, DevOps practices, and system design. I believe in writing clean, maintainable code and building solutions that scale.</p>
-                <p>When I'm not coding, you can find me [your hobbies/interests]. I believe in continuous learning and staying at the forefront of technology trends.</p>
-                <a href="assets/resume.pdf" class="btn btn-primary" target="_blank">
-                    <span>Download Resume</span>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <section id="projects" class="section">
-        <h2 class="section-title">Projects</h2>
-        <p class="section-subtitle">Showcase of my latest work and innovations</p>
-        <div class="projects-container">
-            <div class="projects-grid">
-                <div class="project-terminal">
-                    <div class="terminal-header">
-                        <div class="terminal-controls">
-                            <span class="control-btn close"></span>
-                            <span class="control-btn minimize"></span>
-                            <span class="control-btn maximize"></span>
-                        </div>
-                        <div class="terminal-title">~/projects/alpha $ npm run demo</div>
-                    </div>
-                    <div class="terminal-content">
-                        <div class="placeholder-gif">GIF: Project Alpha Demo</div>
-                        <div class="project-info">
-                            <h3>Project Alpha</h3>
-                            <p>A comprehensive web application built with modern technologies, featuring real-time data processing, advanced analytics, and an intuitive user interface designed for scalability.</p>
-                            <div class="tech-stack">
-                                <span class="tech-tag">React</span>
-                                <span class="tech-tag">Node.js</span>
-                                <span class="tech-tag">MongoDB</span>
-                                <span class="tech-tag">TypeScript</span>
-                                <span class="tech-tag">AWS</span>
-                            </div>
-                            <div class="project-links">
-                                <a href="#" target="_blank" class="project-link">Live Demo</a>
-                                <a href="#" target="_blank" class="project-link">GitHub</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="project-terminal">
-                    <div class="terminal-header">
-                        <div class="terminal-controls">
-                            <span class="control-btn close"></span>
-                            <span class="control-btn minimize"></span>
-                            <span class="control-btn maximize"></span>
-                        </div>
-                        <div class="terminal-title">~/projects/beta $ python manage.py runserver</div>
-                    </div>
-                    <div class="terminal-content">
-                        <div class="placeholder-gif">GIF: Project Beta Demo</div>
-                        <div class="project-info">
-                            <h3>Project Beta</h3>
-                            <p>A mobile-first application that streamlines workflow processes with advanced automation, real-time collaboration, and comprehensive analytics capabilities.</p>
-                            <div class="tech-stack">
-                                <span class="tech-tag">Vue.js</span>
-                                <span class="tech-tag">Python</span>
-                                <span class="tech-tag">PostgreSQL</span>
-                                <span class="tech-tag">Docker</span>
-                                <span class="tech-tag">Redis</span>
-                            </div>
-                            <div class="project-links">
-                                <a href="#" target="_blank" class="project-link">Live Demo</a>
-                                <a href="#" target="_blank" class="project-link">GitHub</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="project-terminal">
-                    <div class="terminal-header">
-                        <div class="terminal-controls">
-                            <span class="control-btn close"></span>
-                            <span class="control-btn minimize"></span>
-                            <span class="control-btn maximize"></span>
-                        </div>
-                        <div class="terminal-title">~/projects/gamma $ ng serve --prod</div>
-                    </div>
-                    <div class="terminal-content">
-                        <div class="placeholder-gif">GIF: Project Gamma Demo</div>
-                        <div class="project-info">
-                            <h3>Project Gamma</h3>
-                            <p>An innovative solution for data visualization and reporting, helping businesses make informed decisions through interactive dashboards and predictive analytics.</p>
-                            <div class="tech-stack">
-                                <span class="tech-tag">Angular</span>
-                                <span class="tech-tag">C#</span>
-                                <span class="tech-tag">Azure</span>
-                                <span class="tech-tag">D3.js</span>
-                                <span class="tech-tag">ML.NET</span>
-                            </div>
-                            <div class="project-links">
-                                <a href="#" target="_blank" class="project-link">Live Demo</a>
-                                <a href="#" target="_blank" class="project-link">GitHub</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
