@@ -527,7 +527,7 @@
         }
 
         .skill-icon {
-            font-size: 2.5rem;
+            font-size: 1rem;
             width: 60px;
             height: 60px;
             display: flex;
@@ -537,6 +537,10 @@
             border-radius: 1rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--terminal-green);
+            font-size: 0.8rem;
         }
 
         .skill-category:hover .skill-icon {
@@ -601,7 +605,7 @@
         }
 
         .skill-item-icon {
-            font-size: 1.2rem;
+            font-size: 0.7rem;
             width: 32px;
             height: 32px;
             display: flex;
@@ -611,11 +615,9 @@
             border-radius: 0.5rem;
             flex-shrink: 0;
             transition: all 0.3s ease;
-        }
-
-        .skill-item:hover .skill-item-icon {
-            background: linear-gradient(135deg, var(--terminal-green) 0%, var(--terminal-blue) 100%);
-            transform: scale(1.1);
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-secondary);
         }
 
         .skill-item-text {
@@ -1062,14 +1064,13 @@
         }
 
         .contact-icon {
-            font-size: 3rem;
+            font-size: 1.2rem;
             margin-bottom: 1.5rem;
             display: block;
             transition: transform 0.3s ease;
-        }
-
-        .contact-card:hover .contact-icon {
-            transform: scale(1.2) rotate(5deg);
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--terminal-green);
         }
 
         .contact-card h3 {
@@ -1315,7 +1316,10 @@
                                 <span class="tech-tag">Libcurl</span>
                             </div>
                             <div class="project-links">
-                                <a href="https://github.com/DevinCoster/Web-Crawler" target="_blank" class="project-link">GitHub</a>
+                                <a href="https://github.com/DevinCoster/Web-Crawler" class="project-link" target="_blank">
+                                    GitHub
+                                </a>
+                                <a href="webcrawler_static_spider.html" target="_blank" class="project-link">View Project</a>
                             </div>
                         </div>
                     </div>
@@ -1381,21 +1385,21 @@
         <div class="skills-grid">
             <div class="skill-category">
                 <div class="skill-category-header">
-                    <div class="skill-icon">💻</div>
+                    <div class="skill-icon">LANG</div>
                     <h3>Languages</h3>
                 </div>
-                <p class="skill-category-description">Core programming languages I use for development</p>
+                <p class="skill-category-description">Core programming languages for development</p>
                 <ul class="skill-list">
                     <li class="skill-item">
-                        <div class="skill-item-icon">☕</div>
+                        <div class="skill-item-icon">JAVA</div>
                         <span class="skill-item-text">Java</span>
                     </li>
                     <li class="skill-item">
-                        <div class="skill-item-icon">🐍</div>
+                        <div class="skill-item-icon">PY</div>
                         <span class="skill-item-text">Python</span>
                     </li>
                     <li class="skill-item">
-                        <div class="skill-item-icon">⚡</div>
+                        <div class="skill-item-icon">C++</div>
                         <span class="skill-item-text">C/C++</span>
                     </li>
                 </ul>
@@ -1403,45 +1407,45 @@
             
             <div class="skill-category">
                 <div class="skill-category-header">
-                    <div class="skill-icon">🛠️</div>
+                    <div class="skill-icon">TOOLS</div>
                     <h3>Developer Tools</h3>
                 </div>
                 <p class="skill-category-description">Essential tools and platforms for modern development</p>
                 <ul class="skill-list">
                     <li class="skill-item">
-                        <div class="skill-item-icon">🎮</div>
+                        <div class="skill-item-icon">UE</div>
                         <span class="skill-item-text">Unreal Engine</span>
                     </li>
                     <li class="skill-item">
-                        <div class="skill-item-icon">🐱</div>
+                        <div class="skill-item-icon">GIT</div>
                         <span class="skill-item-text">GitHub</span>
                     </li>
                     <li class="skill-item">
-                        <div class="skill-item-icon">🐳</div>
+                        <div class="skill-item-icon">DOCK</div>
                         <span class="skill-item-text">Docker</span>
                     </li>
                     <li class="skill-item">
-                        <div class="skill-item-icon">☁️</div>
+                        <div class="skill-item-icon">AWS</div>
                         <span class="skill-item-text">AWS</span>
                     </li>
                     <li class="skill-item">
-                        <div class="skill-item-icon">📝</div>
+                        <div class="skill-item-icon">VSC</div>
                         <span class="skill-item-text">VS Code</span>
                     </li>
                     <li class="skill-item">
-                        <div class="skill-item-icon">🔧</div>
+                        <div class="skill-item-icon">PY</div>
                         <span class="skill-item-text">PyCharm</span>
                     </li>
                     <li class="skill-item">
-                        <div class="skill-item-icon">💡</div>
+                        <div class="skill-item-icon">IJ</div>
                         <span class="skill-item-text">IntelliJ</span>
                     </li>
                     <li class="skill-item">
-                        <div class="skill-item-icon">⚙️</div>
+                        <div class="skill-item-icon">CLI</div>
                         <span class="skill-item-text">CLion</span>
                     </li>
                     <li class="skill-item">
-                        <div class="skill-item-icon">🏃</div>
+                        <div class="skill-item-icon">RID</div>
                         <span class="skill-item-text">Rider</span>
                     </li>
                 </ul>
@@ -1449,25 +1453,25 @@
             
             <div class="skill-category">
                 <div class="skill-category-header">
-                    <div class="skill-icon">📚</div>
+                    <div class="skill-icon">LIB</div>
                     <h3>Libraries & Frameworks</h3>
                 </div>
                 <p class="skill-category-description">Powerful libraries and frameworks for efficient development</p>
                 <ul class="skill-list">
                     <li class="skill-item">
-                        <div class="skill-item-icon">🐼</div>
+                        <div class="skill-item-icon">PD</div>
                         <span class="skill-item-text">Pandas</span>
                     </li>
                     <li class="skill-item">
-                        <div class="skill-item-icon">🔢</div>
+                        <div class="skill-item-icon">NP</div>
                         <span class="skill-item-text">NumPy</span>
                     </li>
                     <li class="skill-item">
-                        <div class="skill-item-icon">🤖</div>
+                        <div class="skill-item-icon">SKL</div>
                         <span class="skill-item-text">Scikit-learn</span>
                     </li>
                     <li class="skill-item">
-                        <div class="skill-item-icon">🔨</div>
+                        <div class="skill-item-icon">CM</div>
                         <span class="skill-item-text">CMake</span>
                     </li>
                 </ul>
@@ -1475,29 +1479,29 @@
             
             <div class="skill-category">
                 <div class="skill-category-header">
-                    <div class="skill-icon">🎯</div>
+                    <div class="skill-icon">SPEC</div>
                     <h3>Areas of Expertise</h3>
                 </div>
                 <p class="skill-category-description">Specialized domains and technical focus areas</p>
                 <ul class="skill-list">
                     <li class="skill-item">
-                        <div class="skill-item-icon">🎮</div>
+                        <div class="skill-item-icon">GAME</div>
                         <span class="skill-item-text">Game Development</span>
                     </li>
                     <li class="skill-item">
-                        <div class="skill-item-icon">📊</div>
+                        <div class="skill-item-icon">DATA</div>
                         <span class="skill-item-text">Data Science & Analytics</span>
                     </li>
                     <li class="skill-item">
-                        <div class="skill-item-icon">🧠</div>
+                        <div class="skill-item-icon">ML</div>
                         <span class="skill-item-text">Machine Learning</span>
                     </li>
                     <li class="skill-item">
-                        <div class="skill-item-icon">☁️</div>
+                        <div class="skill-item-icon">CLOUD</div>
                         <span class="skill-item-text">Cloud Architecture</span>
                     </li>
                     <li class="skill-item">
-                        <div class="skill-item-icon">⚗️</div>
+                        <div class="skill-item-icon">SWE</div>
                         <span class="skill-item-text">Software Engineering</span>
                     </li>
                 </ul>
@@ -1511,26 +1515,22 @@
         <div class="contact-content">
             <div class="contact-grid">
                 <div class="contact-card" onclick="window.location.href='mailto:costerdevin@gmail.com'">
-                    <div class="contact-icon">📧</div>
-                    <h3>Email</h3>
+                    <div class="contact-icon">EMAIL</div>
                     <p>costerdevin@gmail.com</p>
                 </div>
                 
                 <div class="contact-card" onclick="window.open('https://linkedin.com/in/devincoster', '_blank')">
-                    <div class="contact-icon">💼</div>
-                    <h3>LinkedIn</h3>
+                    <div class="contact-icon">LINKEDIN</div>
                     <p>Connect with me professionally</p>
                 </div>
                 
                 <div class="contact-card" onclick="window.open('https://github.com/DevinCoster', '_blank')">
-                    <div class="contact-icon">🐱</div>
-                    <h3>GitHub</h3>
+                    <div class="contact-icon">GITHUB</div>
                     <p>Check out my code repositories</p>
                 </div>
                 
                 <div class="contact-card" onclick="window.location.href='tel:+14438763070'">
-                    <div class="contact-icon">📱</div>
-                    <h3>Phone</h3>
+                    <div class="contact-icon">PHONE</div>
                     <p>(443) 876-3070</p>
                 </div>
             </div>
