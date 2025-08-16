@@ -344,12 +344,11 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.08;
+            opacity: 0.4;
             pointer-events: none;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 0 2rem;
+            justify-content: center;
         }
 
         .static-spider {
@@ -362,22 +361,15 @@
             animation: glow 4s ease-in-out infinite alternate;
         }
 
-        .spider-left {
-            font-size: 12px;
-            transform: scaleX(-1);
-            animation-delay: 1s;
-        }
-
-        .spider-right {
-            font-size: 12px;
-            animation-delay: 2s;
-        }
-
-        .spider-center {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+                opacity: 0.8;
+            }
+            to {
+                text-shadow: 0 0 30px rgba(0, 255, 65, 0.5), 0 0 40px rgba(0, 255, 65, 0.2);
+                opacity: 1;
+            }
         }
 
         /* Mobile responsiveness */
@@ -518,35 +510,8 @@
 
     <!-- ASCII Spider Background -->
     <div class="ascii-background">
-        <!-- Left spider -->
-        <div class="static-spider spider-left">
-            .--.
-         .::    ::.
-        :::      :::
-       .::  .::. ::.
-      .::  ::  :: ::.
-     .::  ::    :: ::.
-    .::  ::      :: ::.
-   .::  ::        :: ::.
-  .::  ::          :: ::.
- .::  ::            :: ::.
-.::  ::              :: ::.
-:::  ::              :: :::
-:::  ::              :: :::
- :::  ::            :: :::
-  :::  ::          :: :::
-   :::  ::        :: :::
-    :::  ::      :: :::
-     :::  ::    :: :::
-      :::  ::  :: :::
-       :::  .::. :::
-        :::      :::
-         .::    ::.
-            .--.
-        </div>
-
         <!-- Main central spider -->
-        <div class="static-spider spider-center">
+        <div class="static-spider">
                                                                    .-.
                                                                ..-*%-.                              
                                                             :=..:#-                                 
@@ -600,33 +565,6 @@
                                                      .-+:=                                          
                                                      .**+.                                          
                                                      .*-.
-        </div>
-
-        <!-- Right spider -->
-        <div class="static-spider spider-right">
-            .--.
-         .::    ::.
-        :::      :::
-       .::  .::. ::.
-      .::  ::  :: ::.
-     .::  ::    :: ::.
-    .::  ::      :: ::.
-   .::  ::        :: ::.
-  .::  ::          :: ::.
- .::  ::            :: ::.
-.::  ::              :: ::.
-:::  ::              :: :::
-:::  ::              :: :::
- :::  ::            :: :::
-  :::  ::          :: :::
-   :::  ::        :: :::
-    :::  ::      :: :::
-     :::  ::    :: :::
-      :::  ::  :: :::
-       :::  .::. :::
-        :::      :::
-         .::    ::.
-            .--.
         </div>
     </div>
 
