@@ -26,9 +26,9 @@
             --border-color: #21262d;
             --gradient-primary: linear-gradient(135deg, #ffffff 0%, #e5e7eb 100%);
             --glow-color: rgba(255, 255, 255, 0.1);
-            --terminal-green: #00ff41;
-            --terminal-blue: #0099ff;
-            --terminal-yellow: #ffff00;
+            --terminal-green: #0099ff;
+            --terminal-blue: #0066cc;
+            --terminal-yellow: #007acc;
         }
 
         body {
@@ -93,7 +93,7 @@
         }
 
         .logo:hover {
-            transform: scale(1.05);
+            color: var(--terminal-blue);
         }
 
         .nav-links {
@@ -154,7 +154,7 @@
 
         .hero-content .greeting {
             font-size: 1.4rem;
-            color: var(--terminal-green);
+            color: var(--terminal-blue);
             font-family: 'JetBrains Mono', monospace;
             margin-bottom: 2rem;
             opacity: 0;
@@ -327,7 +327,7 @@
             line-height: 1.8;
         }
 
-        /* Terminal-style projects */
+        /* IDE-style projects */
         .projects-container {
             position: relative;
         }
@@ -339,70 +339,148 @@
             margin-top: 3rem;
         }
 
-        .project-terminal {
-            background: var(--secondary-dark);
-            border: 1px solid var(--border-color);
-            border-radius: 1rem;
+        .project-ide {
+            background: linear-gradient(135deg, #1e1e1e 0%, #252526 100%);
+            border: 1px solid #3e3e42;
+            border-radius: 8px;
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
 
-        .project-terminal:hover {
+        .project-ide:hover {
             transform: translateY(-10px) scale(1.02);
-            border-color: var(--accent-primary);
-            box-shadow: 0 25px 50px rgba(255, 255, 255, 0.1);
+            border-color: #007acc;
+            box-shadow: 0 20px 40px rgba(0, 122, 204, 0.2);
         }
 
-        .terminal-header {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            padding: 1rem 1.5rem;
+        .ide-titlebar {
+            background: linear-gradient(135deg, #2d2d30 0%, #383838 100%);
+            padding: 0.8rem 1rem;
             display: flex;
             align-items: center;
-            gap: 1rem;
-            border-bottom: 1px solid var(--border-color);
+            justify-content: space-between;
+            border-bottom: 1px solid #3e3e42;
+            position: relative;
         }
 
-        .terminal-controls {
+        .ide-titlebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        }
+
+        .ide-project-name {
+            color: #cccccc;
+            font-size: 0.9rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
             display: flex;
+            align-items: center;
             gap: 0.5rem;
         }
 
-        .control-btn {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            position: relative;
+        .ide-project-icon {
+            width: 16px;
+            height: 16px;
+            background: #007acc;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            color: white;
+            font-weight: 700;
+        }
+
+        .ide-controls {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .ide-control-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            border: none;
             cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
         }
 
-        .control-btn.close {
-            background: #ff5f57;
-            box-shadow: 0 0 10px rgba(255, 95, 87, 0.3);
-        }
-
-        .control-btn.minimize {
+        .ide-control-btn.minimize {
             background: #ffbd2e;
-            box-shadow: 0 0 10px rgba(255, 189, 46, 0.3);
         }
 
-        .control-btn.maximize {
+        .ide-control-btn.maximize {
             background: #28ca42;
-            box-shadow: 0 0 10px rgba(40, 202, 66, 0.3);
         }
 
-        .terminal-title {
-            color: var(--text-secondary);
-            font-size: 1rem;
+        .ide-control-btn.close {
+            background: #ff5f57;
+        }
+
+        .ide-control-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .ide-sidebar {
+            background: #252526;
+            width: 100%;
+            border-bottom: 1px solid #3e3e42;
+            padding: 1rem;
+        }
+
+        .ide-explorer {
+            color: #cccccc;
+            font-size: 0.85rem;
             font-family: 'JetBrains Mono', monospace;
-            flex: 1;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .terminal-content {
-            padding: 2rem;
+        .ide-folder-icon {
+            color: #dcb67a;
+            font-weight: 700;
+        }
+
+        .ide-file-tree {
+            margin-left: 1rem;
+        }
+
+        .ide-file {
+            color: #9cdcfe;
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 0.3rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
+        }
+
+        .ide-file:hover {
+            color: #ffffff;
+        }
+
+        .ide-file-icon {
+            font-size: 0.7rem;
+            color: #569cd6;
+        }
+
+        .ide-content {
+            padding: 1.5rem;
+            background: #1e1e1e;
         }
 
         .project-info {
@@ -411,15 +489,29 @@
         }
 
         .project-info h3 {
-            color: var(--accent-primary);
+            color: #ffffff;
             margin-bottom: 1rem;
             font-size: 1.6rem;
-            font-weight: 700;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .project-status {
+            background: #007acc;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .project-info p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
+            color: #d4d4d4;
+            font-size: 1rem;
             margin-bottom: 1.5rem;
             line-height: 1.6;
         }
@@ -432,43 +524,63 @@
         }
 
         .tech-tag {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--accent-secondary);
-            padding: 0.3rem 0.8rem;
-            border-radius: 1rem;
-            font-size: 0.9rem;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 122, 204, 0.15);
+            color: #9cdcfe;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(0, 122, 204, 0.3);
             font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .tech-tag:hover {
+            background: rgba(0, 122, 204, 0.25);
+            border-color: rgba(0, 122, 204, 0.5);
         }
 
         .project-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 1rem;
         }
 
         .project-link {
-            color: var(--accent-primary);
+            color: #ffffff;
             text-decoration: none;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
-            padding: 0.5rem 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 0.5rem;
-            background: rgba(255, 255, 255, 0.05);
+            padding: 0.6rem 1.2rem;
+            border: 1px solid #007acc;
+            border-radius: 4px;
+            background: rgba(0, 122, 204, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
         }
 
         .project-link:hover {
-            color: var(--primary-dark);
-            background: var(--accent-primary);
+            background: #007acc;
             transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 122, 204, 0.3);
+        }
+
+        .project-link::before {
+            content: '→';
+            font-weight: 700;
+            transition: transform 0.2s ease;
+        }
+
+        .project-link:hover::before {
+            transform: translateX(3px);
         }
 
         /* Remove grid animation on hover */
-        .projects-grid:hover .project-terminal:not(:hover) {
+        .projects-grid:hover .project-ide:not(:hover) {
             transform: scale(0.98);
-            opacity: 0.8;
+            opacity: 0.7;
         }
 
         /* Skills Section */
@@ -539,7 +651,7 @@
             transition: all 0.3s ease;
             font-weight: 700;
             font-family: 'JetBrains Mono', monospace;
-            color: var(--terminal-green);
+            color: var(--terminal-blue);
             font-size: 0.8rem;
         }
 
@@ -587,7 +699,7 @@
             top: 0;
             height: 100%;
             width: 3px;
-            background: linear-gradient(135deg, var(--terminal-green) 0%, var(--terminal-blue) 100%);
+            background: linear-gradient(135deg, var(--terminal-blue) 0%, var(--terminal-yellow) 100%);
             transform: scaleY(0);
             transition: transform 0.3s ease;
             border-radius: 0 3px 3px 0;
@@ -1001,7 +1113,7 @@
             width: 50px;
             height: 50px;
             border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top: 3px solid var(--terminal-green);
+            border-top: 3px solid var(--terminal-blue);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -1070,7 +1182,7 @@
             transition: transform 0.3s ease;
             font-weight: 700;
             font-family: 'JetBrains Mono', monospace;
-            color: var(--terminal-green);
+            color: var(--terminal-blue);
         }
 
         .contact-card h3 {
@@ -1225,8 +1337,7 @@
             }
 
             .nav-links a:hover {
-                background: rgba(255, 255, 255, 0.1);
-                color: var(--accent-primary);
+                color: var(--terminal-blue);
             }
 
         }
@@ -1297,22 +1408,52 @@
         <p class="section-subtitle">Showcase of my latest work and innovations</p>
         <div class="projects-container">
             <div class="projects-grid">
-                <div class="project-terminal">
-                    <div class="terminal-header">
-                        <div class="terminal-controls">
-                            <span class="control-btn close"></span>
-                            <span class="control-btn minimize"></span>
-                            <span class="control-btn maximize"></span>
+                <div class="project-ide">
+                    <div class="ide-titlebar">
+                        <div class="ide-project-name">
+                            <div class="ide-project-icon">C++</div>
+                            web-crawler
                         </div>
-                        <div class="terminal-title">~/projects/web-crawler</div>
+                        <div class="ide-controls">
+                            <button class="ide-control-btn minimize"></button>
+                            <button class="ide-control-btn maximize"></button>
+                            <button class="ide-control-btn close"></button>
+                        </div>
                     </div>
-                    <div class="terminal-content">
+                    <div class="ide-sidebar">
+                        <div class="ide-explorer">
+                            <span class="ide-folder-icon">📁</span>
+                            EXPLORER
+                        </div>
+                        <div class="ide-file-tree">
+                            <div class="ide-file">
+                                <span class="ide-file-icon">📄</span>
+                                main.cpp
+                            </div>
+                            <div class="ide-file">
+                                <span class="ide-file-icon">📄</span>
+                                crawler.h
+                            </div>
+                            <div class="ide-file">
+                                <span class="ide-file-icon">📄</span>
+                                CMakeLists.txt
+                            </div>
+                            <div class="ide-file">
+                                <span class="ide-file-icon">📄</span>
+                                README.md
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ide-content">
                         <div class="project-info">
-                            <h3>Web-Crawler</h3>
+                            <h3>
+                                Web-Crawler
+                                <span class="project-status">Complete</span>
+                            </h3>
                             <p>A high-performance, multithreaded web crawler built in C++ with advanced graph analysis capabilities.</p>
                             <div class="tech-stack">
                                 <span class="tech-tag">C++</span>
-                                <span class="tech-tag">Cmake</span>
+                                <span class="tech-tag">CMake</span>
                                 <span class="tech-tag">Libcurl</span>
                             </div>
                             <div class="project-links">
@@ -1325,24 +1466,54 @@
                     </div>
                 </div>
 
-                <div class="project-terminal">
-                    <div class="terminal-header">
-                        <div class="terminal-controls">
-                            <span class="control-btn close"></span>
-                            <span class="control-btn minimize"></span>
-                            <span class="control-btn maximize"></span>
+                <div class="project-ide">
+                    <div class="ide-titlebar">
+                        <div class="ide-project-name">
+                            <div class="ide-project-icon">PY</div>
+                            movie-recommendation
                         </div>
-                        <div class="terminal-title">~/projects/movie-recommendations</div>
+                        <div class="ide-controls">
+                            <button class="ide-control-btn minimize"></button>
+                            <button class="ide-control-btn maximize"></button>
+                            <button class="ide-control-btn close"></button>
+                        </div>
                     </div>
-                    <div class="terminal-content">
+                    <div class="ide-sidebar">
+                        <div class="ide-explorer">
+                            <span class="ide-folder-icon">📁</span>
+                            EXPLORER
+                        </div>
+                        <div class="ide-file-tree">
+                            <div class="ide-file">
+                                <span class="ide-file-icon">📄</span>
+                                main.py
+                            </div>
+                            <div class="ide-file">
+                                <span class="ide-file-icon">📄</span>
+                                model.py
+                            </div>
+                            <div class="ide-file">
+                                <span class="ide-file-icon">📄</span>
+                                data_processor.py
+                            </div>
+                            <div class="ide-file">
+                                <span class="ide-file-icon">📄</span>
+                                requirements.txt
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ide-content">
                         <div class="project-info">
-                            <h3>Movie Recommendation</h3>
-                            <p>A movie recommendation program built using Python</p>
+                            <h3>
+                                Movie Recommendation
+                                <span class="project-status">Complete</span>
+                            </h3>
+                            <p>A movie recommendation program built using Python and machine learning algorithms.</p>
                             <div class="tech-stack">
                                 <span class="tech-tag">Python</span>
-                                <span class="tech-tag">Numpy</span>
+                                <span class="tech-tag">NumPy</span>
                                 <span class="tech-tag">Pandas</span>
-                                <span class="tech-tag">Sklearn</span>
+                                <span class="tech-tag">Scikit-learn</span>
                             </div>
                             <div class="project-links">
                                 <a href="https://github.com/DevinCoster/Movie-Recommendation-System" target="_blank" class="project-link">GitHub</a>
@@ -1352,19 +1523,49 @@
                     </div>
                 </div>
 
-                <div class="project-terminal">
-                    <div class="terminal-header">
-                        <div class="terminal-controls">
-                            <span class="control-btn close"></span>
-                            <span class="control-btn minimize"></span>
-                            <span class="control-btn maximize"></span>
+                <div class="project-ide">
+                    <div class="ide-titlebar">
+                        <div class="ide-project-name">
+                            <div class="ide-project-icon">UE</div>
+                            obstacle-assault
                         </div>
-                        <div class="terminal-title">~/projects/obstacle assault</div>
+                        <div class="ide-controls">
+                            <button class="ide-control-btn minimize"></button>
+                            <button class="ide-control-btn maximize"></button>
+                            <button class="ide-control-btn close"></button>
+                        </div>
                     </div>
-                    <div class="terminal-content">
+                    <div class="ide-sidebar">
+                        <div class="ide-explorer">
+                            <span class="ide-folder-icon">📁</span>
+                            EXPLORER
+                        </div>
+                        <div class="ide-file-tree">
+                            <div class="ide-file">
+                                <span class="ide-file-icon">📄</span>
+                                Player.cpp
+                            </div>
+                            <div class="ide-file">
+                                <span class="ide-file-icon">📄</span>
+                                GameMode.h
+                            </div>
+                            <div class="ide-file">
+                                <span class="ide-file-icon">📄</span>
+                                Blueprint.uasset
+                            </div>
+                            <div class="ide-file">
+                                <span class="ide-file-icon">📄</span>
+                                Level.umap
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ide-content">
                         <div class="project-info">
-                            <h3>Obstacle Assault</h3>
-                            <p>A mini-game built with Unreal Engine 5.6, using C++ and Blueprints </p>
+                            <h3>
+                                Obstacle Assault
+                                <span class="project-status">In Progress</span>
+                            </h3>
+                            <p>A mini-game built with Unreal Engine 5.6, using C++ and Blueprints for gameplay mechanics.</p>
                             <div class="tech-stack">
                                 <span class="tech-tag">C++</span>
                                 <span class="tech-tag">Blueprints</span>
@@ -1589,28 +1790,23 @@
             });
         }
 
-        // Terminal typing effect
-        function initTerminalEffect() {
-            const terminalElements = document.querySelectorAll('.terminal-title');
+        // Terminal typing effect -> IDE file loading effect
+        function initIDEEffect() {
+            const projectNames = document.querySelectorAll('.ide-project-name');
 
-            terminalElements.forEach(element => {
-                const text = element.textContent;
-                element.textContent = '';
-
-                let i = 0;
-                const typeWriter = () => {
-                    if (i < text.length) {
-                        element.textContent += text.charAt(i);
-                        i++;
-                        setTimeout(typeWriter, 50);
-                    }
-                };
-
-                // Start typing effect when element comes into view
+            projectNames.forEach(element => {
+                // Add loading animation when project comes into view
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
-                            setTimeout(typeWriter, 500);
+                            // Simulate IDE loading
+                            const projectIcon = entry.target.querySelector('.ide-project-icon');
+                            if (projectIcon) {
+                                projectIcon.style.animation = 'pulse 1s ease-in-out infinite';
+                                setTimeout(() => {
+                                    projectIcon.style.animation = 'none';
+                                }, 2000);
+                            }
                             observer.unobserve(entry.target);
                         }
                     });
@@ -1653,7 +1849,7 @@
             }
         }
 
-        // Matrix background effect
+        // Matrix background effect with blue theme
         class MatrixBackground {
             constructor() {
                 this.canvas = document.getElementById('matrix-canvas');
@@ -1689,7 +1885,7 @@
                 this.ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
                 this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
                 
-                this.ctx.fillStyle = '#00ff41';
+                this.ctx.fillStyle = '#0099ff';
                 this.ctx.font = `${this.fontSize}px monospace`;
                 
                 for (let i = 0; i < this.drops.length; i++) {
@@ -1892,7 +2088,7 @@
             initNavbarScroll();
             initMobileHeaderScroll();
             initScrollAnimations();
-            initTerminalEffect();
+            initIDEEffect(); // Changed from initTerminalEffect
 
             // Only init particle cursor on desktop
             if (window.innerWidth >= 768) {
@@ -1902,7 +2098,7 @@
             initPerformanceMonitoring();
             updateActiveNavLink('home');
             
-            console.log('%c🚀 Portfolio loaded successfully!', 'color: #00ff41; font-size: 16px; font-weight: bold;');
+            console.log('%c🚀 Portfolio loaded successfully!', 'color: #0099ff; font-size: 16px; font-weight: bold;');
         });
 
         // Service Worker registration for PWA capabilities

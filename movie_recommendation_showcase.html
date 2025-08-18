@@ -26,9 +26,9 @@
             --border-color: #21262d;
             --gradient-primary: linear-gradient(135deg, #ffffff 0%, #e5e7eb 100%);
             --glow-color: rgba(255, 255, 255, 0.1);
-            --terminal-green: #00ff41;
-            --terminal-blue: #0099ff;
-            --terminal-yellow: #ffff00;
+            --terminal-green: #0099ff;
+            --terminal-blue: #0066cc;
+            --terminal-yellow: #007acc;
         }
 
         body {
@@ -66,7 +66,7 @@
             white-space: pre;
             text-align: center;
             animation: gentle-pulse 8s ease-in-out infinite alternate;
-            text-shadow: 0 0 2px var(--terminal-green);
+            text-shadow: 0 0 2px var(--terminal-blue);
         }
 
         @keyframes gentle-pulse {
@@ -112,7 +112,7 @@
         }
 
         .logo:hover {
-            color: var(--terminal-green);
+            color: var(--terminal-blue);
         }
 
         .nav-links {
@@ -130,7 +130,7 @@
         }
 
         .nav-links a:hover {
-            color: var(--terminal-green);
+            color: var(--terminal-blue);
         }
 
         .nav-links a::after {
@@ -140,7 +140,7 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: var(--terminal-green);
+            background: var(--terminal-blue);
             transition: width 0.3s ease;
         }
 
@@ -174,7 +174,7 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, var(--terminal-green), transparent);
+            background: linear-gradient(90deg, transparent, var(--terminal-blue), transparent);
             animation: shimmer 3s ease-in-out infinite;
         }
 
@@ -214,7 +214,7 @@
         .github-link {
             display: inline-block;
             padding: 1rem 2rem;
-            background: linear-gradient(135deg, var(--terminal-green) 0%, #00cc33 100%);
+            background: linear-gradient(135deg, var(--terminal-blue) 0%, #0066cc 100%);
             color: var(--primary-dark);
             text-decoration: none;
             border-radius: 50px;
@@ -227,7 +227,7 @@
 
         .github-link:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 255, 65, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 153, 255, 0.3);
         }
 
         .github-link::before {
@@ -297,7 +297,7 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, var(--terminal-green), var(--terminal-blue));
+            background: linear-gradient(90deg, var(--terminal-blue), var(--terminal-yellow));
             transform: scaleX(0);
             transition: transform 0.3s ease;
         }
@@ -308,15 +308,15 @@
 
         .feature-card:hover {
             transform: translateY(-5px);
-            border-color: var(--terminal-green);
-            box-shadow: 0 15px 35px rgba(0, 255, 65, 0.1);
+            border-color: var(--terminal-blue);
+            box-shadow: 0 15px 35px rgba(0, 153, 255, 0.1);
         }
 
         .feature-title {
             font-size: 1.3rem;
             font-weight: 600;
             margin-bottom: 1rem;
-            color: var(--terminal-green);
+            color: var(--terminal-blue);
         }
 
         .feature-description {
@@ -474,7 +474,7 @@
             width: 50px;
             height: 50px;
             border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top: 3px solid var(--terminal-green);
+            border-top: 3px solid var(--terminal-blue);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -632,6 +632,18 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
                                                                                                                                                                                                                                                                                                             ░</div>
     </div>
 
@@ -650,7 +662,7 @@
     </nav>
 
     <div class="container">
-        <a href="../index.html" style="display:inline-block;margin-bottom:2rem;padding:0.75rem 2rem;background:linear-gradient(135deg,#222 0%,#333 100%);color:#00ff41;text-decoration:none;border-radius:40px;font-weight:600;font-size:1.1rem;box-shadow:0 2px 12px rgba(0,0,0,0.08);transition:background 0.2s;">
+        <a href="../index.html" style="display:inline-block;margin-bottom:2rem;padding:0.75rem 2rem;background:linear-gradient(135deg,var(--terminal-blue) 0%,#0066cc 100%);color:var(--primary-dark);text-decoration:none;border-radius:40px;font-weight:600;font-size:1.1rem;box-shadow:0 2px 12px rgba(0,153,255,0.2);transition:all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 30px rgba(0,153,255,0.3)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 12px rgba(0,153,255,0.2)'">
             &larr; Back to Portfolio
         </a>
 
@@ -827,10 +839,10 @@
             
             <div style="margin-top: 3rem; display: flex; justify-content: center;">
                 <div style="text-align: center; padding: 3rem; background: rgba(0, 0, 0, 0.6); border-radius: 20px; border: 1px solid var(--border-color); max-width: 600px;">
-                    <div style="font-size: 1.8rem; color: var(--terminal-green); margin-bottom: 1.5rem; font-weight: 600; font-family: 'JetBrains Mono', monospace;">MovieLens 25M Dataset</div>
+                    <div style="font-size: 1.8rem; color: var(--terminal-blue); margin-bottom: 1.5rem; font-weight: 600; font-family: 'JetBrains Mono', monospace;">MovieLens 25M Dataset</div>
                     <div style="color: var(--text-secondary); font-size: 1.2rem; line-height: 1.7;">
-                        Complete dataset from GroupLens Research containing <strong style="color: var(--terminal-green);">25 million ratings</strong> from 
-                        <strong style="color: var(--terminal-green);">162,000 users</strong> across <strong style="color: var(--terminal-green);">62,000 movies</strong> 
+                        Complete dataset from GroupLens Research containing <strong style="color: var(--terminal-blue);">25 million ratings</strong> from
+                        <strong style="color: var(--terminal-blue);">162,000 users</strong> across <strong style="color: var(--terminal-blue);">62,000 movies</strong>
                         with comprehensive metadata including genres, timestamps, and movie information.
                     </div>
                     <div style="margin-top: 2rem; padding: 1rem; background: rgba(0, 0, 0, 0.8); border-radius: 10px; font-family: 'JetBrains Mono', monospace; color: var(--accent-secondary); border: 1px solid var(--border-color);">
@@ -863,7 +875,7 @@
             // Add hover effects to interactive elements
             document.querySelectorAll('.feature-card, .github-link, .section').forEach(element => {
                 element.addEventListener('mouseenter', function() {
-                    this.style.boxShadow = '0 0 30px rgba(0, 255, 65, 0.2)';
+                    this.style.boxShadow = '0 0 30px rgba(0, 153, 255, 0.2)';
                 });
                 
                 element.addEventListener('mouseleave', function() {
@@ -909,7 +921,7 @@
             });
 
             console.log('%c🎬 Movie Recommendation System loaded successfully!', 
-                       'color: #00ff41; font-size: 16px; font-weight: bold;');
+                       'color: #0099ff; font-size: 16px; font-weight: bold;');
         });
 
         // Navbar scroll effect
