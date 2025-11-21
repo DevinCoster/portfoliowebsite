@@ -1,0 +1,513 @@
+/* --- GLOBAL RESETS --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    /* increased base size so rem units scale up across the site */
+    font-size: 24px; /* was implicit/default — increased to fill space */
+    /* Keep vertical scrolling enabled while hiding the scrollbar visually */
+    overflow-y: auto;
+    background-color: #050505; /* Near black */
+    color: #ffffff;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+}
+
+/* Hide vertical scrollbar across browsers but preserve scroll behavior */
+html, body {
+    overflow-x: hidden; /* existing horizontal prevention */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+}
+
+/* Chrome, Edge (WebKit/Blink), Safari */
+body::-webkit-scrollbar {
+    display: none;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* --- TYPOGRAPHY --- */
+h1, h2, h3, h4 {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+}
+
+/* larger headings to better fill hero and section headers */
+h1 { font-size: 4.5rem; line-height: 1.02; } /* increased from 3.5rem */
+h2 { font-size: 3.2rem; margin-bottom: 1rem; } /* increased from 2.5rem */
+h3 { font-size: 2rem; } /* increased from 1.5rem */
+
+.label {
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 1.5rem;
+    border-left: 2px solid #fff;
+    padding-left: 10px;
+}
+
+/* --- BUTTONS --- */
+button {
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: #fff;
+    color: #000;
+    border: none;
+    padding: 18px 36px; /* increased for larger text */
+    font-size: 1.05rem; /* larger readable button text */
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 20px;
+}
+
+.btn-primary:hover {
+    background: #ccc;
+}
+
+.btn-outline {
+    background: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 18px 36px; /* increased */
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 30px;
+}
+
+.btn-outline:hover {
+    background: #fff;
+    color: #000;
+}
+
+/* --- NAVIGATION --- */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    z-index: 1000;
+    transition: background 0.3s ease;
+}
+
+.navbar.scrolled {
+    background: rgba(5, 5, 5, 0.95);
+    border-bottom: 1px solid #222;
+}
+
+.logo {
+    font-weight: 900;
+    letter-spacing: 1px;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
+
+.nav-links button {
+    background: none;
+    border: none;
+    color: #fff;
+    margin-left: 30px;
+    text-transform: uppercase;
+    font-size: 1rem; /* slightly larger nav links */
+    letter-spacing: 1px;
+    opacity: 0.8;
+}
+
+.nav-links button:hover {
+    opacity: 1;
+}
+
+/* --- SECTIONS --- */
+.section {
+    padding: 100px 50px;
+    border-bottom: 1px solid #1a1a1a;
+}
+
+/* --- HERO --- */
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 0 50px;
+    position: relative;
+    /* removed gradient — use a solid background */
+    background-color: #050505;
+}
+
+.hero-content {
+    max-width: 800px;
+    z-index: 2;
+}
+
+.hero-content p {
+    font-size: 1.6rem; /* increased from 1.2rem */
+    color: #aaa;
+    margin-top: 20px;
+    max-width: 700px; /* allow copy to span more */
+}
+
+/* --- BIO --- */
+.bio-section .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+}
+
+.bio-section p {
+    color: #ccc;
+    font-size: 1.1rem;
+}
+
+.stats-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.stat-item h3 {
+    font-size: 4.5rem; /* increased from 3rem */
+    margin-bottom: 5px;
+}
+
+.stat-item span {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #666;
+    letter-spacing: 1px;
+}
+
+/* --- PROJECTS --- */
+.projects-section h2 {
+    margin-bottom: 50px;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2px; /* Grid lines effect */
+    background: #222; /* Border color */
+    border: 1px solid #222222;
+}
+
+.project-card {
+    background: #0a0a0a;
+    padding: 48px; /* increased padding to match larger type */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 340px; /* slightly taller cards */
+    transition: background 0.2s;
+}
+
+.project-card:hover {
+    background: #111;
+}
+
+.category {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #666;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.project-card p {
+    color: #999;
+    margin: 10px 0 20px;
+    font-size: 1.05rem; /* increased from 0.95rem */
+}
+
+.tech-stack span {
+    font-size: 0.85rem;
+    border: 1px solid #333;
+    padding: 6px 10px;
+    margin-right: 6px;
+    color: #888;
+}
+
+.card-arrow {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    align-self: flex-end;
+}
+
+/* --- RESUME --- */
+.resume-container {
+    max-width: 800px;
+}
+
+.timeline {
+    margin-top: 50px;
+    border-left: 1px solid #333;
+}
+
+.timeline-item {
+    padding-left: 30px;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 5px;
+    width: 9px;
+    height: 9px;
+    background: #fff;
+}
+
+.year {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.job-details h4 {
+    color: #888;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
+.job-details p {
+    color: #bbb;
+}
+
+/* --- FOOTER --- */
+.footer {
+    background: #000;
+    padding: 80px 50px 30px;
+    border-top: 1px solid #222;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 80px;
+}
+
+.email-link {
+    font-size: 2rem;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    border-bottom: 2px solid #333;
+    transition: border 0.3s;
+}
+
+.email-link:hover {
+    border-color: #fff;
+}
+
+.footer-links ul {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: #888; /* Gray text by default */
+    text-decoration: none; /* Remove underline */
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #fff; /* White on hover */
+    text-decoration: none;
+}
+
+.copyright {
+    font-size: 0.75rem;
+    color: #444;
+    text-transform: uppercase;
+}
+
+/* --- MOBILE RESPONSIVE --- */
+@media (max-width: 768px) {
+    /* scale things down on mobile while keeping improved legibility */
+    h1 { font-size: 2.8rem; } /* reduced for mobile */
+    h2 { font-size: 1.8rem; }
+    h3 { font-size: 1.4rem; }
+    body { font-size: 16px; } /* slightly smaller base on mobile */
+
+    .btn-primary, .btn-outline {
+        padding: 12px 20px;
+        font-size: 0.95rem;
+    }
+
+    .project-card {
+        padding: 28px;
+        min-height: auto;
+    }
+
+    .hero-content p {
+        font-size: 1.05rem;
+        max-width: 100%;
+    }
+
+    .nav-links { display: none; } /* preserve existing mobile behavior */
+}
+
+/* Resume modal / in-site viewer */
+.resume-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.resume-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(2px);
+}
+
+.resume-modal-content {
+    position: relative;
+    width: 92%;
+    max-width: 1200px;
+    height: 86vh; /* slightly taller viewer for large screens */
+    background: #0a0a0a;
+    border: 1px solid #222;
+    z-index: 2001;
+    display: flex;
+    flex-direction: column;
+    padding: 14px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+
+.resume-modal-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: transparent;
+    color: #fff;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 2002;
+}
+
+.resume-iframe {
+    width: 100%;
+    flex: 1 1 auto;
+    border: none;
+    background: #fff;
+}
+
+.resume-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 10px;
+}
+
+/* Ensure the existing .btn-outline works inside the modal */
+.resume-modal .btn-outline {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+}
+
+/* Reset link styling (remove default blue/visited) */
+a,
+a:visited {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Keep an accessible hover/focus indicator without changing color */
+a:hover,
+a:focus {
+    text-decoration: underline;
+    color: inherit;
+    outline: none;
+}
+
+/* Tech Stack section */
+.tech-section h2 {
+    margin-bottom: 24px;
+}
+
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    align-items: start;
+}
+
+.tech-column {
+    background: #0b0b0b;
+    padding: 20px;
+    border: 1px solid #1a1a1a;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tech-column h4 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #bbb;
+    margin-bottom: 6px;
+}
+
+.tech-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0;
+    margin: 0;
+}
+
+.tech-item {
+    display: inline-block;
+    background: #111;
+    color: #ddd;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    border: 1px solid #222;
+}
+
+/* Responsive: collapse columns on smaller screens */
+@media (max-width: 992px) {
+    .tech-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .tech-grid {
+        grid-template-columns: 1fr;
+    }
+}
