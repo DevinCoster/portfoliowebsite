@@ -16,7 +16,51 @@ const DATA = {
     hero: {
         title: "Software Engineer",
         subtitle: "Exploring Autonomy, Artificial Intelligence, and Embedded Systems.",
-        buttonText: "VIEW CAPABILITIES"
+        buttonText: "VIEW CAPABILITIES",
+        // <-- new: simple 3D ASCII art (multi-line string)
+        ascii: `
+                                                               **+++==++**+******                    
+                                                           *+++==++===+++=+=+*******#               
+                                              ==*#***#%%%%*++**********+***++=+***********          
+                                        ****##**%@%%%%%%@#**##%%%%%%%#%%#####*********#*****        
+                                 ** ***#**%%%%%%%@%%%%@@##%%@@@@@@@@@@%%@@%%%%%%###**###*##***      
+               ##%%%        %%++*#%%#%%%%%%%%%%%%@@%%@@@%%%%@@@@@@@@@@@@@@@@@@@@@%%%##*##*******    
+             ##%@@@@@@%%%  *%%%@@@%%%%%%%%%%%%%%%@@%@@@%%%%%@%@@@@@@@@@@@@@@@@@@@@@%%%%#%##*##**#   
+            #*%%      %%#%%%%%@@@@%%%%%%%%%%%%%%%@@@@@@@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%#####*#%  
+            **#%   %%%@%%%%%%%@@@@%%%%%%%%%%%%%%%@@@@@@%%@%@%%%@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%##%% 
+            ###% %%@@@@%%%%%%%@@@@%%%%%%%%%%%%%%%@@%@@ %%%@%%%@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%##%%%%
+             ####@@@@%%%%%%%%%@@@@%%%%%%%%%%%%%@@      %@%%@%%%%@@@@@@@@@@@@@%%@@@@@@@@@@@%%%%%%@@%*
+             %#%%%#*##*##%%%%%@@@@%%%%%%%@@@@@@%       %@%%%%%%%%@@@@@@%%%%%%%%%%%%@%@@@@@%@%%@#%#%%
+            *###%%##*#****%%%%@@@@@%%%     %@%@@@%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%@@@@%%%%%%%%
+           **##***######*****#%%%                 #%@@@@@@@%%%%#%%%#%%%%##%%%%%%%%%%%%%%%%%@%%@%%%%%
+         ************######*#######                      @@@%%%%%%%%%%%%%##*#*###%%%%%%%%%%%%%%%%%%%
+       ************+++**#%##*######*****                   @@@@%%%%%%%%%%%%%%#%#%#%%%%%%%%*%%%%%%%%%
+    *************+++++++***%@%##########*#**#*#               @@@@@%%%%%%%%%%%%%%%%*%#%%++#%%%%%%%%%
+  ###**************+++++*##**#*%###%####**####*##*#****           @@@@@@@@%%%%%%%%%%%%%%%%%%%%%%%%% 
+**#%%%%%%*#%%%#********+****************%%%#####*###*##**#**++           @@@@@@%%%%%%%%%@@%%%%%%%%% 
+**#%%%%%@%%%**#%%%*#**************************#%%######************           @@@%%#%%%%@@%%%%%%@@  
+**##%%%%%@@@@%%####%%%#%************************+++++*######**********         #%%%%%%%%@@%%%%%%    
++**#%%%%%%@@@@@@@@%%%#*%%%%%###******#******++++========++++**#%%#***#**  **#%%%@@%%%%%%@%%%%%%     
+***##%%%%%%@@@@@@@@@@@%%@%*%%%%%%%#*********++=========+++*****%%%%%%++#%%@@@@@@@%%%%%%@@%%%@       
+***##%%%%%%%%@@@@@@@@@@@@@@%%%%%%#********++++++++==+++*****####%#*%%@@@@@@@@@@@@%@%%%%@@%%%        
+++**#%%%%%%%%%@@@@@@@@@@@@@@@@@@%%#%%**+++++==+++++******#####%%%%%@@@@@@@@@@@@@@%%%%%%@@%%         
+ ++**#%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@%%%%*+=+++++******%##%%%%%%%%%%%@@@@@@@@@@@@@%%%%%             
+ =+**##%%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@@@%%%#********###%%%%%%%%%@@@@@@@@@@@@@@@@%%%%               
+  =+**##%%%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@@@@@%%#**###%%%%%%%%%@@@@@@@@@@@@@@@@@@%%@                 
+  ==***#%%%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@%@%%%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@                   
+   +****#%%%%%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%@@@@@@@@@@@@@@@@@@@@@                     
+    =+**###%%%%%%%%%%@%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%@@@@@@@@@@@@@@@@@@@@                         
+     ++**##%%%%%%%%%%%%%%@@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                         
+      +***###%%%%%%%%%%%%%@@@%@@@@@@@@@@@@@@@@@@@@@@@@@%@@@@@@@@@@@@@@@@@@                          
+        ***##%%%%%%%%%%%%%%@%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                           
+         **###%@@@@%%%%%%%%%%@%@@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                            
+            #%%      %%%%%%%%%%%%%@@@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                             
+                       %%%%%%%%%%%%%@%%@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@                               
+                         %%%%%%%%%%%%@@%%@@%@@%@@@@@@@@@@@@@@@@@@@@                                 
+                          %%%%%%%%%%%%%%%@%@@@@@@%@@@@@@@@@@@@@@                                    
+                             %%%%%%%%%%@%%%@%@@%@@@@@@@@@@@                                         
+                                 %%@@@%@@@@@@@@@@@                                                                                                                                  
+        `
     },
     bio: {
         label: "MISSION",
@@ -37,28 +81,32 @@ const DATA = {
                 category: "Secure Communications",
                 description: "A low-latency, CLI-based communication protocol designed for messages across devices",
                 tech: ["C++", "Cmake", "OpenSSL"],
-                url: "https://github.com/DevinCoster/NetworkMessenger"
+                url: "https://github.com/DevinCoster/NetworkMessenger",
+                image: process.env.PUBLIC_URL + ''
             },
             {
                 title: "Web-Crawler",
                 category: "Multi-Threaded Crawler",
                 description: "A scalable web crawler that extracts data from websites using multi-threading.",
                 tech: ["C++", "Cmake", "Multi-Threading"],
-                url: "https://github.com/DevinCoster/web-crawler"
+                url: "https://github.com/DevinCoster/web-crawler",
+                image: process.env.PUBLIC_URL + ''
             },
             {
                 title: "Library Book-Shelf",
                 category: "Full-Stack Web App",
                 description: "Collaborative web application project to manage and store PDF's, EPUB's, and other documents for students.",
                 tech: ["React", "JavaScript", "Node.js"],
-                url: "https://github.com/CaldwellDN/bookshelfapp"
+                url: "https://github.com/CaldwellDN/bookshelfapp",
+                image: process.env.PUBLIC_URL + ''
             },
             {
                 title: "Movie Recommendation System",
                 category: "Machine Learning",
                 description: "A system that recommends movies based on user preferences using collaborative filtering.",
                 tech: ["Python", "NumPy", "Scikit-Learn"],
-                url: "https://github.com/DevinCoster/movie-recommendation-system"
+                url: "https://github.com/DevinCoster/movie-recommendation-system",
+                image: process.env.PUBLIC_URL + ''
             }
         ]
     },
@@ -172,6 +220,9 @@ const Hero = () => {
                     {DATA.hero.buttonText}
                 </button>
             </div>
+
+            {/* insert 3D ASCII art into the hero */}
+            <Ascii3D art={DATA.hero.ascii} />
         </section>
     );
 };
@@ -205,6 +256,16 @@ const Projects = () => (
         <div className="projects-grid">
             {DATA.projects.items.map((project, index) => (
                 <div key={index} className="project-card">
+                    {/* Background Image (Absolute Positioned) */}
+                    {project.image && (
+                        <img
+                            src={project.image}
+                            alt=""
+                            className="project-bg-image"
+                        />
+                    )}
+
+                    {/* Content (Standard Flow) */}
                     <div className="card-content">
                         <span className="category">{project.category}</span>
                         <h3>{project.title}</h3>
@@ -213,7 +274,6 @@ const Projects = () => (
                             {project.tech.map((t, i) => <span key={i}>{t}</span>)}
                         </div>
                     </div>
-                    {/* Arrow now links to the project's GitHub URL */}
                     <a
                         className="card-arrow"
                         href={project.url}
@@ -334,6 +394,22 @@ const Footer = () => (
         </div>
     </footer>
 );
+
+// <-- new component: lightweight 3-layer ascii "3D" renderer
+const Ascii3D = ({ art = "" }) => {
+    // split into lines so each pre has identical content
+    const lines = art.trimEnd();
+    return (
+        <div className="hero-ascii" aria-hidden="true">
+            {/* back layer: darker, farther away */}
+            <pre className="ascii-layer layer-back">{lines}</pre>
+            {/* mid layer: faint mid-depth */}
+            <pre className="ascii-layer layer-mid">{lines}</pre>
+            {/* front layer: sharp, closest */}
+            <pre className="ascii-layer layer-front">{lines}</pre>
+        </div>
+    );
+};
 
 // --- 3. MAIN APP ---
 
