@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f12de606-ef79-45d7-b746-995635e3b340" name="Changes" comment="Refactor ResumeViewer to fetch and validate PDF before display">
+    <list default="true" id="f12de606-ef79-45d7-b746-995635e3b340" name="Changes" comment="Add bundled resume support and improve PDF URL resolution logic">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/Coster_Resume.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/src/public/Coster_Resume.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -116,7 +118,7 @@
       <workItem from="1763696755636" duration="2563000" />
       <workItem from="1763766803103" duration="3394000" />
       <workItem from="1763770261831" duration="3918000" />
-      <workItem from="1764300378325" duration="981000" />
+      <workItem from="1764300378325" duration="1670000" />
     </task>
     <task id="LOCAL-00001" summary="Fixed various things.">
       <option name="closed" value="true" />
@@ -262,7 +264,23 @@
       <option name="project" value="LOCAL" />
       <updated>1764301069711</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Refactor ResumeViewer to support multiple PDF source URLs and improve error handling">
+      <option name="closed" value="true" />
+      <created>1764301384021</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1764301384021</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Add helper to find valid PDF URL and update Resume button behavior">
+      <option name="closed" value="true" />
+      <created>1764301497247</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1764301497247</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -284,7 +302,10 @@
     <MESSAGE value="Add 3D ASCII art to hero section and enhance project card styling" />
     <MESSAGE value="Update title in index.html to reflect portfolio branding" />
     <MESSAGE value="Refactor ResumeViewer to fetch and validate PDF before display" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor ResumeViewer to fetch and validate PDF before display" />
+    <MESSAGE value="Refactor ResumeViewer to support multiple PDF source URLs and improve error handling" />
+    <MESSAGE value="Add helper to find valid PDF URL and update Resume button behavior" />
+    <MESSAGE value="Add bundled resume support and improve PDF URL resolution logic" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add bundled resume support and improve PDF URL resolution logic" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

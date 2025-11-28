@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import bundledResume from './public/Coster_Resume.pdf';
 
 // --- 1. USER DATA CONFIGURATION ---
 const DATA = {
@@ -67,7 +68,6 @@ const DATA = {
         title: "Engineering the Future",
         description: "My mission is to build resilient, scalable, and autonomous software systems. I focus on low level and embedded systems, leveraging my expertise in C++, Python, and machine learning.",
         stats: [
-            { value: "1+", label: "Years Experience" },
             { value: "10+", label: "Projects Deployed" },
             { value: "100%", label: "Commitment" }
         ]
@@ -165,13 +165,19 @@ const DATA = {
 const RESUME_CANDIDATES = (() => {
     const pub = process.env.PUBLIC_URL || '';
     const candidates = [
-        `${pub}/Coster_Resume.pdf`,                       // typical: PUBLIC_URL/Coster_Resume.pdf
+        `${pub}/Coster_Resume.pdf`,                       // public/ path
         `/Coster_Resume.pdf`,                             // root-relative
     ];
     if (typeof window !== 'undefined') {
-        // absolute origin + PUBLIC_URL (useful when hosting rewrites exist)
         candidates.unshift(`${window.location.origin}${pub}/Coster_Resume.pdf`);
     }
+
+    // Prefer the bundled (imported) resume when available in the build.
+    if (typeof bundledResume === 'string' && bundledResume) {
+        // Ensure it is first so open-in-new-tab uses the reliable asset URL
+        candidates.unshift(bundledResume);
+    }
+
     // dedupe and return
     return Array.from(new Set(candidates));
 })();
@@ -190,13 +196,23 @@ async function findResumeUrl() {
             }
             if (!res || !res.ok) continue;
             const ct = (res.headers.get('content-type') || '').toLowerCase();
+            // If headers aren't available or misleading, try to inspect blob type as fallback
             if (ct.includes('pdf')) {
                 return url;
+            }
+            // If header says text/html, try one more time with GET and check blob.type
+            if (ct.includes('text/html')) {
+                try {
+                    const blob = await (await fetch(url, { method: 'GET', cache: 'no-store' })).blob();
+                    if ((blob.type || '').toLowerCase().includes('pdf')) return url;
+                } catch (e) {
+                    // ignore and continue
+                }
             }
             // not a PDF, try next candidate
         } catch (err) {
             // network or CORS issue — try next candidate
-            continue;
+
         }
     }
     return null;
@@ -327,126 +343,6 @@ const Projects = () => (
     </section>
 );
 
-// Replace ResumeViewer internals with multi-url attempt logic
-const ResumeViewer = ({ visible, onClose }) => {
-    const [src, setSrc] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [tried, setTried] = useState([]);
-
-    useEffect(() => {
-        let canceled = false;
-        let objectUrl = null;
-        const controller = new AbortController();
-
-        if (!visible) return () => { controller.abort(); };
-
-        setLoading(true);
-        setError(null);
-        setSrc(null);
-        setTried([]);
-
-        (async () => {
-            for (const url of RESUME_CANDIDATES) {
-                if (canceled) break;
-                setTried((prev) => [...prev, url]);
-                try {
-                    const res = await fetch(url, { cache: 'no-store', signal: controller.signal });
-                    if (!res.ok) {
-                        // try next candidate
-                        continue;
-                    }
-                    const ct = (res.headers.get('content-type') || '').toLowerCase();
-                    if (!ct.includes('pdf')) {
-                        // Received HTML (SPA index) or other content; try next
-                        continue;
-                    }
-                    const blob = await res.blob();
-                    objectUrl = URL.createObjectURL(blob);
-                    if (!canceled) {
-                        setSrc(objectUrl);
-                        setError(null);
-                    }
-                    return; // success, stop trying
-                } catch (err) {
-                    if (err.name === 'AbortError') return;
-                    // network error: try next URL
-                    continue;
-                }
-            }
-
-            if (!canceled) {
-                setError(`None of the candidate URLs returned a PDF. Tried: ${RESUME_CANDIDATES.join(', ')}`);
-            }
-        })().finally(() => {
-            if (!canceled) setLoading(false);
-        });
-
-        return () => {
-            canceled = true;
-            controller.abort();
-            if (objectUrl) URL.revokeObjectURL(objectUrl);
-        };
-    }, [visible]);
-
-    if (!visible) return null;
-
-    return (
-        <div className="resume-modal" role="dialog" aria-modal="true">
-            <div className="resume-modal-backdrop" onClick={onClose}></div>
-            <div className="resume-modal-content">
-                <button className="resume-modal-close" onClick={onClose} aria-label="Close resume viewer">✕</button>
-
-                {loading && (
-                    <div style={{ padding: 24, color: '#ddd' }}>
-                        Loading resume...
-                    </div>
-                )}
-
-                {error && (
-                    <div style={{ padding: 24, color: '#f88' }}>
-                        Failed to load resume.
-                        <div style={{ marginTop: 12 }}>
-                            <div style={{ marginBottom: 8, fontSize: '0.9rem', color: '#ccc' }}>
-                                Tried these URLs:
-                            </div>
-                            <ul style={{ color: '#bbb', marginLeft: 18 }}>
-                                {RESUME_CANDIDATES.map((u) => (
-                                    <li key={u} style={{ marginBottom: 6 }}>
-                                        <a href={u} target="_blank" rel="noopener noreferrer" className="btn-outline" style={{ padding: '8px 12px', display: 'inline-block' }}>
-                                            Open candidate URL in new tab
-                                        </a>
-                                        <div style={{ fontSize: '0.8rem', color: '#666', marginTop: 6 }}>{u}</div>
-                                    </li>
-                                ))}
-                            </ul>
-                            <div style={{ marginTop: 12, color: '#f88' }}>
-                                Note: Receiving text/html usually means the file wasn't found and the server returned the SPA index. Ensure Coster_Resume.pdf is placed in your public/ folder (so it's served at /Coster_Resume.pdf) and that hosting rules don't rewrite PDF requests to index.html.
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {!loading && !error && src && (
-                    <iframe
-                        src={src}
-                        title="Full Resume"
-                        frameBorder="0"
-                        className="resume-iframe"
-                    />
-                )}
-
-                <div className="resume-actions">
-                    {/* Provide direct open links for each candidate as fallback */}
-                    {RESUME_CANDIDATES.map((u) => (
-                        <a key={u} href={u} target="_blank" rel="noopener noreferrer" className="btn-outline">Open: {u.replace(window.location.origin || '', '')}</a>
-                    ))}
-                </div>
-            </div>
-        </div>
-    );
-};
-
 // Modify Resume accepting onOpenViewer prop and use a button that resolves the correct PDF URL first
 const Resume = ({ onOpenViewer }) => {
     return (
@@ -467,16 +363,22 @@ const Resume = ({ onOpenViewer }) => {
                     ))}
                 </div>
 
-                {/* Updated click handler: try to open a real PDF URL in a new tab; fallback to in-site viewer */}
+                {/* Updated click handler: prefer the bundled resume URL, then try candidates, fallback to in-site viewer */}
                 <button
                     className="btn-outline"
                     onClick={async () => {
+                        // If we built with the resume in src/assets, open that directly (most reliable)
+                        if (typeof bundledResume === 'string' && bundledResume) {
+                            window.open(bundledResume, '_blank', 'noopener,noreferrer');
+                            return;
+                        }
+
+                        // Otherwise attempt to resolve a working candidate URL
                         const url = await findResumeUrl();
                         if (url) {
-                            // open the PDF directly in a new tab (avoid embedding blob unless needed)
                             window.open(url, '_blank', 'noopener,noreferrer');
                         } else {
-                            // fallback: open the existing in-site viewer (will surface clearer errors)
+                            // fallback: open the in-site viewer which will show clearer errors
                             onOpenViewer(true);
                         }
                     }}
