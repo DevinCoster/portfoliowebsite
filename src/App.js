@@ -289,20 +289,82 @@ const Projects = () => (
     </section>
 );
 
-// Add a viewer component to display the PDF in-site
+// Replace the previous ResumeViewer with this fetch-validated viewer
 const ResumeViewer = ({ visible, onClose }) => {
+    const [src, setSrc] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        let canceled = false;
+        let objectUrl = null;
+        if (!visible) return;
+
+        setLoading(true);
+        setError(null);
+        setSrc(null);
+
+        fetch(RESUME_FILE, { cache: 'no-store' })
+            .then((res) => {
+                if (!res.ok) throw new Error('Resume file not found on server.');
+                const ct = (res.headers.get('content-type') || '').toLowerCase();
+                if (!ct.includes('pdf')) {
+                    // If server returned HTML (SPA index) or anything not PDF, treat as error
+                    throw new Error('Server did not return a PDF (received ' + ct + ').');
+                }
+                return res.blob();
+            })
+            .then((blob) => {
+                objectUrl = URL.createObjectURL(blob);
+                if (!canceled) setSrc(objectUrl);
+            })
+            .catch((err) => {
+                if (!canceled) setError(err.message);
+            })
+            .finally(() => {
+                if (!canceled) setLoading(false);
+            });
+
+        return () => {
+            canceled = true;
+            if (objectUrl) URL.revokeObjectURL(objectUrl);
+        };
+    }, [visible]);
+
     if (!visible) return null;
+
     return (
         <div className="resume-modal" role="dialog" aria-modal="true">
             <div className="resume-modal-backdrop" onClick={onClose}></div>
             <div className="resume-modal-content">
                 <button className="resume-modal-close" onClick={onClose} aria-label="Close resume viewer">✕</button>
-                <iframe
-                    src={RESUME_FILE}
-                    title="Full Resume"
-                    frameBorder="0"
-                    className="resume-iframe"
-                />
+
+                {loading && (
+                    <div style={{ padding: 24, color: '#ddd' }}>
+                        Loading resume...
+                    </div>
+                )}
+
+                {error && (
+                    <div style={{ padding: 24, color: '#f88' }}>
+                        Failed to load resume: {error}
+                        <div style={{ marginTop: 12 }}>
+                            <a href={RESUME_FILE} target="_blank" rel="noopener noreferrer" className="btn-outline">
+                                Open resume in new tab
+                            </a>
+                        </div>
+                    </div>
+                )}
+
+                {!loading && !error && src && (
+                    <iframe
+                        src={src}
+                        title="Full Resume"
+                        frameBorder="0"
+                        className="resume-iframe"
+                    />
+                )}
+
                 <div className="resume-actions">
                     <a href={RESUME_FILE} target="_blank" rel="noopener noreferrer" className="btn-outline">Open in new tab</a>
                 </div>
