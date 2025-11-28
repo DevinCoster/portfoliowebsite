@@ -176,6 +176,32 @@ const RESUME_CANDIDATES = (() => {
     return Array.from(new Set(candidates));
 })();
 
+// NEW helper: try each candidate and return the first URL that reports a PDF content-type
+async function findResumeUrl() {
+    for (const url of RESUME_CANDIDATES) {
+        try {
+            // Prefer HEAD to avoid downloading body; some hosts block HEAD, so fall back to GET
+            let res;
+            try {
+                res = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+            } catch (headErr) {
+                // HEAD failed — try GET but don't read the body
+                res = await fetch(url, { method: 'GET', cache: 'no-store' });
+            }
+            if (!res || !res.ok) continue;
+            const ct = (res.headers.get('content-type') || '').toLowerCase();
+            if (ct.includes('pdf')) {
+                return url;
+            }
+            // not a PDF, try next candidate
+        } catch (err) {
+            // network or CORS issue — try next candidate
+            continue;
+        }
+    }
+    return null;
+}
+
 // --- 2. COMPONENTS ---
 
 const Navigation = () => {
@@ -421,7 +447,7 @@ const ResumeViewer = ({ visible, onClose }) => {
     );
 };
 
-// Modify Resume accepting onOpenViewer prop and use a button to open the in-site viewer
+// Modify Resume accepting onOpenViewer prop and use a button that resolves the correct PDF URL first
 const Resume = ({ onOpenViewer }) => {
     return (
         <section id="resume" className="section resume-section">
@@ -440,10 +466,20 @@ const Resume = ({ onOpenViewer }) => {
                         </div>
                     ))}
                 </div>
-                {/* Open in-site viewer instead of downloading */}
+
+                {/* Updated click handler: try to open a real PDF URL in a new tab; fallback to in-site viewer */}
                 <button
                     className="btn-outline"
-                    onClick={() => onOpenViewer(true)}
+                    onClick={async () => {
+                        const url = await findResumeUrl();
+                        if (url) {
+                            // open the PDF directly in a new tab (avoid embedding blob unless needed)
+                            window.open(url, '_blank', 'noopener,noreferrer');
+                        } else {
+                            // fallback: open the existing in-site viewer (will surface clearer errors)
+                            onOpenViewer(true);
+                        }
+                    }}
                 >
                     VIEW FULL RESUME
                 </button>
