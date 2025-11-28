@@ -162,7 +162,19 @@ const DATA = {
     },
 };
 
-const RESUME_FILE = process.env.PUBLIC_URL + '/Coster_Resume.pdf';
+const RESUME_CANDIDATES = (() => {
+    const pub = process.env.PUBLIC_URL || '';
+    const candidates = [
+        `${pub}/Coster_Resume.pdf`,                       // typical: PUBLIC_URL/Coster_Resume.pdf
+        `/Coster_Resume.pdf`,                             // root-relative
+    ];
+    if (typeof window !== 'undefined') {
+        // absolute origin + PUBLIC_URL (useful when hosting rewrites exist)
+        candidates.unshift(`${window.location.origin}${pub}/Coster_Resume.pdf`);
+    }
+    // dedupe and return
+    return Array.from(new Set(candidates));
+})();
 
 // --- 2. COMPONENTS ---
 
@@ -289,44 +301,64 @@ const Projects = () => (
     </section>
 );
 
-// Replace the previous ResumeViewer with this fetch-validated viewer
+// Replace ResumeViewer internals with multi-url attempt logic
 const ResumeViewer = ({ visible, onClose }) => {
     const [src, setSrc] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [tried, setTried] = useState([]);
 
     useEffect(() => {
         let canceled = false;
         let objectUrl = null;
-        if (!visible) return;
+        const controller = new AbortController();
+
+        if (!visible) return () => { controller.abort(); };
 
         setLoading(true);
         setError(null);
         setSrc(null);
+        setTried([]);
 
-        fetch(RESUME_FILE, { cache: 'no-store' })
-            .then((res) => {
-                if (!res.ok) throw new Error('Resume file not found on server.');
-                const ct = (res.headers.get('content-type') || '').toLowerCase();
-                if (!ct.includes('pdf')) {
-                    // If server returned HTML (SPA index) or anything not PDF, treat as error
-                    throw new Error('Server did not return a PDF (received ' + ct + ').');
+        (async () => {
+            for (const url of RESUME_CANDIDATES) {
+                if (canceled) break;
+                setTried((prev) => [...prev, url]);
+                try {
+                    const res = await fetch(url, { cache: 'no-store', signal: controller.signal });
+                    if (!res.ok) {
+                        // try next candidate
+                        continue;
+                    }
+                    const ct = (res.headers.get('content-type') || '').toLowerCase();
+                    if (!ct.includes('pdf')) {
+                        // Received HTML (SPA index) or other content; try next
+                        continue;
+                    }
+                    const blob = await res.blob();
+                    objectUrl = URL.createObjectURL(blob);
+                    if (!canceled) {
+                        setSrc(objectUrl);
+                        setError(null);
+                    }
+                    return; // success, stop trying
+                } catch (err) {
+                    if (err.name === 'AbortError') return;
+                    // network error: try next URL
+                    continue;
                 }
-                return res.blob();
-            })
-            .then((blob) => {
-                objectUrl = URL.createObjectURL(blob);
-                if (!canceled) setSrc(objectUrl);
-            })
-            .catch((err) => {
-                if (!canceled) setError(err.message);
-            })
-            .finally(() => {
-                if (!canceled) setLoading(false);
-            });
+            }
+
+            if (!canceled) {
+                setError(`None of the candidate URLs returned a PDF. Tried: ${RESUME_CANDIDATES.join(', ')}`);
+            }
+        })().finally(() => {
+            if (!canceled) setLoading(false);
+        });
 
         return () => {
             canceled = true;
+            controller.abort();
             if (objectUrl) URL.revokeObjectURL(objectUrl);
         };
     }, [visible]);
@@ -347,11 +379,24 @@ const ResumeViewer = ({ visible, onClose }) => {
 
                 {error && (
                     <div style={{ padding: 24, color: '#f88' }}>
-                        Failed to load resume: {error}
+                        Failed to load resume.
                         <div style={{ marginTop: 12 }}>
-                            <a href={RESUME_FILE} target="_blank" rel="noopener noreferrer" className="btn-outline">
-                                Open resume in new tab
-                            </a>
+                            <div style={{ marginBottom: 8, fontSize: '0.9rem', color: '#ccc' }}>
+                                Tried these URLs:
+                            </div>
+                            <ul style={{ color: '#bbb', marginLeft: 18 }}>
+                                {RESUME_CANDIDATES.map((u) => (
+                                    <li key={u} style={{ marginBottom: 6 }}>
+                                        <a href={u} target="_blank" rel="noopener noreferrer" className="btn-outline" style={{ padding: '8px 12px', display: 'inline-block' }}>
+                                            Open candidate URL in new tab
+                                        </a>
+                                        <div style={{ fontSize: '0.8rem', color: '#666', marginTop: 6 }}>{u}</div>
+                                    </li>
+                                ))}
+                            </ul>
+                            <div style={{ marginTop: 12, color: '#f88' }}>
+                                Note: Receiving text/html usually means the file wasn't found and the server returned the SPA index. Ensure Coster_Resume.pdf is placed in your public/ folder (so it's served at /Coster_Resume.pdf) and that hosting rules don't rewrite PDF requests to index.html.
+                            </div>
                         </div>
                     </div>
                 )}
@@ -366,7 +411,10 @@ const ResumeViewer = ({ visible, onClose }) => {
                 )}
 
                 <div className="resume-actions">
-                    <a href={RESUME_FILE} target="_blank" rel="noopener noreferrer" className="btn-outline">Open in new tab</a>
+                    {/* Provide direct open links for each candidate as fallback */}
+                    {RESUME_CANDIDATES.map((u) => (
+                        <a key={u} href={u} target="_blank" rel="noopener noreferrer" className="btn-outline">Open: {u.replace(window.location.origin || '', '')}</a>
+                    ))}
                 </div>
             </div>
         </div>

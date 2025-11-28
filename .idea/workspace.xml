@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f12de606-ef79-45d7-b746-995635e3b340" name="Changes" comment="Update title in index.html to reflect portfolio branding">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="f12de606-ef79-45d7-b746-995635e3b340" name="Changes" comment="Refactor ResumeViewer to fetch and validate PDF before display">
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -117,7 +116,7 @@
       <workItem from="1763696755636" duration="2563000" />
       <workItem from="1763766803103" duration="3394000" />
       <workItem from="1763770261831" duration="3918000" />
-      <workItem from="1764300378325" duration="675000" />
+      <workItem from="1764300378325" duration="981000" />
     </task>
     <task id="LOCAL-00001" summary="Fixed various things.">
       <option name="closed" value="true" />
@@ -255,7 +254,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763777916524</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Refactor ResumeViewer to fetch and validate PDF before display">
+      <option name="closed" value="true" />
+      <created>1764301069711</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1764301069711</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -276,7 +283,8 @@
     <MESSAGE value="Edited package.json" />
     <MESSAGE value="Add 3D ASCII art to hero section and enhance project card styling" />
     <MESSAGE value="Update title in index.html to reflect portfolio branding" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update title in index.html to reflect portfolio branding" />
+    <MESSAGE value="Refactor ResumeViewer to fetch and validate PDF before display" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor ResumeViewer to fetch and validate PDF before display" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
