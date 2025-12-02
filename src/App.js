@@ -308,11 +308,19 @@ const Resume = () => {
 
                 {/* Updated button: Directly opens the imported PDF in a new tab. */}
                 <a
-                    href={process.env.PUBLIC_URL + '/Coster_Resume.pdf'}
+                    href={`${process.env.PUBLIC_URL || window.location.origin}/Coster_Resume.pdf`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-outline"
+                    download="Coster_Resume.pdf"
                     style={{ display: 'inline-block', textDecoration: 'none' }}
+                    onClick={(e) => {
+                        // ensure we open the actual PDF URL (avoids SPA fallback)
+                        const url = `${process.env.PUBLIC_URL || window.location.origin}/Coster_Resume.pdf`;
+                        // open in new tab explicitly and prevent the default anchor navigation
+                        window.open(url, '_blank', 'noopener');
+                        e.preventDefault();
+                    }}
                 >
                     VIEW FULL RESUME
                 </a>
