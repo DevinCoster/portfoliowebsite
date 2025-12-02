@@ -152,6 +152,7 @@ const DATA = {
         "Software": [
             "Blender",
             "Unreal Engine",
+            "Fusion 360"
         ],
         "Tools": [
             "Git / GitHub",
