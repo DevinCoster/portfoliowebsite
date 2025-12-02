@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 // --- 1. USER DATA CONFIGURATION ---
@@ -161,168 +161,6 @@ const DATA = {
     },
 };
 
-// --- RESUME: robust candidate list and resolver ---
-const RESUME_FILENAME = 'Coster_Resume.pdf';
-
-// build candidate URLs in order of preference
-function buildResumeCandidates() {
-    const pub = (process.env.PUBLIC_URL || '').replace(/\/$/, '');
-    const candidates = new Set();
-
-    if (typeof window !== 'undefined' && window.location && window.location.origin) {
-        // absolute origin + public path
-        candidates.add(`${window.location.origin}${pub ? pub : ''}/${RESUME_FILENAME}`.replace(/([^:]\/)\/+/g, '$1'));
-    }
-
-    // root-relative
-    candidates.add(`/${RESUME_FILENAME}`);
-
-    // PUBLIC_URL relative (some hosts serve assets under PUBLIC_URL)
-    if (pub) candidates.add(`${pub}/${RESUME_FILENAME}`);
-
-    return Array.from(candidates);
-}
-const RESUME_CANDIDATES = buildResumeCandidates();
-
-// quick check whether a URL returns a PDF (HEAD preferred, GET fallback)
-async function urlLooksLikePdf(url) {
-    try {
-        // Try HEAD first
-        let res;
-        try {
-            res = await fetch(url, { method: 'HEAD', cache: 'no-store' });
-        } catch (headErr) {
-            // HEAD might be blocked; try GET
-            res = await fetch(url, { method: 'GET', cache: 'no-store' });
-        }
-        if (!res || !res.ok) return false;
-        const ct = (res.headers.get('content-type') || '').toLowerCase();
-        if (ct.includes('pdf')) return true;
-
-        // If server returns text/html, try to inspect a small blob to confirm type
-        if (ct.includes('text/html')) {
-            try {
-                const blob = await res.blob();
-                if ((blob.type || '').toLowerCase().includes('pdf')) return true;
-            } catch (e) {
-                // ignore and treat as not pdf
-            }
-        }
-        return false;
-    } catch (err) {
-        return false;
-    }
-}
-
-// return first candidate that checks as PDF, otherwise null
-async function findResumeUrl() {
-    for (const url of RESUME_CANDIDATES) {
-        if (await urlLooksLikePdf(url)) return url;
-    }
-    return null;
-}
-
-// --- IN-SITE RESUME VIEWER (modal) ---
-const ResumeViewer = ({ visible, onClose }) => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [blobUrl, setBlobUrl] = useState(null);
-    const tried = useRef(RESUME_CANDIDATES);
-
-    useEffect(() => {
-        let revoked = false;
-        async function load() {
-            setError(null);
-            setBlobUrl(null);
-            if (!visible) return;
-            setLoading(true);
-            // Try to find a PDF candidate
-            const url = await findResumeUrl();
-            if (!url) {
-                setLoading(false);
-                setError('No PDF found at expected URLs. See fallback links below.');
-                return;
-            }
-            try {
-                const res = await fetch(url, { method: 'GET', cache: 'no-store' });
-                if (!res.ok) {
-                    setError(`Failed to fetch resume: ${res.status} ${res.statusText}`);
-                    setLoading(false);
-                    return;
-                }
-                const blob = await res.blob();
-                if (!blob.type.toLowerCase().includes('pdf')) {
-                    setError('Server returned a non-PDF resource (likely the SPA index).');
-                    setLoading(false);
-                    return;
-                }
-                const objectUrl = URL.createObjectURL(blob);
-                if (!revoked) setBlobUrl(objectUrl);
-            } catch (e) {
-                setError('Network error while fetching resume.');
-            } finally {
-                if (!revoked) setLoading(false);
-            }
-        }
-        load();
-        return () => {
-            revoked = true;
-            if (blobUrl) URL.revokeObjectURL(blobUrl);
-        };
-    }, [visible]); // eslint-disable-line
-
-    if (!visible) return null;
-
-    return (
-        <div className="resume-modal" role="dialog" aria-modal="true">
-            <div className="resume-modal-backdrop" onClick={onClose}></div>
-            <div className="resume-modal-content">
-                <button className="resume-modal-close" onClick={onClose} aria-label="Close resume viewer">×</button>
-
-                {loading && <div style={{ padding: 20, color: '#ccc' }}>Loading resume…</div>}
-
-                {!loading && error && (
-                    <div style={{ padding: 20, color: '#f88' }}>
-                        <div style={{ marginBottom: 12, fontWeight: 700 }}>Failed to load resume</div>
-                        <div style={{ marginBottom: 12 }}>{error}</div>
-                        <div style={{ marginBottom: 8 }}>Tried these URLs (open in new tab):</div>
-                        <ul>
-                            {tried.current.map((u) => (
-                                <li key={u}>
-                                    <a href={u} target="_blank" rel="noopener noreferrer">{u}</a>
-                                </li>
-                            ))}
-                        </ul>
-                        <div style={{ marginTop: 12 }}>
-                            <button className="btn-outline" onClick={() => {
-                                // attempt to open root-relative directly as a last-ditch
-                                window.open(`/${RESUME_FILENAME}`, '_blank', 'noopener,noreferrer');
-                            }}>Open /{RESUME_FILENAME} in new tab</button>
-                        </div>
-                    </div>
-                )}
-
-                {!loading && !error && blobUrl && (
-                    <iframe title="Resume" src={blobUrl} className="resume-iframe" />
-                )}
-
-                <div className="resume-actions">
-                    <button className="btn-outline" onClick={() => {
-                        // If we have a blob URL open the PDF in new tab as well
-                        if (blobUrl) {
-                            window.open(blobUrl, '_blank', 'noopener,noreferrer');
-                        } else {
-                            // open root-relative as fallback
-                            window.open(`/${RESUME_FILENAME}`, '_blank', 'noopener,noreferrer');
-                        }
-                    }}>Open in new tab</button>
-                    <button className="btn-primary" onClick={onClose}>Close</button>
-                </div>
-            </div>
-        </div>
-    );
-};
-
 // --- 2. COMPONENTS ---
 
 const Navigation = () => {
@@ -448,8 +286,8 @@ const Projects = () => (
     </section>
 );
 
-// Modify Resume accepting onOpenViewer prop and use a button that resolves the correct PDF URL first
-const Resume = ({ onOpenViewer }) => {
+// Modify Resume to be a simpler component that directly opens the imported PDF.
+const Resume = () => {
     return (
         <section id="resume" className="section resume-section">
             <div className="label">{DATA.resume.label}</div>
@@ -468,23 +306,16 @@ const Resume = ({ onOpenViewer }) => {
                     ))}
                 </div>
 
-                {/* Updated click handler: prefer the bundled resume URL, then try candidates, fallback to in-site viewer */}
-                <button
+                {/* Updated button: Directly opens the imported PDF in a new tab. */}
+                <a
+                    href={process.env.PUBLIC_URL + '/Coster_Resume.pdf'}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="btn-outline"
-                    onClick={async () => {
-                        // Try to find a candidate URL that actually returns a PDF
-                        const url = await findResumeUrl();
-                        if (url) {
-                            // Open verified PDF in a new tab
-                            window.open(url, '_blank', 'noopener,noreferrer');
-                        } else {
-                            // Fall back to in-site viewer that will show clearer errors and links
-                            onOpenViewer(true);
-                        }
-                    }}
+                    style={{ display: 'inline-block', textDecoration: 'none' }}
                 >
                     VIEW FULL RESUME
-                </button>
+                </a>
             </div>
         </section>
     );
@@ -562,9 +393,7 @@ const Ascii3D = ({ art = "" }) => {
 // --- 3. MAIN APP ---
 
 function App() {
-    // Manage resume viewer visibility at the app level
-    const [resumeVisible, setResumeVisible] = useState(false);
-
+    // Removed resume viewer state management
     return (
         <div className="App">
             <Navigation />
@@ -572,10 +401,9 @@ function App() {
             <Bio />
             <Projects />
             <TechStack /> {/* inserted tech stack section */}
-            <Resume onOpenViewer={setResumeVisible} />
+            <Resume />
             <Footer />
-            {/* render the in-site viewer */}
-            <ResumeViewer visible={resumeVisible} onClose={() => setResumeVisible(false)} />
+            {/* Removed the ResumeViewer component */}
         </div>
     );
 }
