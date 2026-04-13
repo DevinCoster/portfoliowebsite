@@ -774,12 +774,7 @@ a:focus-visible {
     max-width: 1600px;
     margin: 0 auto;
     padding-top: calc(var(--space-unit) * 2);
-    border-top: none;
-    background: linear-gradient(
-        to bottom,
-        color-mix(in srgb, var(--surface-bright) 12%, transparent),
-        transparent
-    );
+    background: var(--surface-lowest);
 }
 
 /* --- Links (global within app) --- */
