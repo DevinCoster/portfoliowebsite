@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 
+/** Resolve a path under `public/` for static assets (e.g. `/images/profile.jpg`). */
+const publicAsset = (path) => {
+    const normalized = path.startsWith('/') ? path : `/${path}`;
+    return `${process.env.PUBLIC_URL || ''}${normalized}`;
+};
+
 const DATA = {
     navbar: {
         logo: "DEVIN COSTER",
@@ -14,9 +20,14 @@ const DATA = {
     },
     hero: {
         directive: "PRIMARY DIRECTIVE",
-        title: "Software Engineer",
-        subtitle: "Exploring autonomy, artificial intelligence, and embedded systems.",
+        title: "Student",
+        tagline: "Engineering systems that bridge silicon, software, and scale.",
+        subtitle:
+            "B.S. Computer Science student at Marymount University (minor: AI & Robotics). Building production-grade systems on Palantir Foundry—from clinical decision support to multi-domain tactical dashboards—and supporting federal-scale solution design.",
         buttonText: "View capabilities",
+        portraitSrc: publicAsset("/images/hero-portrait.jpg"),
+        portraitAlt: "Devin Coster",
+        portraitHint: "Add file: public/images/hero-portrait.jpg",
         ascii: `
                                                                **+++==++**+******                    
                                                            *+++==++===+++=+=+*******#               
@@ -64,82 +75,154 @@ const DATA = {
     bio: {
         label: "Mission",
         title: "Engineering the future",
-        description: "My mission is to build resilient, scalable, and autonomous software systems. I focus on low level and embedded systems, leveraging my expertise in C++, Python, and machine learning.",
+        portraitSrc: publicAsset("/images/profile.jpg"),
+        portraitAlt: "Devin Coster",
+        portraitHint: "Add file: public/images/profile.jpg",
+        description:
+            "I design and ship software where safety, auditability, and throughput matter—ontology-backed workflows on Foundry, hybrid deterministic + LLM guardrails, and real-time operational dashboards. My coursework and internships bridge federal solutioning, enterprise IT, and applied ML.",
         stats: [
-            { value: "10+", label: "Projects deployed" },
-            { value: "100%", label: "Commitment" }
+            { value: "2027", label: "Graduation (expected)" },
+            { value: "99%", label: "ESI triage ±1 level (Nightingale)" }
         ]
     },
     projects: {
         label: "Capabilities",
-        title: "Current projects",
+        title: "Signature builds",
         items: [
             {
-                title: "Terminal Messenger",
-                category: "Secure communications",
-                description: "A low-latency, CLI-based communication protocol designed for messages across devices",
-                tech: ["C++", "Cmake", "OpenSSL"],
-                url: "https://github.com/DevinCoster/NetworkMessenger",
-                image: process.env.PUBLIC_URL + ''
+                title: "Nightingale",
+                category: "Clinical decision support",
+                description:
+                    "End-to-end ED triage support on Palantir Foundry: Polars pipelines, typed ontology objects, a Python rules engine for ESI v4 with explicit guardrails, and a React frontend on the generated Ontology SDK. Hybrid rules + Claude Opus refinement in AIP Logic with a hard safety ratchet (escalation only), full audit tags, MIMIC-IV-ED evaluation (99% within-one-level, zero dangerous Level 1 misses), and OAuth2 code flow without an intermediary backend.",
+                tech: ["Palantir Foundry", "AIP Logic", "Python", "TypeScript", "React", "Polars", "Claude API"],
+                url: "https://github.com/DevinCoster",
+                linkText: "GitHub profile",
+                linkAria: "Open Devin Coster GitHub profile",
+                image: publicAsset("/images/projects/nightingale.jpg"),
+                imageAlt: "Nightingale clinical decision support project",
+                imageHint: "public/images/projects/nightingale.jpg"
             },
             {
-                title: "Web-Crawler",
-                category: "Multi-threaded crawler",
-                description: "A scalable web crawler that extracts data from websites using multi-threading.",
-                tech: ["C++", "Cmake", "Multi-threading"],
-                url: "https://github.com/DevinCoster/web-crawler",
-                image: process.env.PUBLIC_URL + ''
-            },
-            {
-                title: "Library Book-Shelf",
-                category: "Full-stack web app",
-                description: "Collaborative web application project to manage and store PDF's, EPUB's, and other documents for students.",
-                tech: ["React", "JavaScript", "Node.js"],
-                url: "https://github.com/CaldwellDN/bookshelfapp",
-                image: process.env.PUBLIC_URL + ''
-            },
-            {
-                title: "Movie Recommendation System",
-                category: "Machine learning",
-                description: "A system that recommends movies based on user preferences using collaborative filtering.",
-                tech: ["Python", "NumPy", "Scikit-Learn"],
-                url: "https://github.com/DevinCoster/movie-recommendation-system",
-                image: process.env.PUBLIC_URL + ''
+                title: "Synapse",
+                category: "Tactical dashboard",
+                description:
+                    "Multi-Domain Operations dashboard in TypeScript and React—unified tactical picture across Air, Land, Sea, and Cyber. Python asyncio backend for real-time mission logic and telemetry with high-throughput state sync; type-safe structures and protocols between services and the web UI to cut integration latency.",
+                tech: ["TypeScript", "Python", "React", "Asyncio"],
+                url: "https://github.com/DevinCoster",
+                linkText: "GitHub profile",
+                linkAria: "Open Devin Coster GitHub profile",
+                image: publicAsset("/images/projects/synapse.jpg"),
+                imageAlt: "Synapse tactical dashboard project",
+                imageHint: "public/images/projects/synapse.jpg"
             }
         ]
     },
     resume: {
         label: "History",
         title: "Professional trajectory",
+        education: {
+            school: "Marymount University",
+            location: "Arlington, VA",
+            degree: "Bachelor of Science in Computer Science",
+            minor: "Artificial Intelligence and Robotics",
+            dates: "Aug. 2023 — May 2027"
+        },
         jobs: [
             {
-                company: "Allan Myers",
-                role: "IT Generalist Intern",
-                year: "May 2025 — Aug 2025",
-                description: "Assisted in maintaining IT infrastructure and provided technical support."
+                company: "World Wide Technology",
+                role: "Federal Sales Intern",
+                location: "Washington, D.C.",
+                year: "May 2026 — Aug. 2026",
+                bullets: [
+                    "Embedded with the Federal Systems Engineering team for pre-sale solution design and post-sale technical validation across WWT’s OEM partner ecosystem for federal clients.",
+                    "Supported federal engagements (including agencies such as DISA): requirements discovery, technical scoping, and solution proposal development.",
+                    "Contributed to post-sale implementation workflows—technical documentation, configuration guidance, and cross-functional handoffs between engineering and delivery."
+                ]
             },
             {
-                company: "Rock Spring Swim Club",
-                role: "Water Safety Instructor",
-                year: "May 2019 — Aug 2024",
-                description: "Taught swimming and water safety to children and adults."
-            },
+                company: "Allan Myers",
+                role: "Information Technology Generalist Intern",
+                location: "Fallston, MD",
+                year: "May 2025 — Aug. 2025",
+                bullets: [
+                    "Diagnosed and resolved 50+ weekly hardware and software tickets across six business units, reducing downtime by roughly 30%.",
+                    "Led a company-wide device refresh, replacing 200+ end-user systems across field offices with minimal service disruption.",
+                    "Deployed AWS jump boxes and Microsoft 365 admin tooling to improve remote access reliability, cutting login-related issues by roughly 20%."
+                ]
+            }
         ]
     },
     contact: {
         email: "costerdevin@gmail.com",
-        address: "Bel Air, MD",
+        phone: "443-876-3070",
+        address: "Arlington, VA · Bel Air, MD",
         socials: [
             { name: "LinkedIn", url: "https://www.linkedin.com/in/devincoster" },
             { name: "GitHub", url: "https://github.com/DevinCoster" }
         ]
     },
     techStack: {
-        "Front-end": ["React", "JavaScript", "HTML", "CSS"],
-        "Back-end": ["Python", "C/C++", "Java"],
-        "Software": ["Blender", "Unreal Engine", "Fusion 360"],
-        "Tools": ["Git / GitHub", "Docker", "Amazon Web Services"]
+        "Front-end": ["HTML", "CSS", "TypeScript", "JavaScript", "React", "Vite"],
+        "Back-end & data": ["C++", "Java", "Python", "SQL", "PostgreSQL", "CMake", "FastAPI"],
+        "ML, AI & notebooks": [
+            "Pandas",
+            "Polars",
+            "NumPy",
+            "scikit-learn",
+            "Jupyter",
+            "PyTorch",
+            "Claude API",
+            "AIP Logic",
+            "Structured output",
+            "Evaluation design"
+        ],
+        "Platforms & cloud": [
+            "Palantir Foundry",
+            "Ontology SDK",
+            "Foundry Transforms",
+            "Workshop",
+            "Unreal Engine",
+            "Multi-threading",
+            "Graph algorithms",
+            "AWS",
+            "Azure",
+            "Docker",
+            "Git/GitHub",
+            "OAuth2",
+            "Microsoft 365",
+            "Google Workspace"
+        ]
     },
+};
+
+const RasterImage = ({ src, alt = "", className = "", slotLabel = "Add image under public/" }) => {
+    const [broken, setBroken] = useState(false);
+
+    useEffect(() => {
+        setBroken(false);
+    }, [src]);
+
+    if (!src || broken) {
+        return (
+            <div
+                className={["image-slot", className].filter(Boolean).join(" ")}
+                role="img"
+                aria-label={slotLabel}
+            >
+                <span className="label-sm label-sm--muted">Image slot</span>
+                <span className="image-slot__hint mono">{slotLabel}</span>
+            </div>
+        );
+    }
+
+    return (
+        <img
+            src={src}
+            alt={alt}
+            className={className}
+            onError={() => setBroken(true)}
+        />
+    );
 };
 
 const formatTime = () => {
@@ -274,6 +357,7 @@ const Hero = () => {
                     <h1 id="hero-title" className="display-lg">
                         {DATA.hero.title}
                     </h1>
+                    <p className="hero-tagline">{DATA.hero.tagline}</p>
                     <p className="body-md hero-lead">{DATA.hero.subtitle}</p>
                     <button type="button" className="btn-primary" onClick={handleViewCapabilities}>
                         {DATA.hero.buttonText}
@@ -281,9 +365,20 @@ const Hero = () => {
                 </div>
 
                 <div className="hero-visual">
-                    <div className="hero-visual__frame surface-nested">
-                        <span className="label-sm label-sm--secondary">Telemetry</span>
-                        <Ascii3D art={DATA.hero.ascii} />
+                    <div className="hero-visual__stack">
+                        <div className="hero-portrait-block surface-nested">
+                            <span className="label-sm label-sm--secondary">Subject capture</span>
+                            <RasterImage
+                                src={DATA.hero.portraitSrc}
+                                alt={DATA.hero.portraitAlt}
+                                className="hero-portrait-block__img"
+                                slotLabel={DATA.hero.portraitHint}
+                            />
+                        </div>
+                        <div className="hero-visual__frame surface-nested">
+                            <span className="label-sm label-sm--secondary">Telemetry</span>
+                            <Ascii3D art={DATA.hero.ascii} />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -293,18 +388,34 @@ const Hero = () => {
 
 const Bio = () => (
     <section id="bio" className="panel-band panel-band--bio">
-        <div className="panel-band__header">
-            <span className="label-sm label-sm--primary">{DATA.bio.label}</span>
-            <h2 className="display-md">{DATA.bio.title}</h2>
-        </div>
-        <p className="body-md panel-band__copy">{DATA.bio.description}</p>
-        <div className="stat-grid">
-            {DATA.bio.stats.map((stat, index) => (
-                <div key={index} className="stat-cell surface-nested">
-                    <span className="label-sm label-sm--muted">{stat.label}</span>
-                    <span className="stat-value">{stat.value}</span>
+        <div className="bio-layout">
+            <figure className="bio-portrait surface-nested">
+                <span className="label-sm label-sm--primary">Visual ID</span>
+                <RasterImage
+                    src={DATA.bio.portraitSrc}
+                    alt={DATA.bio.portraitAlt}
+                    className="bio-portrait__img"
+                    slotLabel={DATA.bio.portraitHint}
+                />
+                <figcaption className="label-md label-md--soft bio-portrait__caption">
+                    {DATA.bio.portraitAlt}
+                </figcaption>
+            </figure>
+            <div className="bio-layout__main">
+                <div className="panel-band__header">
+                    <span className="label-sm label-sm--primary">{DATA.bio.label}</span>
+                    <h2 className="display-md">{DATA.bio.title}</h2>
                 </div>
-            ))}
+                <p className="body-md panel-band__copy">{DATA.bio.description}</p>
+                <div className="stat-grid">
+                    {DATA.bio.stats.map((stat, index) => (
+                        <div key={index} className="stat-cell surface-nested">
+                            <span className="label-sm label-sm--muted">{stat.label}</span>
+                            <span className="stat-value">{stat.value}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
     </section>
 );
@@ -353,9 +464,15 @@ const Projects = () => (
                     key={project.title}
                     className={`project-tile ${index % 2 === 1 ? "project-tile--alt" : ""}`}
                 >
-                    {project.image ? (
-                        <img src={project.image} alt="" className="project-tile__bg" />
-                    ) : null}
+                    <div className="project-tile__media">
+                        <span className="label-sm label-sm--muted project-tile__media-label">Project still</span>
+                        <RasterImage
+                            src={project.image}
+                            alt={project.imageAlt || ""}
+                            className="project-tile__img"
+                            slotLabel={project.imageHint ? `Add file: ${project.imageHint}` : "Add project image under public/images/projects/"}
+                        />
+                    </div>
                     <div className="project-tile__body">
                         <span className="label-sm label-sm--secondary">{project.category}</span>
                         <h3 className="display-sm">{project.title}</h3>
@@ -368,15 +485,17 @@ const Projects = () => (
                             ))}
                         </div>
                     </div>
-                    <a
-                        className="project-tile__link"
-                        href={project.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`Open ${project.title} on GitHub`}
-                    >
-                        Open repository
-                    </a>
+                    {project.url ? (
+                        <a
+                            className="project-tile__link"
+                            href={project.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={project.linkAria || `Open link for ${project.title}`}
+                        >
+                            {project.linkText || "Open repository"}
+                        </a>
+                    ) : null}
                 </article>
             ))}
         </div>
@@ -389,6 +508,16 @@ const Resume = () => (
             <span className="label-sm label-sm--secondary">{DATA.resume.label}</span>
             <h2 className="display-md">{DATA.resume.title}</h2>
         </div>
+        {DATA.resume.education ? (
+            <div className="education-panel surface-nested">
+                <span className="label-sm label-sm--primary">Education</span>
+                <h3 className="display-sm">{DATA.resume.education.school}</h3>
+                <p className="label-md label-md--soft">{DATA.resume.education.location}</p>
+                <p className="body-md education-panel__degree">{DATA.resume.education.degree}</p>
+                <p className="body-md">Minor: {DATA.resume.education.minor}</p>
+                <p className="label-md mono education-panel__dates">{DATA.resume.education.dates}</p>
+            </div>
+        ) : null}
         <div className="history-stack">
             {DATA.resume.jobs.map((job, index) => (
                 <div key={job.company} className={`history-panel surface-nested ${index % 2 === 1 ? "history-panel--alt" : ""}`}>
@@ -398,8 +527,21 @@ const Resume = () => (
                     </div>
                     <div className="history-panel__body">
                         <h3 className="display-sm">{job.company}</h3>
-                        <p className="label-md label-md--soft">{job.role}</p>
-                        <p className="body-md">{job.description}</p>
+                        <p className="label-md label-md--soft">
+                            {job.role}
+                            {job.location ? ` · ${job.location}` : ""}
+                        </p>
+                        {job.bullets?.length ? (
+                            <ul className="history-bullets">
+                                {job.bullets.map((line, i) => (
+                                    <li key={i} className="body-md">
+                                        {line}
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p className="body-md">{job.description}</p>
+                        )}
                     </div>
                 </div>
             ))}
@@ -431,6 +573,11 @@ const Footer = () => (
                 <a href={`mailto:${DATA.contact.email}`} className="footer-email body-md">
                     {DATA.contact.email}
                 </a>
+                {DATA.contact.phone ? (
+                    <a href={`tel:${DATA.contact.phone.replace(/\D/g, "")}`} className="footer-phone body-md">
+                        {DATA.contact.phone}
+                    </a>
+                ) : null}
                 <p className="label-md label-md--soft">{DATA.contact.address}</p>
             </div>
             <div className="footer-block__links">
