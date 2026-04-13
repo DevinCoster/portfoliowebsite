@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:devincoster.com)",
+      "Bash(ls D:/CursorProjects/portfoliowebsite/*.toml D:/CursorProjects/portfoliowebsite/*.json D:/CursorProjects/portfoliowebsite/netlify* D:/CursorProjects/portfoliowebsite/vercel*)",
+      "Bash(npm run:*)",
+      "Bash(cp \"C:/Users/docto/Downloads/Headshots-CareerDiscorveryWeek-9.jpg\" \"D:/CursorProjects/portfoliowebsite/public/images/hero-portrait.jpg\")",
+      "Bash(cp \"C:/Users/docto/Downloads/Headshots-CareerDiscorveryWeek-10.jpg\" \"D:/CursorProjects/portfoliowebsite/public/images/profile.jpg\")",
+      "Bash(cp \"C:/Users/docto/Downloads/favicon.ico\" \"D:/CursorProjects/portfoliowebsite/public/favicon.ico\")"
+    ]
+  }
+}
