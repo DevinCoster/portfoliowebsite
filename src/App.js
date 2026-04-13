@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 
-/** Resolve a path under `public/` for static assets (e.g. `/images/profile.jpg`). */
+/** Resolve a path under `public/` for static assets. */
 const publicAsset = (path) => {
     const normalized = path.startsWith('/') ? path : `/${path}`;
     return `${process.env.PUBLIC_URL || ''}${normalized}`;
@@ -10,6 +10,7 @@ const publicAsset = (path) => {
 const DATA = {
     navbar: {
         logo: "DEVIN COSTER",
+        version: "v2.0_STABLE",
         links: [
             { name: "Mission", id: "bio" },
             { name: "Capabilities", id: "projects" },
@@ -21,7 +22,7 @@ const DATA = {
     hero: {
         directive: "PRIMARY DIRECTIVE",
         title: "Student",
-        tagline: "Engineering systems that bridge silicon, software, and scale.",
+        tagline: "Mission-first systems engineering — I own the full stack, from requirements to deployment.",
         subtitle:
             "B.S. Computer Science student at Marymount University (minor: AI & Robotics). Building production-grade systems on Palantir Foundry—from clinical decision support to multi-domain tactical dashboards—and supporting federal-scale solution design.",
         buttonText: "View capabilities",
@@ -29,47 +30,47 @@ const DATA = {
         portraitAlt: "Devin Coster",
         portraitHint: "Add file: public/images/hero-portrait.jpg",
         ascii: `
-                                                               **+++==++**+******                    
-                                                           *+++==++===+++=+=+*******#               
-                                              ==*#***#%%%%*++**********+***++=+***********          
-                                        ****##**%@%%%%%%@#**##%%%%%%%#%%#####*********#*****        
-                                 ** ***#**%%%%%%%@%%%%@@##%%@@@@@@@@@@%%@@%%%%%%###**###*##***      
-               ##%%%        %%++*#%%#%%%%%%%%%%%%@@%%@@@%%%%@@@@@@@@@@@@@@@@@@@@@%%%##*##*******    
-             ##%@@@@@@%%%  *%%%@@@%%%%%%%%%%%%%%%@@%@@@%%%%%@%@@@@@@@@@@@@@@@@@@@@@%%%%#%##*##**#   
-            #*%%      %%#%%%%%@@@@%%%%%%%%%%%%%%%@@@@@@@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%#####*#%  
-            **#%   %%%@%%%%%%%@@@@%%%%%%%%%%%%%%%@@@@@@%%@%@%%%@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%##%% 
+                                                               **+++==++**+******
+                                                           *+++==++===+++=+=+*******#
+                                              ==*#***#%%%%*++**********+***++=+***********
+                                        ****##**%@%%%%%%@#**##%%%%%%%#%%#####*********#*****
+                                 ** ***#**%%%%%%%@%%%%@@##%%@@@@@@@@@@%%@@%%%%%%###**###*##***
+               ##%%%        %%++*#%%#%%%%%%%%%%%%@@%%@@@%%%%@@@@@@@@@@@@@@@@@@@@@%%%##*##*******
+             ##%@@@@@@%%%  *%%%@@@%%%%%%%%%%%%%%%@@%@@@%%%%%@%@@@@@@@@@@@@@@@@@@@@@%%%%#%##*##**#
+            #*%%      %%#%%%%%@@@@%%%%%%%%%%%%%%%@@@@@@@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%#####*#%
+            **#%   %%%@%%%%%%%@@@@%%%%%%%%%%%%%%%@@@@@@%%@%@%%%@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%##%%
             ###% %%@@@@%%%%%%%@@@@%%%%%%%%%%%%%%%@@%@@ %%%@%%%@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%##%%%%
-             ####@@@@%%%%%%%%%@@@@%%%%%%%%%%%%%@@      %@%%@%%%%@@@@@@@@@@@@@%%@@@@@@@@@@@%%%%%%@@%*
+             ####@@@@%%%%%%%%%@@@@%%%%%%%%%%%%%@@      %@%%@%%%%@@@@@@@@@@@@@@@@@@@%%@@@@@@@@@%%%%%*
              %#%%%#*##*##%%%%%@@@@%%%%%%%@@@@@@%       %@%%%%%%%%@@@@@@%%%%%%%%%%%%@%@@@@@%@%%@#%#%%
             *###%%##*#****%%%%@@@@@%%%     %@%@@@%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%@@@@%%%%%%%%
            **##***######*****#%%%                 #%@@@@@@@%%%%#%%%#%%%%##%%%%%%%%%%%%%%%%%@%%@%%%%%
          ************######*#######                      @@@%%%%%%%%%%%%%##*#*###%%%%%%%%%%%%%%%%%%%
        ************+++**#%##*######*****                   @@@@%%%%%%%%%%%%%%#%#%#%%%%%%%%*%%%%%%%%%
     *************+++++++***%@%##########*#**#*#               @@@@@%%%%%%%%%%%%%%%%*%#%%++#%%%%%%%%%
-  ###**************+++++*##**#*%###%####**####*##*#****           @@@@@@@@%%%%%%%%%%%%%%%%%%%%%%%%% 
-**#%%%%%%*#%%%#********+****************%%%#####*###*##**#**++           @@@@@@%%%%%%%%%@@%%%%%%%%% 
-**#%%%%%@%%%**#%%%*#**************************#%%######************           @@@%%#%%%%@@%%%%%%@@  
-**##%%%%%@@@@%%####%%%#%************************+++++*######**********         #%%%%%%%%@@%%%%%%    
-+**#%%%%%%@@@@@@@@%%%#*%%%%%###******#******++++========++++**#%%#***#**  **#%%%@@%%%%%%@%%%%%%     
-***##%%%%%%@@@@@@@@@@@%%@%*%%%%%%%#*********++=========+++*****%%%%%%++#%%@@@@@@@%%%%%%@@%%%@       
-***##%%%%%%%%@@@@@@@@@@@@@@%%%%%%#********++++++++==+++*****####%#*%%@@@@@@@@@@@@%@%%%%@@%%%        
-++**#%%%%%%%%%@@@@@@@@@@@@@@@@@@%%#%%**+++++==+++++******#####%%%%%@@@@@@@@@@@@@@%%%%%%@@%%         
- ++**#%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@%%%%*+=+++++******%##%%%%%%%%%%%@@@@@@@@@@@@@%%%%%             
- =+**##%%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@@@%%%#********###%%%%%%%%%@@@@@@@@@@@@@@@@%%%%               
-  =+**##%%%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@@@@@%%#**###%%%%%%%%%@@@@@@@@@@@@@@@@@@%%@                 
-  ==***#%%%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@%@%%%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@                   
-   +****#%%%%%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%@@@@@@@@@@@@@@@@@@@@@                     
-    =+**###%%%%%%%%%%@%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%@@@@@@@@@@@@@@@@@@@@                         
-     ++**##%%%%%%%%%%%%%%@@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                         
-      +***###%%%%%%%%%%%%%@@@%@@@@@@@@@@@@@@@@@@@@@@@@@%@@@@@@@@@@@@@@@@@@                          
-        ***##%%%%%%%%%%%%%%@%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                           
-         **###%@@@@%%%%%%%%%%@%@@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                            
-            #%%      %%%%%%%%%%%%%@@@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                             
-                       %%%%%%%%%%%%%@%%@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@                               
-                         %%%%%%%%%%%%@@%%@@%@@%@@@@@@@@@@@@@@@@@@@@                                 
-                          %%%%%%%%%%%%%%%@%@@@@@@%@@@@@@@@@@@@@@                                    
-                             %%%%%%%%%%@%%%@%@@%@@@@@@@@@@@                                         
-                                 %%@@@%@@@@@@@@@@@                                                                                                                                  
+  ###**************+++++*##**#*%###%####**####*##*#****           @@@@@@@@%%%%%%%%%%%%%%%%%%%%%%%%%
+**#%%%%%%*#%%%#********+****************%%%#####*###*##**#**++           @@@@@@%%%%%%%%%@@%%%%%%%%%
+**#%%%%%@%%%**#%%%*#**************************#%%######************           @@@%%#%%%%@@%%%%%%@@
+**##%%%%%@@@@%%####%%%#%************************+++++*######**********         #%%%%%%%%@@%%%%%%
++**#%%%%%%@@@@@@@@%%%#*%%%%%###******#******++++========++++**#%%#***#**  **#%%%@@%%%%%%@%%%%%%
+***##%%%%%%@@@@@@@@@@@%%@%*%%%%%%%#*********++=========+++*****%%%%%%++#%%@@@@@@@%%%%%%@@%%%@
+***##%%%%%%%%@@@@@@@@@@@@@@%%%%%%#********++++++++==+++*****####%#*%%@@@@@@@@@@@@%@%%%%@@%%%
+++**#%%%%%%%%%@@@@@@@@@@@@@@@@@@%%#%%**+++++==+++++******#####%%%%%@@@@@@@@@@@@@@%%%%%%@@%%
+ ++**#%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@%%%%*+=+++++******%##%%%%%%%%%%%@@@@@@@@@@@@@%%%%%
+ =+**##%%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@@@%%%#********###%%%%%%%%%@@@@@@@@@@@@@@@@%%%%
+  =+**##%%%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@@@@@%%#**###%%%%%%%%%@@@@@@@@@@@@@@@@@@%%@
+  ==***#%%%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@%@%%%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@
+   +****#%%%%%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%@@@@@@@@@@@@@@@@@@@@@
+    =+**###%%%%%%%%%%@%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%@@@@@@@@@@@@@@@@@@@@
+     ++**##%%%%%%%%%%%%%%@@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+      +***###%%%%%%%%%%%%%@@@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        ***##%%%%%%%%%%%%%%@%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+         **###%@@@@%%%%%%%%%%@%@@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            #%%      %%%%%%%%%%%%%@@@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                       %%%%%%%%%%%%%@%%@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                         %%%%%%%%%%%%@@%%@@%@@%@@@@@@@@@@@@@@@@@@@@
+                          %%%%%%%%%%%%%%%@%@@@@@@%@@@@@@@@@@@@@@
+                             %%%%%%%%%%@%%%@%@@%@@@@@@@@@@@
+                                 %%@@@%@@@@@@@@@@@
         `
     },
     bio: {
@@ -81,8 +82,7 @@ const DATA = {
         description:
             "I design and ship software where safety, auditability, and throughput matter—ontology-backed workflows on Foundry, hybrid deterministic + LLM guardrails, and real-time operational dashboards. My coursework and internships bridge federal solutioning, enterprise IT, and applied ML.",
         stats: [
-            { value: "2027", label: "Graduation (expected)" },
-            { value: "99%", label: "ESI triage ±1 level (Nightingale)" }
+            { value: "2027", label: "Graduation (expected)" }
         ]
     },
     projects: {
@@ -134,7 +134,7 @@ const DATA = {
                 location: "Washington, D.C.",
                 year: "May 2026 — Aug. 2026",
                 bullets: [
-                    "Embedded with the Federal Systems Engineering team for pre-sale solution design and post-sale technical validation across WWT’s OEM partner ecosystem for federal clients.",
+                    "Embedded with the Federal Systems Engineering team for pre-sale solution design and post-sale technical validation across WWT's OEM partner ecosystem for federal clients.",
                     "Supported federal engagements (including agencies such as DISA): requirements discovery, technical scoping, and solution proposal development.",
                     "Contributed to post-sale implementation workflows—technical documentation, configuration guidance, and cross-functional handoffs between engineering and delivery."
                 ]
@@ -165,42 +165,25 @@ const DATA = {
         "Front-end": ["HTML", "CSS", "TypeScript", "JavaScript", "React", "Vite"],
         "Back-end & data": ["C++", "Java", "Python", "SQL", "PostgreSQL", "CMake", "FastAPI"],
         "ML, AI & notebooks": [
-            "Pandas",
-            "Polars",
-            "NumPy",
-            "scikit-learn",
-            "Jupyter",
-            "PyTorch",
-            "Claude API",
-            "AIP Logic",
-            "Structured output",
-            "Evaluation design"
+            "Pandas", "Polars", "NumPy", "scikit-learn", "Jupyter",
+            "PyTorch", "Claude API", "AIP Logic", "Structured output", "Evaluation design"
         ],
         "Platforms & cloud": [
-            "Palantir Foundry",
-            "Ontology SDK",
-            "Foundry Transforms",
-            "Workshop",
-            "Unreal Engine",
-            "Multi-threading",
-            "Graph algorithms",
-            "AWS",
-            "Azure",
-            "Docker",
-            "Git/GitHub",
-            "OAuth2",
-            "Microsoft 365",
-            "Google Workspace"
+            "Palantir Foundry", "Ontology SDK", "Foundry Transforms", "Workshop",
+            "Unreal Engine", "Multi-threading", "Graph algorithms",
+            "AWS", "Azure", "Docker", "Git/GitHub", "OAuth2", "Microsoft 365", "Google Workspace"
         ]
     },
 };
 
+/* ============================================================
+   UTILITY COMPONENTS
+   ============================================================ */
+
 const RasterImage = ({ src, alt = "", className = "", slotLabel = "Add image under public/" }) => {
     const [broken, setBroken] = useState(false);
 
-    useEffect(() => {
-        setBroken(false);
-    }, [src]);
+    useEffect(() => { setBroken(false); }, [src]);
 
     if (!src || broken) {
         return (
@@ -230,6 +213,20 @@ const formatTime = () => {
     return d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit", hour12: false });
 };
 
+const formatSync = () => {
+    const d = new Date();
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const yy = String(d.getFullYear()).slice(2);
+    const hh = String(d.getHours()).padStart(2, '0');
+    const min = String(d.getMinutes()).padStart(2, '0');
+    const ss = String(d.getSeconds()).padStart(2, '0');
+    return `${dd}.${mm}.${yy}_${hh}:${min}:${ss}`;
+};
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
 const Navigation = ({ menuOpen, setMenuOpen }) => {
     const [scrolled, setScrolled] = useState(false);
     const [clock, setClock] = useState(formatTime);
@@ -264,8 +261,9 @@ const Navigation = ({ menuOpen, setMenuOpen }) => {
     return (
         <header className={`monolithic-header ${scrolled ? "monolithic-header--scrolled" : ""}`}>
             <div className="monolithic-header__inner">
+
                 <div className="monolithic-header__id">
-                    <span className="label-sm label-sm--primary">Identification</span>
+                    <span className="label-sm label-sm--muted" style={{ marginBottom: "2px" }}>Identification</span>
                     <div className="monolithic-header__logo">{DATA.navbar.logo}</div>
                 </div>
 
@@ -283,10 +281,10 @@ const Navigation = ({ menuOpen, setMenuOpen }) => {
                 </nav>
 
                 <div className="monolithic-header__status" aria-live="polite">
-                    <span className="label-sm">System status</span>
+                    <span className="label-sm label-sm--muted" style={{ marginBottom: "4px" }}>System status</span>
                     <div className="status-row">
-                        <span className="status-chip status-chip--nominal">Nominal</span>
-                        <span className="label-md mono">{clock}</span>
+                        <span className="status-chip status-chip--nominal">Operational</span>
+                        <span className="label-sm mono" style={{ marginBottom: 0, fontSize: "0.65rem", letterSpacing: "0.1em" }}>{clock}</span>
                     </div>
                 </div>
 
@@ -312,7 +310,7 @@ const Navigation = ({ menuOpen, setMenuOpen }) => {
                     role="presentation"
                 />
                 <div className="mobile-nav-hud__panel">
-                    <span className="label-sm label-sm--primary">Navigation overlay</span>
+                    <span className="label-sm label-sm--muted">Navigation overlay</span>
                     <div className="mobile-nav-hud__links">
                         {DATA.navbar.links.map((link) => (
                             <button
@@ -331,6 +329,23 @@ const Navigation = ({ menuOpen, setMenuOpen }) => {
     );
 };
 
+/* ============================================================
+   ASCII 3D
+   ============================================================ */
+const Ascii3D = ({ art = "" }) => {
+    const lines = art.trimEnd();
+    return (
+        <div className="hero-ascii" aria-hidden="true">
+            <pre className="ascii-layer ascii-layer--back">{lines}</pre>
+            <pre className="ascii-layer ascii-layer--mid">{lines}</pre>
+            <pre className="ascii-layer ascii-layer--front">{lines}</pre>
+        </div>
+    );
+};
+
+/* ============================================================
+   HERO
+   ============================================================ */
 const Hero = () => {
     const handleViewCapabilities = () => {
         const element = document.getElementById("projects");
@@ -345,14 +360,20 @@ const Hero = () => {
     return (
         <section className="hero hero--directive" aria-labelledby="hero-title">
             <div className="hero-grid">
-                <div className="hero-rail">
-                    <span className="label-sm label-sm--muted">Grid ref</span>
-                    <span className="hero-rail__ref mono">A-01 // HERO</span>
-                    <span className="label-sm label-sm--muted">Depth</span>
-                    <span className="hero-rail__ref mono">Layer 0</span>
+
+                {/* Data gutter */}
+                <div className="hero-rail" aria-hidden="true">
+                    <span className="hero-rail__ref">A-01 // HERO</span>
+                    <span className="hero-rail__ref">Layer 0</span>
+                    <span className="hero-rail__ref">Grid ref</span>
                 </div>
 
+                {/* Main content */}
                 <div className="hero-main">
+                    <div className="hero-status-row">
+                        <span className="hero-badge">Status: Operational</span>
+                        <span className="hero-version">{DATA.navbar.version}</span>
+                    </div>
                     <span className="label-sm label-sm--primary">{DATA.hero.directive}</span>
                     <h1 id="hero-title" className="display-lg">
                         {DATA.hero.title}
@@ -364,20 +385,17 @@ const Hero = () => {
                     </button>
                 </div>
 
+                {/* Visual column */}
                 <div className="hero-visual">
                     <div className="hero-visual__stack">
-                        <div className="hero-portrait-block surface-nested">
-                            <span className="label-sm label-sm--secondary">Subject capture</span>
+                        <div className="hero-portrait-block">
+                            <span className="label-sm label-sm--muted">Subject capture</span>
                             <RasterImage
                                 src={DATA.hero.portraitSrc}
                                 alt={DATA.hero.portraitAlt}
                                 className="hero-portrait-block__img"
                                 slotLabel={DATA.hero.portraitHint}
                             />
-                        </div>
-                        <div className="hero-visual__frame surface-nested">
-                            <span className="label-sm label-sm--secondary">Telemetry</span>
-                            <Ascii3D art={DATA.hero.ascii} />
                         </div>
                     </div>
                 </div>
@@ -386,18 +404,21 @@ const Hero = () => {
     );
 };
 
+/* ============================================================
+   BIO
+   ============================================================ */
 const Bio = () => (
     <section id="bio" className="panel-band panel-band--bio">
         <div className="bio-layout">
-            <figure className="bio-portrait surface-nested">
-                <span className="label-sm label-sm--primary">Visual ID</span>
+            <figure className="bio-portrait" style={{ margin: 0 }}>
+                <span className="label-sm label-sm--muted">Visual ID</span>
                 <RasterImage
                     src={DATA.bio.portraitSrc}
                     alt={DATA.bio.portraitAlt}
                     className="bio-portrait__img"
                     slotLabel={DATA.bio.portraitHint}
                 />
-                <figcaption className="label-md label-md--soft bio-portrait__caption">
+                <figcaption className="bio-portrait__caption">
                     {DATA.bio.portraitAlt}
                 </figcaption>
             </figure>
@@ -409,7 +430,7 @@ const Bio = () => (
                 <p className="body-md panel-band__copy">{DATA.bio.description}</p>
                 <div className="stat-grid">
                     {DATA.bio.stats.map((stat, index) => (
-                        <div key={index} className="stat-cell surface-nested">
+                        <div key={index} className="stat-cell">
                             <span className="label-sm label-sm--muted">{stat.label}</span>
                             <span className="stat-value">{stat.value}</span>
                         </div>
@@ -420,16 +441,19 @@ const Bio = () => (
     </section>
 );
 
+/* ============================================================
+   TECH STACK
+   ============================================================ */
 const TechStack = () => (
     <section id="tech" className="panel-band panel-band--tech">
         <div className="panel-band__header">
-            <span className="label-sm label-sm--secondary">Tech</span>
+            <span className="label-sm label-sm--muted">Tech</span>
             <h2 className="display-md">Stack readout</h2>
         </div>
         <div className="tech-matrix">
             {Object.entries(DATA.techStack).map(([columnTitle, items]) => (
-                <div key={columnTitle} className="tech-matrix__column surface-nested">
-                    <h3 className="label-md mono">{columnTitle}</h3>
+                <div key={columnTitle} className="tech-matrix__column">
+                    <h3>{columnTitle}</h3>
                     <ul className="tech-chip-list">
                         {items.map((item, i) => (
                             <li key={i}>
@@ -452,75 +476,93 @@ const SchematicBand = () => (
     </div>
 );
 
+/* ============================================================
+   PROJECTS — Bento Grid
+   ============================================================ */
 const Projects = () => (
     <section id="projects" className="section-block section-block--projects">
         <div className="section-block__intro">
-            <span className="label-sm label-sm--primary">{DATA.projects.label}</span>
+            <span className="label-sm label-sm--muted">[ {DATA.projects.label} ]</span>
             <h2 className="display-md">{DATA.projects.title}</h2>
         </div>
-        <div className="projects-matrix">
+        <div className="bento-grid">
             {DATA.projects.items.map((project, index) => (
                 <article
                     key={project.title}
-                    className={`project-tile ${index % 2 === 1 ? "project-tile--alt" : ""}`}
+                    className={`bento-card ${index === 0 ? "bento-card--featured" : "bento-card--secondary"}`}
                 >
-                    <div className="project-tile__media">
-                        <span className="label-sm label-sm--muted project-tile__media-label">Project still</span>
-                        <RasterImage
-                            src={project.image}
-                            alt={project.imageAlt || ""}
-                            className="project-tile__img"
-                            slotLabel={project.imageHint ? `Add file: ${project.imageHint}` : "Add project image under public/images/projects/"}
-                        />
-                    </div>
-                    <div className="project-tile__body">
-                        <span className="label-sm label-sm--secondary">{project.category}</span>
-                        <h3 className="display-sm">{project.title}</h3>
-                        <p className="body-md">{project.description}</p>
-                        <div className="project-tile__chips">
-                            {project.tech.map((t, i) => (
-                                <span key={i} className="tactical-chip tactical-chip--ghost">
-                                    {t}
-                                </span>
-                            ))}
+                    <RasterImage
+                        src={project.image}
+                        alt={project.imageAlt || ""}
+                        className="bento-card__img"
+                        slotLabel={project.imageHint ? `Add file: ${project.imageHint}` : "Add project image"}
+                    />
+                    <div className="bento-card__gradient" />
+                    <div className="bento-card__overlay">
+                        <div className="bento-card__top">
+                            <span className="label-sm">
+                                [ {project.category.toUpperCase().replace(/ /g, "_")} ]
+                            </span>
+                            <div className="bento-card__tech-chips">
+                                {project.tech.slice(0, 3).map((t, i) => (
+                                    <span key={i} className="tactical-chip tactical-chip--dark">{t}</span>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="bento-card__bottom">
+                            <h3 className="display-sm">{project.title.toUpperCase()}</h3>
+                            <p className="body-md">{project.description}</p>
+                            <div className="bento-card__chips">
+                                {project.tech.slice(3).map((t, i) => (
+                                    <span key={i} className="tactical-chip tactical-chip--ghost">{t}</span>
+                                ))}
+                            </div>
+                            {project.url && (
+                                <a
+                                    className="bento-card__link"
+                                    href={project.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label={project.linkAria || `Open link for ${project.title}`}
+                                >
+                                    {project.linkText || "Open repository"} →
+                                </a>
+                            )}
                         </div>
                     </div>
-                    {project.url ? (
-                        <a
-                            className="project-tile__link"
-                            href={project.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={project.linkAria || `Open link for ${project.title}`}
-                        >
-                            {project.linkText || "Open repository"}
-                        </a>
-                    ) : null}
                 </article>
             ))}
         </div>
     </section>
 );
 
+/* ============================================================
+   RESUME / HISTORY
+   ============================================================ */
 const Resume = () => (
-    <section id="resume" className="section-block section-block--resume surface-shift">
+    <section id="resume" className="section-block section-block--resume">
         <div className="section-block__intro">
-            <span className="label-sm label-sm--secondary">{DATA.resume.label}</span>
+            <span className="label-sm label-sm--muted">[ {DATA.resume.label} ]</span>
             <h2 className="display-md">{DATA.resume.title}</h2>
         </div>
-        {DATA.resume.education ? (
-            <div className="education-panel surface-nested">
+
+        {DATA.resume.education && (
+            <div className="education-panel">
                 <span className="label-sm label-sm--primary">Education</span>
                 <h3 className="display-sm">{DATA.resume.education.school}</h3>
                 <p className="label-md label-md--soft">{DATA.resume.education.location}</p>
                 <p className="body-md education-panel__degree">{DATA.resume.education.degree}</p>
                 <p className="body-md">Minor: {DATA.resume.education.minor}</p>
-                <p className="label-md mono education-panel__dates">{DATA.resume.education.dates}</p>
+                <p className="education-panel__dates mono">{DATA.resume.education.dates}</p>
             </div>
-        ) : null}
+        )}
+
         <div className="history-stack">
             {DATA.resume.jobs.map((job, index) => (
-                <div key={job.company} className={`history-panel surface-nested ${index % 2 === 1 ? "history-panel--alt" : ""}`}>
+                <div
+                    key={job.company}
+                    className={`history-panel ${index % 2 === 1 ? "history-panel--alt" : ""}`}
+                >
                     <div className="history-panel__meta">
                         <span className="label-sm label-sm--primary">Record</span>
                         <span className="label-md mono">{job.year}</span>
@@ -528,15 +570,12 @@ const Resume = () => (
                     <div className="history-panel__body">
                         <h3 className="display-sm">{job.company}</h3>
                         <p className="label-md label-md--soft">
-                            {job.role}
-                            {job.location ? ` · ${job.location}` : ""}
+                            {job.role}{job.location ? ` · ${job.location}` : ""}
                         </p>
                         {job.bullets?.length ? (
                             <ul className="history-bullets">
                                 {job.bullets.map((line, i) => (
-                                    <li key={i} className="body-md">
-                                        {line}
-                                    </li>
+                                    <li key={i} className="body-md">{line}</li>
                                 ))}
                             </ul>
                         ) : (
@@ -546,6 +585,7 @@ const Resume = () => (
                 </div>
             ))}
         </div>
+
         <a
             href={`${process.env.PUBLIC_URL || ""}/Coster_Resume.pdf`}
             target="_blank"
@@ -559,59 +599,70 @@ const Resume = () => (
                 e.preventDefault();
             }}
         >
-            View full resume
+            View full resume →
         </a>
     </section>
 );
 
-const Footer = () => (
-    <footer id="contact" className="footer-block surface-deepest">
-        <div className="footer-block__grid">
-            <div className="footer-block__primary">
-                <span className="label-sm label-sm--primary">Contact channel</span>
-                <h2 className="display-md">Ready to build</h2>
-                <a href={`mailto:${DATA.contact.email}`} className="footer-email body-md">
-                    {DATA.contact.email}
-                </a>
-                {DATA.contact.phone ? (
-                    <a href={`tel:${DATA.contact.phone.replace(/\D/g, "")}`} className="footer-phone body-md">
-                        {DATA.contact.phone}
-                    </a>
-                ) : null}
-                <p className="label-md label-md--soft">{DATA.contact.address}</p>
-            </div>
-            <div className="footer-block__links">
-                <span className="label-sm label-sm--secondary">Uplink</span>
-                <ul>
-                    {DATA.contact.socials.map((social, index) => (
-                        <li key={index}>
-                            <a href={social.url} target="_blank" rel="noopener noreferrer" className="footer-link">
-                                {social.name}
-                            </a>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        </div>
-        <div className="footer-block__strip">
-            <span className="label-sm label-sm--muted">
-                © {new Date().getFullYear()} {DATA.navbar.logo} — All systems operational
-            </span>
-        </div>
-    </footer>
-);
+/* ============================================================
+   FOOTER / CONTACT
+   ============================================================ */
+const Footer = () => {
+    const [sync, setSync] = useState(formatSync);
+    useEffect(() => {
+        const id = setInterval(() => setSync(formatSync()), 1000);
+        return () => clearInterval(id);
+    }, []);
 
-const Ascii3D = ({ art = "" }) => {
-    const lines = art.trimEnd();
     return (
-        <div className="hero-ascii" aria-hidden="true">
-            <pre className="ascii-layer ascii-layer--back">{lines}</pre>
-            <pre className="ascii-layer ascii-layer--mid">{lines}</pre>
-            <pre className="ascii-layer ascii-layer--front">{lines}</pre>
-        </div>
+        <footer id="contact" className="footer-block surface-deepest">
+            <div className="footer-block__grid">
+                <div className="footer-block__primary">
+                    <span className="label-sm label-sm--muted">Contact channel</span>
+                    <h2 className="display-md">Ready to build</h2>
+                    <a href={`mailto:${DATA.contact.email}`} className="footer-email body-md">
+                        {DATA.contact.email}
+                    </a>
+                    {DATA.contact.phone && (
+                        <a href={`tel:${DATA.contact.phone.replace(/\D/g, "")}`} className="footer-phone">
+                            {DATA.contact.phone}
+                        </a>
+                    )}
+                    <p className="label-md label-md--soft" style={{ marginTop: "8px" }}>{DATA.contact.address}</p>
+                </div>
+                <div className="footer-block__links">
+                    <span className="label-sm label-sm--muted">Uplink</span>
+                    <ul>
+                        {DATA.contact.socials.map((social, index) => (
+                            <li key={index}>
+                                <a
+                                    href={social.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="footer-link"
+                                >
+                                    {social.name}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+            <div className="footer-block__strip">
+                <span className="label-sm">
+                    © {new Date().getFullYear()} {DATA.navbar.logo} — All systems operational
+                </span>
+                <span className="label-sm mono">
+                    Last sync: {sync}
+                </span>
+            </div>
+        </footer>
     );
 };
 
+/* ============================================================
+   APP ROOT
+   ============================================================ */
 function App() {
     const [menuOpen, setMenuOpen] = useState(false);
 
