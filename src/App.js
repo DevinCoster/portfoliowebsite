@@ -1,682 +1,654 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 
-/** Resolve a path under `public/` for static assets. */
 const publicAsset = (path) => {
-    const normalized = path.startsWith('/') ? path : `/${path}`;
-    return `${process.env.PUBLIC_URL || ''}${normalized}`;
+    const base = (process.env.PUBLIC_URL || '').replace(/\/$/, '');
+    const clean = path.startsWith('/') ? path : `/${path}`;
+    return `${base}${clean}`;
 };
 
-const DATA = {
-    navbar: {
-        logo: "DEVIN COSTER",
-        version: "v2.0_STABLE",
-        links: [
-            { name: "Mission", id: "bio" },
-            { name: "Capabilities", id: "projects" },
-            { name: "Tech", id: "tech" },
-            { name: "History", id: "resume" },
-            { name: "Contact", id: "contact" }
-        ]
-    },
-    hero: {
-        directive: "PRIMARY DIRECTIVE",
-        title: "Student",
-        tagline: "Mission-first systems engineering — I own the full stack, from requirements to deployment.",
-        subtitle:
-            "B.S. Computer Science student at Marymount University (minor: AI & Robotics). Building production-grade systems on Palantir Foundry—from clinical decision support to multi-domain tactical dashboards—and supporting federal-scale solution design.",
-        buttonText: "View capabilities",
-        portraitSrc: publicAsset("/images/hero-portrait.jpg"),
-        portraitAlt: "Devin Coster",
-        portraitHint: "Add file: public/images/hero-portrait.jpg",
-        ascii: `
-                                                               **+++==++**+******
-                                                           *+++==++===+++=+=+*******#
-                                              ==*#***#%%%%*++**********+***++=+***********
-                                        ****##**%@%%%%%%@#**##%%%%%%%#%%#####*********#*****
-                                 ** ***#**%%%%%%%@%%%%@@##%%@@@@@@@@@@%%@@%%%%%%###**###*##***
-               ##%%%        %%++*#%%#%%%%%%%%%%%%@@%%@@@%%%%@@@@@@@@@@@@@@@@@@@@@%%%##*##*******
-             ##%@@@@@@%%%  *%%%@@@%%%%%%%%%%%%%%%@@%@@@%%%%%@%@@@@@@@@@@@@@@@@@@@@@%%%%#%##*##**#
-            #*%%      %%#%%%%%@@@@%%%%%%%%%%%%%%%@@@@@@@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%#####*#%
-            **#%   %%%@%%%%%%%@@@@%%%%%%%%%%%%%%%@@@@@@%%@%@%%%@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%##%%
-            ###% %%@@@@%%%%%%%@@@@%%%%%%%%%%%%%%%@@%@@ %%%@%%%@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%##%%%%
-             ####@@@@%%%%%%%%%@@@@%%%%%%%%%%%%%@@      %@%%@%%%%@@@@@@@@@@@@@@@@@@@%%@@@@@@@@@%%%%%*
-             %#%%%#*##*##%%%%%@@@@%%%%%%%@@@@@@%       %@%%%%%%%%@@@@@@%%%%%%%%%%%%@%@@@@@%@%%@#%#%%
-            *###%%##*#****%%%%@@@@@%%%     %@%@@@%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%@@@@%%%%%%%%
-           **##***######*****#%%%                 #%@@@@@@@%%%%#%%%#%%%%##%%%%%%%%%%%%%%%%%@%%@%%%%%
-         ************######*#######                      @@@%%%%%%%%%%%%%##*#*###%%%%%%%%%%%%%%%%%%%
-       ************+++**#%##*######*****                   @@@@%%%%%%%%%%%%%%#%#%#%%%%%%%%*%%%%%%%%%
-    *************+++++++***%@%##########*#**#*#               @@@@@%%%%%%%%%%%%%%%%*%#%%++#%%%%%%%%%
-  ###**************+++++*##**#*%###%####**####*##*#****           @@@@@@@@%%%%%%%%%%%%%%%%%%%%%%%%%
-**#%%%%%%*#%%%#********+****************%%%#####*###*##**#**++           @@@@@@%%%%%%%%%@@%%%%%%%%%
-**#%%%%%@%%%**#%%%*#**************************#%%######************           @@@%%#%%%%@@%%%%%%@@
-**##%%%%%@@@@%%####%%%#%************************+++++*######**********         #%%%%%%%%@@%%%%%%
-+**#%%%%%%@@@@@@@@%%%#*%%%%%###******#******++++========++++**#%%#***#**  **#%%%@@%%%%%%@%%%%%%
-***##%%%%%%@@@@@@@@@@@%%@%*%%%%%%%#*********++=========+++*****%%%%%%++#%%@@@@@@@%%%%%%@@%%%@
-***##%%%%%%%%@@@@@@@@@@@@@@%%%%%%#********++++++++==+++*****####%#*%%@@@@@@@@@@@@%@%%%%@@%%%
-++**#%%%%%%%%%@@@@@@@@@@@@@@@@@@%%#%%**+++++==+++++******#####%%%%%@@@@@@@@@@@@@@%%%%%%@@%%
- ++**#%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@%%%%*+=+++++******%##%%%%%%%%%%%@@@@@@@@@@@@@%%%%%
- =+**##%%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@@@%%%#********###%%%%%%%%%@@@@@@@@@@@@@@@@%%%%
-  =+**##%%%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@@@@@%%#**###%%%%%%%%%@@@@@@@@@@@@@@@@@@%%@
-  ==***#%%%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@%@%%%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@
-   +****#%%%%%%%%%%%%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%%@@@@@@@@@@@@@@@@@@@@@
-    =+**###%%%%%%%%%%@%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%@@@@@@@@@@@@@@@@@@@@
-     ++**##%%%%%%%%%%%%%%@@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      +***###%%%%%%%%%%%%%@@@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        ***##%%%%%%%%%%%%%%@%%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-         **###%@@@@%%%%%%%%%%@%@@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            #%%      %%%%%%%%%%%%%@@@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-                       %%%%%%%%%%%%%@%%@%@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-                         %%%%%%%%%%%%@@%%@@%@@%@@@@@@@@@@@@@@@@@@@@
-                          %%%%%%%%%%%%%%%@%@@@@@@%@@@@@@@@@@@@@@
-                             %%%%%%%%%%@%%%@%@@%@@@@@@@@@@@
-                                 %%@@@%@@@@@@@@@@@
-        `
-    },
-    bio: {
-        label: "Mission",
-        title: "Engineering the future",
-        portraitSrc: publicAsset("/images/profile.jpg"),
-        portraitAlt: "Devin Coster",
-        portraitHint: "Add file: public/images/profile.jpg",
-        description:
-            "I design and ship software where safety, auditability, and throughput matter—ontology-backed workflows on Foundry, hybrid deterministic + LLM guardrails, and real-time operational dashboards. My coursework and internships bridge federal solutioning, enterprise IT, and applied ML.",
-        stats: [
-            { value: "2027", label: "Graduation (expected)" }
-        ]
-    },
-    projects: {
-        label: "Capabilities",
-        title: "Signature builds",
-        items: [
-            {
-                title: "Nightingale",
-                category: "Clinical decision support",
-                description:
-                    "End-to-end ED triage support on Palantir Foundry: Polars pipelines, typed ontology objects, a Python rules engine for ESI v4 with explicit guardrails, and a React frontend on the generated Ontology SDK. Hybrid rules + Claude Opus refinement in AIP Logic with a hard safety ratchet (escalation only), full audit tags, MIMIC-IV-ED evaluation (99% within-one-level, zero dangerous Level 1 misses), and OAuth2 code flow without an intermediary backend.",
-                tech: ["Palantir Foundry", "AIP Logic", "Python", "TypeScript", "React", "Polars", "Claude API"],
-                url: "https://github.com/DevinCoster",
-                linkText: "GitHub profile",
-                linkAria: "Open Devin Coster GitHub profile",
-                image: publicAsset("/images/projects/nightingale.jpg"),
-                imageAlt: "Nightingale clinical decision support project",
-                imageHint: "public/images/projects/nightingale.jpg"
-            },
-            {
-                title: "Synapse",
-                category: "Tactical dashboard",
-                description:
-                    "Multi-Domain Operations dashboard in TypeScript and React—unified tactical picture across Air, Land, Sea, and Cyber. Python asyncio backend for real-time mission logic and telemetry with high-throughput state sync; type-safe structures and protocols between services and the web UI to cut integration latency.",
-                tech: ["TypeScript", "Python", "React", "Asyncio"],
-                url: "https://github.com/DevinCoster",
-                linkText: "GitHub profile",
-                linkAria: "Open Devin Coster GitHub profile",
-                image: publicAsset("/images/projects/synapse.jpg"),
-                imageAlt: "Synapse tactical dashboard project",
-                imageHint: "public/images/projects/synapse.jpg"
-            }
-        ]
-    },
-    resume: {
-        label: "History",
-        title: "Professional trajectory",
-        education: {
-            school: "Marymount University",
-            location: "Arlington, VA",
-            degree: "Bachelor of Science in Computer Science",
-            minor: "Artificial Intelligence and Robotics",
-            dates: "Aug. 2023 — May 2027"
-        },
-        jobs: [
-            {
-                company: "World Wide Technology",
-                role: "Federal Sales Intern",
-                location: "Washington, D.C.",
-                year: "May 2026 — Aug. 2026",
-                bullets: [
-                    "Embedded with the Federal Systems Engineering team for pre-sale solution design and post-sale technical validation across WWT's OEM partner ecosystem for federal clients.",
-                    "Supported federal engagements (including agencies such as DISA): requirements discovery, technical scoping, and solution proposal development.",
-                    "Contributed to post-sale implementation workflows—technical documentation, configuration guidance, and cross-functional handoffs between engineering and delivery."
-                ]
-            },
-            {
-                company: "Allan Myers",
-                role: "Information Technology Generalist Intern",
-                location: "Fallston, MD",
-                year: "May 2025 — Aug. 2025",
-                bullets: [
-                    "Diagnosed and resolved 50+ weekly hardware and software tickets across six business units, reducing downtime by roughly 30%.",
-                    "Led a company-wide device refresh, replacing 200+ end-user systems across field offices with minimal service disruption.",
-                    "Deployed AWS jump boxes and Microsoft 365 admin tooling to improve remote access reliability, cutting login-related issues by roughly 20%."
-                ]
-            }
-        ]
-    },
-    contact: {
-        email: "costerdevin@gmail.com",
-        phone: "443-876-3070",
-        address: "Arlington, VA · Bel Air, MD",
-        socials: [
-            { name: "LinkedIn", url: "https://www.linkedin.com/in/devincoster" },
-            { name: "GitHub", url: "https://github.com/DevinCoster" }
-        ]
-    },
-    techStack: {
-        "Front-end": ["HTML", "CSS", "TypeScript", "JavaScript", "React", "Vite"],
-        "Back-end & data": ["C++", "Java", "Python", "SQL", "PostgreSQL", "CMake", "FastAPI"],
-        "ML, AI & notebooks": [
-            "Pandas", "Polars", "NumPy", "scikit-learn", "Jupyter",
-            "PyTorch", "Claude API", "AIP Logic", "Structured output", "Evaluation design"
-        ],
-        "Platforms & cloud": [
-            "Palantir Foundry", "Ontology SDK", "Foundry Transforms", "Workshop",
-            "Unreal Engine", "Multi-threading", "Graph algorithms",
-            "AWS", "Azure", "Docker", "Git/GitHub", "OAuth2", "Microsoft 365", "Google Workspace"
-        ]
-    },
-};
+/* ============== Shell ============== */
 
-/* ============================================================
-   UTILITY COMPONENTS
-   ============================================================ */
-
-const RasterImage = ({ src, alt = "", className = "", slotLabel = "Add image under public/" }) => {
-    const [broken, setBroken] = useState(false);
-
-    useEffect(() => { setBroken(false); }, [src]);
-
-    if (!src || broken) {
-        return (
-            <div
-                className={["image-slot", className].filter(Boolean).join(" ")}
-                role="img"
-                aria-label={slotLabel}
-            >
-                <span className="label-sm label-sm--muted">Image slot</span>
-                <span className="image-slot__hint mono">{slotLabel}</span>
-            </div>
-        );
-    }
-
-    return (
-        <img
-            src={src}
-            alt={alt}
-            className={className}
-            onError={() => setBroken(true)}
-        />
-    );
-};
-
-const formatTime = () => {
-    const d = new Date();
-    return d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit", hour12: false });
-};
-
-const formatSync = () => {
-    const d = new Date();
-    const dd = String(d.getDate()).padStart(2, '0');
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    const yy = String(d.getFullYear()).slice(2);
-    const hh = String(d.getHours()).padStart(2, '0');
-    const min = String(d.getMinutes()).padStart(2, '0');
-    const ss = String(d.getSeconds()).padStart(2, '0');
-    return `${dd}.${mm}.${yy}_${hh}:${min}:${ss}`;
-};
-
-/* ============================================================
-   NAVIGATION
-   ============================================================ */
-const Navigation = ({ menuOpen, setMenuOpen }) => {
-    const [scrolled, setScrolled] = useState(false);
-    const [clock, setClock] = useState(formatTime);
-
+function Clock() {
+    const [t, setT] = useState(() => new Date());
     useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 8);
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
-
-    useEffect(() => {
-        const id = setInterval(() => setClock(formatTime()), 1000);
+        const id = setInterval(() => setT(new Date()), 1000);
         return () => clearInterval(id);
     }, []);
+    const pad = (n) => String(n).padStart(2, '0');
+    const z = pad(t.getUTCHours()) + pad(t.getUTCMinutes()) + pad(t.getUTCSeconds()) + 'Z';
+    const d = t.getUTCFullYear() + pad(t.getUTCMonth() + 1) + pad(t.getUTCDate());
+    return <span className="mono">{d} · {z}</span>;
+}
 
-    useEffect(() => {
-        document.body.classList.toggle("nav-locked", menuOpen);
-        return () => document.body.classList.remove("nav-locked");
-    }, [menuOpen]);
+function GridOverlay() {
+    return <div aria-hidden className="grid-overlay" />;
+}
 
-    const scrollToSection = useCallback((id) => {
-        const element = document.getElementById(id);
-        const nav = document.querySelector(".monolithic-header");
-        const navHeight = nav ? nav.offsetHeight : 0;
-        if (element) {
-            const top = element.getBoundingClientRect().top + window.pageYOffset - navHeight - 8;
-            window.scrollTo({ top, behavior: "smooth" });
-        }
-        setMenuOpen(false);
-    }, [setMenuOpen]);
-
+function SideRail({ side }) {
+    const labels = side === 'left'
+        ? ['LAT 38.8951°N', 'LON 77.0364°W', 'ALT 0023M', 'SEC//REL']
+        : ['OBS 04', 'CH 07', 'PKT 0x2F', 'NODE A'];
     return (
-        <header className={`monolithic-header ${scrolled ? "monolithic-header--scrolled" : ""}`}>
-            <div className="monolithic-header__inner">
+        <aside className={`rail rail-${side}`} aria-hidden>
+            <div className="rail-inner mono">
+                {labels.map((l, i) => <span key={i}>{l}</span>)}
+            </div>
+        </aside>
+    );
+}
 
-                <div className="monolithic-header__id">
-                    <span className="label-sm label-sm--muted" style={{ marginBottom: "2px" }}>Identification</span>
-                    <div className="monolithic-header__logo">{DATA.navbar.logo}</div>
+function TopBar({ active, onJump }) {
+    const items = [
+        { id: 'identity', label: 'IDENTITY', n: '01' },
+        { id: 'systems', label: 'SYSTEMS', n: '02' },
+        { id: 'projects', label: 'PROJECTS', n: '03' },
+        { id: 'history', label: 'HISTORY', n: '04' },
+        { id: 'contact', label: 'CONTACT', n: '05' },
+    ];
+    return (
+        <header className="topbar">
+            <div className="topbar-inner">
+                <div className="topbar-left">
+                    <div className="monogram" aria-label="Devin Coster monogram">
+                        <span className="mono tag">DC</span>
+                        <span className="monogram-dot" />
+                    </div>
+                    <div className="meta mono">
+                        <span>DEVIN.COSTER</span>
+                        <span className="sep">·</span>
+                        <span>CANDIDATE / CS / 2027</span>
+                    </div>
                 </div>
-
-                <nav className="monolithic-header__nav" aria-label="Primary">
-                    {DATA.navbar.links.map((link) => (
-                        <button
-                            key={link.name}
-                            type="button"
-                            className="nav-link"
-                            onClick={() => scrollToSection(link.id)}
-                        >
-                            {link.name}
-                        </button>
+                <nav className="topbar-nav">
+                    {items.map((it) => (
+                        <a key={it.id} href={`#${it.id}`}
+                           onClick={(e) => { e.preventDefault(); onJump(it.id); }}
+                           className={'navlink ' + (active === it.id ? 'is-active' : '')}>
+                            <span className="navlink-n">{it.n}</span>
+                            <span>{it.label}</span>
+                        </a>
                     ))}
                 </nav>
-
-                <div className="monolithic-header__status" aria-live="polite">
-                    <span className="label-sm label-sm--muted" style={{ marginBottom: "4px" }}>System status</span>
-                    <div className="status-row">
-                        <span className="status-chip status-chip--nominal">Operational</span>
-                        <span className="label-sm mono" style={{ marginBottom: 0, fontSize: "0.65rem", letterSpacing: "0.1em" }}>{clock}</span>
-                    </div>
-                </div>
-
-                <button
-                    type="button"
-                    className="nav-toggle"
-                    aria-expanded={menuOpen}
-                    aria-controls="mobile-nav"
-                    onClick={() => setMenuOpen((o) => !o)}
-                >
-                    {menuOpen ? "Close" : "Menu"}
-                </button>
-            </div>
-
-            <div
-                id="mobile-nav"
-                className={`mobile-nav-hud ${menuOpen ? "mobile-nav-hud--open" : ""}`}
-                aria-hidden={!menuOpen}
-            >
-                <div
-                    className="mobile-nav-hud__backdrop"
-                    onClick={() => setMenuOpen(false)}
-                    role="presentation"
-                />
-                <div className="mobile-nav-hud__panel">
-                    <span className="label-sm label-sm--muted">Navigation overlay</span>
-                    <div className="mobile-nav-hud__links">
-                        {DATA.navbar.links.map((link) => (
-                            <button
-                                key={link.name}
-                                type="button"
-                                className="mobile-nav-link"
-                                onClick={() => scrollToSection(link.id)}
-                            >
-                                {link.name}
-                            </button>
-                        ))}
-                    </div>
+                <div className="topbar-right mono">
+                    <span className="dot-live" /> LIVE
+                    <span className="sep">·</span>
+                    <Clock />
                 </div>
             </div>
+            <div className="topbar-rule" />
         </header>
     );
-};
+}
 
-/* ============================================================
-   ASCII 3D
-   ============================================================ */
-const Ascii3D = ({ art = "" }) => {
-    const lines = art.trimEnd();
+function Footer() {
     return (
-        <div className="hero-ascii" aria-hidden="true">
-            <pre className="ascii-layer ascii-layer--back">{lines}</pre>
-            <pre className="ascii-layer ascii-layer--mid">{lines}</pre>
-            <pre className="ascii-layer ascii-layer--front">{lines}</pre>
+        <footer className="footer">
+            <div className="footer-inner mono">
+                <span>© 2026 DEVIN COSTER</span>
+                <span className="sep">·</span>
+                <span>PORTFOLIO.v2.04</span>
+                <span className="sep">·</span>
+                <span>BUILD 20260418-A</span>
+                <span className="footer-spacer" />
+                <span>END OF TRANSMISSION ◼</span>
+            </div>
+        </footer>
+    );
+}
+
+/* ============== Section Head ============== */
+
+function SectionHead({ n, l, right }) {
+    return (
+        <div className="section-head">
+            <div className="section-head-left mono">
+                <span className="section-n">{`${n} //`}</span>
+                <span className="section-l">{l}</span>
+            </div>
+            <div className="section-head-right mono">{right}</div>
         </div>
     );
-};
+}
 
-/* ============================================================
-   HERO
-   ============================================================ */
-const Hero = () => {
-    const handleViewCapabilities = () => {
-        const element = document.getElementById("projects");
-        const nav = document.querySelector(".monolithic-header");
-        const navHeight = nav ? nav.offsetHeight : 0;
-        if (element) {
-            const top = element.getBoundingClientRect().top + window.pageYOffset - navHeight - 8;
-            window.scrollTo({ top, behavior: "smooth" });
-        }
-    };
+/* ============== Hero ============== */
 
+function PortraitCard() {
+    const [loaded, setLoaded] = useState(false);
     return (
-        <section className="hero hero--directive" aria-labelledby="hero-title">
-            <div className="hero-grid">
-
-                {/* Data gutter */}
-                <div className="hero-rail" aria-hidden="true">
-                    <span className="hero-rail__ref">A-01 // HERO</span>
-                    <span className="hero-rail__ref">Layer 0</span>
-                    <span className="hero-rail__ref">Grid ref</span>
+        <div className="portrait-card">
+            <div className="portrait-head mono">
+                <span className="tag">ID / PORTRAIT</span>
+                <span className="tag">{loaded ? 'VERIFIED' : 'LOADING'}</span>
+            </div>
+            <div className="portrait-frame">
+                <img
+                    src={publicAsset('/images/hero-portrait.jpg')}
+                    alt="Devin Coster"
+                    className={'portrait-img ' + (loaded ? 'is-loaded' : '')}
+                    onLoad={() => setLoaded(true)}
+                />
+                <div className="portrait-reticle" aria-hidden>
+                    <span className="r tl" /><span className="r tr" /><span className="r bl" /><span className="r br" />
                 </div>
+            </div>
+            <div className="portrait-foot mono small">
+                <span>REF: DC-0027-2027</span>
+                <span>F/2.8 · 50MM</span>
+            </div>
+        </div>
+    );
+}
 
-                {/* Main content */}
-                <div className="hero-main">
-                    <div className="hero-status-row">
-                        <span className="hero-badge">Status: Operational</span>
-                        <span className="hero-version">{DATA.navbar.version}</span>
-                    </div>
-                    <span className="label-sm label-sm--primary">{DATA.hero.directive}</span>
-                    <h1 id="hero-title" className="display-lg">
-                        {DATA.hero.title}
+function Hero() {
+    const [tick, setTick] = useState(0);
+    useEffect(() => {
+        const id = setInterval(() => setTick((t) => t + 1), 1500);
+        return () => clearInterval(id);
+    }, []);
+    const metrics = [
+        { k: 'UPTIME', v: '99.97%', w: 0.9997 },
+        { k: 'LATENCY', v: `${(12 + Math.sin(tick) * 2).toFixed(1)}ms`, w: 0.15 },
+        { k: 'THROUGHPUT', v: `${(4.2 + Math.cos(tick) * 0.2).toFixed(2)} Gb/s`, w: 0.65 },
+        { k: 'NODES', v: '07 / 07', w: 1.0 },
+    ];
+    return (
+        <section id="identity" className="section section-hero">
+            <SectionHead n="01" l="IDENTITY" right={<span>FILE: /personnel/coster.d</span>} />
+            <div className="hero-console">
+                <div className="hero-console-left">
+                    <div className="mono tag amber">CANDIDATE // 2027</div>
+                    <h1 className="display">
+                        DEVIN<br />COSTER<span className="amber">.</span>
                     </h1>
-                    <p className="hero-tagline">{DATA.hero.tagline}</p>
-                    <p className="body-md hero-lead">{DATA.hero.subtitle}</p>
-                    <button type="button" className="btn-primary" onClick={handleViewCapabilities}>
-                        {DATA.hero.buttonText}
-                    </button>
+                    <p className="hero-lede">
+                        I build systems that hold up under pressure — resilient pipelines,
+                        decision-support tooling, and interfaces for high-stakes
+                        environments. Currently studying computer science, graduating 2027.
+                    </p>
+                    <div className="hero-console-meta mono">
+                        <span>WASHINGTON · DC</span>
+                        <span className="sep">·</span>
+                        <span>AVAILABLE SUMMER 2026</span>
+                    </div>
                 </div>
-
-                {/* Visual column */}
-                <div className="hero-visual">
-                    <div className="hero-visual__stack">
-                        <div className="hero-portrait-block">
-                            <span className="label-sm label-sm--muted">Subject capture</span>
-                            <RasterImage
-                                src={DATA.hero.portraitSrc}
-                                alt={DATA.hero.portraitAlt}
-                                className="hero-portrait-block__img"
-                                slotLabel={DATA.hero.portraitHint}
-                            />
+                <div className="hero-console-right">
+                    <PortraitCard />
+                    <div className="console-panel">
+                        <div className="console-panel-head mono">
+                            <span className="tag">SYS / TELEMETRY</span>
+                            <span className="tag"><span className="dot-live" /> STREAMING</span>
+                        </div>
+                        <div className="console-panel-body">
+                            {metrics.map((m, i) => (
+                                <div key={i} className="metric-row">
+                                    <div className="metric-k mono tag">{m.k}</div>
+                                    <div className="metric-bar">
+                                        <div className="metric-bar-fill" style={{ width: `${m.w * 100}%` }} />
+                                    </div>
+                                    <div className="metric-v mono">{m.v}</div>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="console-panel-foot mono small">
+                            <span>CH_07 · OBS_04 · PKT 0x{(0x2F + tick).toString(16).toUpperCase()}</span>
+                            <span>T+{String(tick).padStart(5, '0')}</span>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
     );
-};
+}
 
-/* ============================================================
-   BIO
-   ============================================================ */
-const Bio = () => (
-    <section id="bio" className="panel-band panel-band--bio">
-        <div className="bio-layout">
-            <figure className="bio-portrait" style={{ margin: 0 }}>
-                <span className="label-sm label-sm--muted">Visual ID</span>
-                <RasterImage
-                    src={DATA.bio.portraitSrc}
-                    alt={DATA.bio.portraitAlt}
-                    className="bio-portrait__img"
-                    slotLabel={DATA.bio.portraitHint}
-                />
-                <figcaption className="bio-portrait__caption">
-                    {DATA.bio.portraitAlt}
-                </figcaption>
-            </figure>
-            <div className="bio-layout__main">
-                <div className="panel-band__header">
-                    <span className="label-sm label-sm--primary">{DATA.bio.label}</span>
-                    <h2 className="display-md">{DATA.bio.title}</h2>
+/* ============== Systems ============== */
+
+const SYS_CATEGORIES = [
+    { k: 'FRONT-END', items: [
+        { n: 'TypeScript', lvl: 0.9 }, { n: 'JavaScript', lvl: 0.9 },
+        { n: 'React', lvl: 0.92 }, { n: 'Vite', lvl: 0.78 },
+        { n: 'HTML', lvl: 0.95 }, { n: 'CSS', lvl: 0.88 },
+    ]},
+    { k: 'BACK-END', items: [
+        { n: 'Python', lvl: 0.92 }, { n: 'Java', lvl: 0.72 },
+        { n: 'C++', lvl: 0.7 }, { n: 'FastAPI', lvl: 0.8 },
+        { n: 'SQL', lvl: 0.82 }, { n: 'PostgreSQL', lvl: 0.78 },
+    ]},
+    { k: 'DATA / ML', items: [
+        { n: 'Pandas', lvl: 0.85 }, { n: 'Polars', lvl: 0.82 },
+        { n: 'NumPy', lvl: 0.8 }, { n: 'PyTorch', lvl: 0.7 },
+        { n: 'scikit-learn', lvl: 0.75 }, { n: 'Jupyter', lvl: 0.85 },
+    ]},
+    { k: 'AI / LLM', items: [
+        { n: 'Claude API', lvl: 0.88 }, { n: 'AIP Logic', lvl: 0.85 },
+        { n: 'Prompt Engineering', lvl: 0.85 }, { n: 'Structured Output', lvl: 0.82 },
+        { n: 'Evaluation Design', lvl: 0.78 }, { n: 'Ontology SDK', lvl: 0.8 },
+    ]},
+    { k: 'PLATFORMS', items: [
+        { n: 'Palantir Foundry', lvl: 0.85 }, { n: 'Foundry Transforms', lvl: 0.8 },
+        { n: 'Workshop', lvl: 0.78 }, { n: 'Unreal Engine', lvl: 0.62 },
+        { n: 'CMake', lvl: 0.6 }, { n: 'Multi-threading', lvl: 0.68 },
+    ]},
+    { k: 'CLOUD / DEVOPS', items: [
+        { n: 'AWS', lvl: 0.78 }, { n: 'Azure', lvl: 0.7 },
+        { n: 'Docker', lvl: 0.78 }, { n: 'Git / GitHub', lvl: 0.92 },
+        { n: 'OAuth2', lvl: 0.75 }, { n: 'Graph Algorithms', lvl: 0.72 },
+    ]},
+];
+
+function Systems() {
+    return (
+        <section id="systems" className="section">
+            <SectionHead n="02" l="SYSTEMS / CAPABILITY MATRIX" right={<span>FILE: /capability/matrix.tsv</span>} />
+            <div className="sys-grid">
+                <div className="sys-about">
+                    <div className="mono tag amber">[ ABOUT OPERATOR ]</div>
+                    <p className="sys-about-body">
+                        I'm a computer science student at <span className="amber">Marymount University</span> (minor in AI &amp; Robotics), operating at the intersection of
+                        <span className="amber"> systems engineering</span>, <span className="amber">machine learning</span>, and <span className="amber">full-stack development</span>. Recent work ranges from a multi-domain operations dashboard with real-time telemetry processing, to a clinical decision-support system on Palantir Foundry, to internal tooling deployed across 200+ enterprise endpoints.
+                    </p>
+                    <p className="sys-about-body">
+                        I care about <span className="amber">reliability under load</span>, <span className="amber">honest interfaces</span>, and software that respects the seriousness of the decisions it supports.
+                    </p>
+                    <div className="sys-stats">
+                        <div className="sys-stat">
+                            <div className="mono tag">PROJECTS SHIPPED</div>
+                            <div className="sys-stat-v">12</div>
+                        </div>
+                        <div className="sys-stat">
+                            <div className="mono tag">TICKETS RESOLVED</div>
+                            <div className="sys-stat-v">1.3K+</div>
+                        </div>
+                        <div className="sys-stat">
+                            <div className="mono tag">UPTIME DELIVERED</div>
+                            <div className="sys-stat-v">99.7%</div>
+                        </div>
+                        <div className="sys-stat">
+                            <div className="mono tag">GRAD / CLASS</div>
+                            <div className="sys-stat-v">2027</div>
+                        </div>
+                    </div>
                 </div>
-                <p className="body-md panel-band__copy">{DATA.bio.description}</p>
-                <div className="stat-grid">
-                    {DATA.bio.stats.map((stat, index) => (
-                        <div key={index} className="stat-cell">
-                            <span className="label-sm label-sm--muted">{stat.label}</span>
-                            <span className="stat-value">{stat.value}</span>
+                <div className="sys-matrix">
+                    {SYS_CATEGORIES.map((cat) => (
+                        <div key={cat.k} className="sys-cat">
+                            <div className="sys-cat-head mono">
+                                <span className="tag">{cat.k}</span>
+                                <span className="tag small">{cat.items.length} UNITS</span>
+                            </div>
+                            <div className="sys-cat-body">
+                                {cat.items.map((it) => (
+                                    <div key={it.n} className="sys-item">
+                                        <div className="sys-item-name mono">{it.n}</div>
+                                        <div className="sys-item-bar">
+                                            {Array.from({ length: 20 }).map((_, i) => {
+                                                const filled = i / 20 < it.lvl;
+                                                return <span key={i} className={'tick ' + (filled ? 'on' : '')} />;
+                                            })}
+                                        </div>
+                                        <div className="sys-item-lvl mono small">
+                                            {String(Math.round(it.lvl * 100)).padStart(2, '0')}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     ))}
                 </div>
             </div>
-        </div>
-    </section>
-);
+        </section>
+    );
+}
 
-/* ============================================================
-   TECH STACK
-   ============================================================ */
-const TechStack = () => (
-    <section id="tech" className="panel-band panel-band--tech">
-        <div className="panel-band__header">
-            <span className="label-sm label-sm--muted">Tech</span>
-            <h2 className="display-md">Stack readout</h2>
-        </div>
-        <div className="tech-matrix">
-            {Object.entries(DATA.techStack).map(([columnTitle, items]) => (
-                <div key={columnTitle} className="tech-matrix__column">
-                    <h3>{columnTitle}</h3>
-                    <ul className="tech-chip-list">
-                        {items.map((item, i) => (
-                            <li key={i}>
-                                <span className="tactical-chip">{item}</span>
-                            </li>
-                        ))}
-                    </ul>
+/* ============== Projects ============== */
+
+const PROJECTS = [
+    {
+        id: 'nightingale', code: 'OP-01', name: 'NIGHTINGALE',
+        tagline: 'Clinical decision support for ED triage',
+        role: 'Applied ML · Ontology · Full-stack',
+        year: '2025',
+        stack: ['Palantir Foundry', 'AIP Logic', 'Claude Opus', 'Python', 'TypeScript', 'React'],
+        domains: ['HEALTH', 'LLM', 'RULES', 'ESI v4'],
+        summary: 'End-to-end ED triage decision-support system on Palantir Foundry: a Polars data pipeline, a typed ontology object, a Python rules engine implementing the ESI v4 algorithm with explicit guardrails, and a custom React frontend calling Foundry directly via the generated Ontology SDK.',
+        bullets: [
+            'Engineered a hybrid rules-plus-LLM refinement layer in AIP Logic using Claude Opus, enforcing a hard safety ratchet that permits acuity escalation but never de-escalation.',
+            'Tagged every LLM contribution for full audit traceability between deterministic and probabilistic reasoning.',
+            'Evaluated the rules baseline against MIMIC-IV-ED ground truth — achieving 99% within-one-level accuracy and zero dangerous Level 1 misses.',
+            'Deployed per-user audit attribution via OAuth2 Authorization Code Flow without an intermediary backend service.',
+        ],
+        imageLabel: 'NIGHTINGALE // TRIAGE FLOW',
+    },
+    {
+        id: 'synapse', code: 'OP-02', name: 'SYNAPSE',
+        tagline: 'Multi-domain tactical operations dashboard',
+        role: 'Architect · Full-stack',
+        year: '2025 — 2026',
+        stack: ['TypeScript', 'React', 'Python', 'Asyncio'],
+        domains: ['AIR', 'LAND', 'SEA', 'CYBER'],
+        summary: 'Responsive Multi-Domain Operations dashboard providing a unified tactical picture for visualizing synchronized assets across Air, Land, Sea, and Cyber domains.',
+        bullets: [
+            'Engineered a Python backend using Asyncio to process real-time mission logic and telemetry, ensuring high-throughput state synchronization with the frontend.',
+            'Implemented type-safe data structures and communication protocols bridging backend logic with web-based rendering.',
+            'Reduced integration latency and improved system reliability through strict typing across the wire boundary.',
+        ],
+        imageLabel: 'SYNAPSE // CMD SURFACE',
+    },
+    {
+        id: 'lex', code: 'OP-03', name: 'LEX ALGORITHMICA',
+        tagline: 'Gothic-utilitarian community handbook',
+        role: 'Full-stack · Designer',
+        year: '2024 — 2025',
+        stack: ['React', 'Vercel', 'Firebase', 'Firestore', 'Auth'],
+        domains: ['COMMUNITY', 'CMS', 'REALTIME'],
+        summary: 'Adeptus Mechanicus community handbook app with real-time content syncing, role-based auth, and a committed gothic-utilitarian visual direction.',
+        bullets: [
+            'Designed and shipped a visual system of riveted panels, monospace machine-code, and liturgical typography.',
+            'Built a live collaborative editor on Firestore with optimistic updates and conflict-resolution for multi-editor sessions.',
+            'Launched with 300+ active members; sustained <80ms median sync latency.',
+        ],
+        imageLabel: 'LEX // HANDBOOK',
+    },
+    {
+        id: 'black-library', code: 'OP-04', name: 'THE BLACK LIBRARY',
+        tagline: 'Personal media catalog across books, games, films',
+        role: 'Full-stack',
+        year: '2024',
+        stack: ['TypeScript', 'React', 'Node.js', 'Postgres'],
+        domains: ['CATALOG', 'API', 'SSR'],
+        summary: 'Full-stack personal media catalog with progress tracking across mixed media types, normalized via a polymorphic item schema.',
+        bullets: [
+            'Designed a polymorphic Postgres schema with discriminated item types and shared progress/annotation tables.',
+            'Built a typed Node.js API with row-level auth and per-item activity streams.',
+            'Front-end state modeled with a derived-cache pattern; zero client-side refetch on navigation.',
+        ],
+        imageLabel: 'BLACK LIBRARY // CATALOG',
+    },
+];
+
+function ProjectPlaceholder({ label, idx }) {
+    const id = `stripes-${idx}`;
+    return (
+        <div className="proj-img">
+            <svg className="proj-img-svg" viewBox="0 0 400 260" preserveAspectRatio="none">
+                <defs>
+                    <pattern id={id} width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                        <rect width="4" height="8" fill="rgba(243,239,230,0.08)" />
+                    </pattern>
+                </defs>
+                <rect width="400" height="260" fill={`url(#${id})`} />
+            </svg>
+            <div>
+                <div className="proj-img-corners">
+                    <span className="c tl" /><span className="c tr" /><span className="c bl" /><span className="c br" />
                 </div>
-            ))}
-        </div>
-    </section>
-);
-
-const SchematicBand = () => (
-    <div className="schematic-band surface-shift">
-        <div className="schematic-band__grid">
-            <Bio />
-            <TechStack />
-        </div>
-    </div>
-);
-
-/* ============================================================
-   PROJECTS — Bento Grid
-   ============================================================ */
-const Projects = () => (
-    <section id="projects" className="section-block section-block--projects">
-        <div className="section-block__intro">
-            <span className="label-sm label-sm--muted">[ {DATA.projects.label} ]</span>
-            <h2 className="display-md">{DATA.projects.title}</h2>
-        </div>
-        <div className="bento-grid">
-            {DATA.projects.items.map((project, index) => (
-                <article
-                    key={project.title}
-                    className={`bento-card ${index === 0 ? "bento-card--featured" : "bento-card--secondary"}`}
-                >
-                    <RasterImage
-                        src={project.image}
-                        alt={project.imageAlt || ""}
-                        className="bento-card__img"
-                        slotLabel={project.imageHint ? `Add file: ${project.imageHint}` : "Add project image"}
-                    />
-                    <div className="bento-card__gradient" />
-                    <div className="bento-card__overlay">
-                        <div className="bento-card__top">
-                            <span className="label-sm">
-                                [ {project.category.toUpperCase().replace(/ /g, "_")} ]
-                            </span>
-                            <div className="bento-card__tech-chips">
-                                {project.tech.slice(0, 3).map((t, i) => (
-                                    <span key={i} className="tactical-chip tactical-chip--dark">{t}</span>
-                                ))}
-                            </div>
-                        </div>
-                        <div className="bento-card__bottom">
-                            <h3 className="display-sm">{project.title.toUpperCase()}</h3>
-                            <p className="body-md">{project.description}</p>
-                            <div className="bento-card__chips">
-                                {project.tech.slice(3).map((t, i) => (
-                                    <span key={i} className="tactical-chip tactical-chip--ghost">{t}</span>
-                                ))}
-                            </div>
-                            {project.url && (
-                                <a
-                                    className="bento-card__link"
-                                    href={project.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label={project.linkAria || `Open link for ${project.title}`}
-                                >
-                                    {project.linkText || "Open repository"} →
-                                </a>
-                            )}
-                        </div>
-                    </div>
-                </article>
-            ))}
-        </div>
-    </section>
-);
-
-/* ============================================================
-   RESUME / HISTORY
-   ============================================================ */
-const Resume = () => (
-    <section id="resume" className="section-block section-block--resume">
-        <div className="section-block__intro">
-            <span className="label-sm label-sm--muted">[ {DATA.resume.label} ]</span>
-            <h2 className="display-md">{DATA.resume.title}</h2>
-        </div>
-
-        {DATA.resume.education && (
-            <div className="education-panel">
-                <span className="label-sm label-sm--primary">Education</span>
-                <h3 className="display-sm">{DATA.resume.education.school}</h3>
-                <p className="label-md label-md--soft">{DATA.resume.education.location}</p>
-                <p className="body-md education-panel__degree">{DATA.resume.education.degree}</p>
-                <p className="body-md">Minor: {DATA.resume.education.minor}</p>
-                <p className="education-panel__dates mono">{DATA.resume.education.dates}</p>
+                <div className="proj-img-label mono tag">{label}</div>
+                <div className="proj-img-note mono small">{'// product shot / placeholder'}</div>
             </div>
-        )}
+        </div>
+    );
+}
 
-        <div className="history-stack">
-            {DATA.resume.jobs.map((job, index) => (
-                <div
-                    key={job.company}
-                    className={`history-panel ${index % 2 === 1 ? "history-panel--alt" : ""}`}
-                >
-                    <div className="history-panel__meta">
-                        <span className="label-sm label-sm--primary">Record</span>
-                        <span className="label-md mono">{job.year}</span>
+function ProjectRow({ p, open, onToggle, idx }) {
+    return (
+        <div className={'proj-row ' + (open ? 'is-open' : '')}>
+            <button className="proj-row-bar" onClick={onToggle} aria-expanded={open}>
+                <span className="proj-row-n mono tag">{p.code}</span>
+                <span className="proj-row-name">{p.name}</span>
+                <span className="proj-row-tag mono small">{p.tagline}</span>
+                <span className="proj-row-year mono tag">{p.year}</span>
+                <span className="proj-row-toggle mono">{open ? '—' : '+'}</span>
+            </button>
+            {open && (
+                <div className="proj-row-body">
+                    <div>
+                        <ProjectPlaceholder label={p.imageLabel} idx={idx} />
                     </div>
-                    <div className="history-panel__body">
-                        <h3 className="display-sm">{job.company}</h3>
-                        <p className="label-md label-md--soft">
-                            {job.role}{job.location ? ` · ${job.location}` : ""}
-                        </p>
-                        {job.bullets?.length ? (
-                            <ul className="history-bullets">
-                                {job.bullets.map((line, i) => (
-                                    <li key={i} className="body-md">{line}</li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <p className="body-md">{job.description}</p>
-                        )}
+                    <div>
+                        <div className="proj-meta-grid">
+                            <div><span className="mono tag">ROLE</span><div className="mono">{p.role}</div></div>
+                            <div><span className="mono tag">STACK</span><div className="mono">{p.stack.join(' · ')}</div></div>
+                            <div><span className="mono tag">DOMAINS</span><div className="mono amber">{p.domains.join(' · ')}</div></div>
+                        </div>
+                        <p className="proj-summary">{p.summary}</p>
+                        <ul className="proj-bullets">
+                            {p.bullets.map((b, j) => (
+                                <li key={j} className="proj-bullet">
+                                    <span className="mono tag small">{String(j + 1).padStart(2, '0')}</span>
+                                    <span>{b}</span>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
-            ))}
+            )}
         </div>
+    );
+}
 
-        <a
-            href={`${process.env.PUBLIC_URL || ""}/Coster_Resume.pdf`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-secondary"
-            download="Coster_Resume.pdf"
-            onClick={(e) => {
-                const base = process.env.PUBLIC_URL || window.location.origin;
-                const url = `${base}/Coster_Resume.pdf`;
-                window.open(url, "_blank", "noopener");
-                e.preventDefault();
-            }}
-        >
-            View full resume →
-        </a>
-    </section>
-);
+function Projects() {
+    const [openId, setOpenId] = useState('nightingale');
+    return (
+        <section id="projects" className="section">
+            <SectionHead n="03" l="PROJECTS / DEPLOYED OPERATIONS" right={<span>COUNT: 04 · STATUS: REVIEWABLE</span>} />
+            <div className="proj-column-head mono small">
+                <span>CODE</span><span>NAME</span><span>BRIEF</span><span>YEAR</span><span />
+            </div>
+            <div className="proj-list">
+                {PROJECTS.map((p, i) => (
+                    <ProjectRow key={p.id} p={p} idx={i}
+                        open={openId === p.id}
+                        onToggle={() => setOpenId(openId === p.id ? null : p.id)} />
+                ))}
+            </div>
+        </section>
+    );
+}
 
-/* ============================================================
-   FOOTER / CONTACT
-   ============================================================ */
-const Footer = () => {
-    const [sync, setSync] = useState(formatSync);
+/* ============== History ============== */
+
+const HISTORY = [
+    {
+        org: 'World Wide Technology', role: 'Federal Sales Intern', loc: 'Washington, D.C.',
+        start: 'MAY 2026', end: 'AUG 2026', tag: 'FEDERAL / SE',
+        bullets: [
+            "Embedded with the Federal Systems Engineering team, supporting both pre-sale solution design and post-sale technical validation across the firm's OEM partner ecosystem for federal clients.",
+            'Contributed to federal client engagements targeting agencies such as DISA — supporting requirements discovery, technical scoping, and solution proposal development.',
+            'Supported post-sale implementation workflows with technical documentation, configuration guidance, and cross-functional handoffs between engineering and delivery teams.',
+        ],
+    },
+    {
+        org: 'Allan Myers', role: 'IT Generalist Intern', loc: 'Fallston, MD',
+        start: 'MAY 2025', end: 'AUG 2025', tag: 'ENTERPRISE / IT',
+        bullets: [
+            'Diagnosed and resolved 50+ weekly hardware and software tickets across 6 business units — cutting average downtime by 30%.',
+            'Led a company-wide device upgrade project, replacing 200+ end-user systems across field offices with minimal service disruption.',
+            'Deployed AWS jumpboxes and Office 365 admin tooling to improve remote access reliability, reducing login issues by 20%.',
+        ],
+    },
+];
+
+function HistoryEntry({ h, idx }) {
+    return (
+        <div className="hist-row">
+            <div className="hist-rail">
+                <div className="hist-rail-n mono">{String(idx + 1).padStart(2, '0')}</div>
+                <div className="hist-rail-line" />
+                <div className="hist-rail-dot" />
+            </div>
+            <div className="hist-body">
+                <div className="hist-top">
+                    <div>
+                        <div className="mono tag amber">{h.tag}</div>
+                        <h3 className="hist-role">{h.role}</h3>
+                        <div className="hist-org mono">{h.org} <span className="sep">·</span> {h.loc}</div>
+                    </div>
+                    <div className="hist-top-r mono">
+                        <span className="tag">{h.start}</span>
+                        <span className="hist-arrow">→</span>
+                        <span className="tag">{h.end}</span>
+                    </div>
+                </div>
+                <ul className="hist-bullets">
+                    {h.bullets.map((b, i) => (
+                        <li key={i} className="hist-bullet">
+                            <span className="mono tag small">▸</span>
+                            <span>{b}</span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    );
+}
+
+function History() {
+    return (
+        <section id="history" className="section">
+            <SectionHead n="04" l="HISTORY / FIELD RECORD" right={<span>ENTRIES: 02 · SORT: DESC</span>} />
+            <div className="hist-edu mono">
+                <div className="hist-edu-head">
+                    <span className="tag">EDU / CURRENT</span>
+                    <span className="tag">AUG 2023 — MAY 2027</span>
+                </div>
+                <div className="hist-edu-body">
+                    <div>
+                        <div className="mono tag">INSTITUTION</div>
+                        <div className="hist-edu-val">Marymount University</div>
+                        <div className="mono small" style={{ color: 'var(--bone-60)', marginTop: 4 }}>Arlington, VA</div>
+                    </div>
+                    <div>
+                        <div className="mono tag">DEGREE</div>
+                        <div className="hist-edu-val">B.S. Computer Science</div>
+                        <div className="mono small" style={{ color: 'var(--bone-60)', marginTop: 4 }}>Minor: AI &amp; Robotics</div>
+                    </div>
+                    <div>
+                        <div className="mono tag">EXPECTED</div>
+                        <div className="hist-edu-val">MAY 2027</div>
+                    </div>
+                </div>
+            </div>
+            <div className="hist-list">
+                {HISTORY.map((h, i) => <HistoryEntry key={h.org} h={h} idx={i} />)}
+            </div>
+        </section>
+    );
+}
+
+/* ============== Contact ============== */
+
+function Contact() {
+    const [copied, setCopied] = useState(null);
+    const copy = async (text, id) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            setCopied(id);
+            setTimeout(() => setCopied(null), 1400);
+        } catch (e) {}
+    };
+    const channels = [
+        { id: 'email', k: 'EMAIL', v: 'costerdevin@gmail.com', href: 'mailto:costerdevin@gmail.com' },
+        { id: 'phone', k: 'VOICE', v: '+1 443 · 876 · 3070', href: 'tel:+14438763070' },
+        { id: 'github', k: 'GITHUB', v: 'github.com/DevinCoster', href: 'https://github.com/DevinCoster' },
+        { id: 'linkedin', k: 'LINKEDIN', v: 'linkedin.com/in/devincoster', href: 'https://www.linkedin.com/in/devincoster/' },
+    ];
+    return (
+        <section id="contact" className="section section-contact">
+            <SectionHead n="05" l="CONTACT / ESTABLISH COMMS" right={<span>CHANNEL: OPEN</span>} />
+            <div className="contact-grid">
+                <div>
+                    <h2 className="contact-head">
+                        Let's build something<br />
+                        that <span className="amber">matters</span>.
+                    </h2>
+                    <p className="contact-lede">
+                        I'm open to summer 2026 roles in systems engineering, applied ML,
+                        and full-stack work — especially in mission-critical or
+                        decision-support contexts. Say hello.
+                    </p>
+                    <div className="contact-status mono">
+                        <div className="contact-status-row">
+                            <span className="dot-live" /> <span>AVAILABLE / RESPONSE WITHIN 24H</span>
+                        </div>
+                        <div className="contact-status-row">
+                            <span className="dot-amber" /> <span>ACCEPTING INTERVIEWS / SUMMER 2026</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div className="channel-panel">
+                        <div className="channel-panel-head mono">
+                            <span className="tag">CHANNELS</span>
+                            <span className="tag">04 / ACTIVE</span>
+                        </div>
+                        <div className="channel-list">
+                            {channels.map((c) => (
+                                <div key={c.id} className="channel-row">
+                                    <div className="channel-k mono tag">{c.k}</div>
+                                    <a className="channel-v mono" href={c.href} target="_blank" rel="noreferrer">{c.v}</a>
+                                    <button className="channel-copy mono small" onClick={() => copy(c.v, c.id)}>
+                                        {copied === c.id ? 'COPIED ✓' : 'COPY'}
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="channel-panel-foot mono small">
+                            <span>PGP KEY ON REQUEST</span>
+                            <span>KEY-ID 0xDC27A338</span>
+                        </div>
+                    </div>
+                    <div className="contact-cta-row">
+                        <a className="btn btn-amber" href="mailto:costerdevin@gmail.com">▸ ESTABLISH CONTACT</a>
+                        <a className="btn" href={publicAsset('/Coster_Resume.pdf')} target="_blank" rel="noreferrer">DOWNLOAD RESUME ↓</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+/* ============== App ============== */
+
+function App() {
+    const [active, setActive] = useState('identity');
+
+    const jump = useCallback((id) => {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, []);
+
     useEffect(() => {
-        const id = setInterval(() => setSync(formatSync()), 1000);
-        return () => clearInterval(id);
+        const ids = ['identity', 'systems', 'projects', 'history', 'contact'];
+        const obs = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((en) => { if (en.isIntersecting) setActive(en.target.id); });
+            },
+            { rootMargin: '-30% 0px -60% 0px' }
+        );
+        ids.forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) obs.observe(el);
+        });
+        return () => obs.disconnect();
     }, []);
 
     return (
-        <footer id="contact" className="footer-block surface-deepest">
-            <div className="footer-block__grid">
-                <div className="footer-block__primary">
-                    <span className="label-sm label-sm--muted">Contact channel</span>
-                    <h2 className="display-md">Ready to build</h2>
-                    <a href={`mailto:${DATA.contact.email}`} className="footer-email body-md">
-                        {DATA.contact.email}
-                    </a>
-                    {DATA.contact.phone && (
-                        <a href={`tel:${DATA.contact.phone.replace(/\D/g, "")}`} className="footer-phone">
-                            {DATA.contact.phone}
-                        </a>
-                    )}
-                    <p className="label-md label-md--soft" style={{ marginTop: "8px" }}>{DATA.contact.address}</p>
-                </div>
-                <div className="footer-block__links">
-                    <span className="label-sm label-sm--muted">Uplink</span>
-                    <ul>
-                        {DATA.contact.socials.map((social, index) => (
-                            <li key={index}>
-                                <a
-                                    href={social.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="footer-link"
-                                >
-                                    {social.name}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </div>
-            <div className="footer-block__strip">
-                <span className="label-sm">
-                    © {new Date().getFullYear()} {DATA.navbar.logo} — All systems operational
-                </span>
-                <span className="label-sm mono">
-                    Last sync: {sync}
-                </span>
-            </div>
-        </footer>
-    );
-};
-
-/* ============================================================
-   APP ROOT
-   ============================================================ */
-function App() {
-    const [menuOpen, setMenuOpen] = useState(false);
-
-    return (
-        <div className="App">
-            <Navigation menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-            <main className="app-main">
-                <Hero />
-                <SchematicBand />
-                <Projects />
-                <Resume />
+        <>
+            <GridOverlay />
+            <SideRail side="left" />
+            <SideRail side="right" />
+            <div className="app">
+                <TopBar onJump={jump} active={active} />
+                <main>
+                    <Hero />
+                    <Systems />
+                    <Projects />
+                    <History />
+                    <Contact />
+                </main>
                 <Footer />
-            </main>
-        </div>
+            </div>
+        </>
     );
 }
 
